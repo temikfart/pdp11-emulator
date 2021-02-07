@@ -87,8 +87,8 @@ void stack_clear(struct Stack * s)
 
 int main()
 {
-	//const char * begin = "([{<";
-	//const char * end = ")]}>";
+	const char * begin = "([{<";
+	const char * end = ")]}>";
 
 	Stack * st;
 	st = malloc(sizeof(Stack));
@@ -101,17 +101,25 @@ int main()
 	st_push(st, '>');
 	printf("is empty: %d\n", st_is_empty(st));		//0
 
-	st_print(st);									//{>
+	st_print(st);									//{ >
 	printf("%c\n", st_pop(st));						//>
 	st_print(st);									//{
 	
+	printf("%c\n", st_pop(st));						//{
+	st_print(st);									//Empty
+	
+	printf("%c %c %c\n", begin[0], begin[3], end[2]); //( < }
+	
+	char temp;
+	while(scanf("%c", &temp) != EOF)
+	{
+		printf("%c", temp);
+	}
+	printf("EOF\n");
 	
 	
 	/* Data x;
 	scanf("%d", &x); */
-
-
-
 
 	/* int nsize = 0;
 	int i = 0;
@@ -128,7 +136,6 @@ int main()
 	i++; */
 	
 	st_destroy(st);
-	
 	
 	return 0;
 }
