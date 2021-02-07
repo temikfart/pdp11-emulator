@@ -64,18 +64,17 @@ void st_destroy(Stack * s)
 		free(s);
 	}
 };
-int br_comp(const char * br, const char * temp)
+int br_comp(const char * br, Data temp)
 {
-	int count = 0;
 	for(int i = 0; i < Brackets; i++)
 	{
-		if(strcmp(br, temp))
+		if(br[i] == temp )
 		{
-			count++;
+			return i+1;
 			break;
 		}
 	}
-	return (count != 0) ? 1 : 0;
+	return 0;
 };
 /* Stack * stack_create(int size)
 {
@@ -127,35 +126,37 @@ int main()
 	
 	st_print(st);
 	Data temp;
+	Data xpop;
+	Data y1, y2;
 	while(scanf("%c", &temp) != EOF)
 	{
-		if(st_is_empty(st) == 1 && br_comp(begin, &temp) == 1)
+		if(br_comp(begin, temp))
 		{
 			st_push(st, temp);
-			printf("if works\n");
+			printf("it's open\n");
 		}
-		printf("%c", temp);
+		if(br_comp(end, temp))
+		{
+			xpop = st_pop(st);
+			if(xpop == -1)
+			{
+				printf("NO\n");
+				break;
+			}
+			y1 = br_comp(end, xpop);
+			y2 = br_comp(end, temp);
+			if(y1 != y2)
+			{
+				printf("NO\n");
+				break;
+			}
+			printf("it was close\n");
+		}
+		//printf("%c", temp);
 	}
 	
 	printf("EOF\n");
 	st_print(st);
-	
-	/* Data x;
-	scanf("%d", &x); */
-
-	/* int nsize = 0;
-	int i = 0;
-
-	while(1)
-	{
-	if(i >= nsize)
-	{
-	nsize += N;
-	s = realloc(s, nsize * sizeof(char));
-	}
-	if(1 != scanf("%c", &s[i]))
-	break;
-	i++; */
 	
 	st_destroy(st);
 	
