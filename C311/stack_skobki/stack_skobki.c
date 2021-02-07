@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define N 10
+#define Brackets 4
 
 typedef char Data;
 typedef struct
@@ -62,6 +64,19 @@ void st_destroy(Stack * s)
 		free(s);
 	}
 };
+int br_comp(const char * br, const char * temp)
+{
+	int count = 0;
+	for(int i = 0; i < Brackets; i++)
+	{
+		if(strcmp(br, temp))
+		{
+			count++;
+			break;
+		}
+	}
+	return (count != 0) ? 1 : 0;
+};
 /* Stack * stack_create(int size)
 {
 	struct Stack * s = malloc(sizeof(struct Stack));
@@ -95,7 +110,7 @@ int main()
 	st_init(st);
 	
 	
-	printf("is empty: %d\n", st_is_empty(st)); 		//1
+	/* printf("is empty: %d\n", st_is_empty(st)); 		//1
 	st_print(st);									//empty stack
 	st_push(st, '{');
 	st_push(st, '>');
@@ -108,15 +123,22 @@ int main()
 	printf("%c\n", st_pop(st));						//{
 	st_print(st);									//Empty
 	
-	printf("%c %c %c\n", begin[0], begin[3], end[2]); //( < }
+	printf("%c %c %c\n", begin[0], begin[3], end[2]); //( < } */
 	
-	char temp;
+	st_print(st);
+	Data temp;
 	while(scanf("%c", &temp) != EOF)
 	{
+		if(st_is_empty(st) == 1 && br_comp(begin, &temp) == 1)
+		{
+			st_push(st, temp);
+			printf("if works\n");
+		}
 		printf("%c", temp);
 	}
-	printf("EOF\n");
 	
+	printf("EOF\n");
+	st_print(st);
 	
 	/* Data x;
 	scanf("%d", &x); */
