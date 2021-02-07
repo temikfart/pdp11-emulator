@@ -54,6 +54,14 @@ Data st_pop(Stack * s)
 	s->n --;
 	return x;
 };
+void st_destroy(Stack * s)
+{
+	if(s != NULL)
+	{
+		free(s->a);
+		free(s);
+	}
+};
 /* Stack * stack_create(int size)
 {
 	struct Stack * s = malloc(sizeof(struct Stack));
@@ -75,14 +83,6 @@ void stack_clear(struct Stack * s)
 {
 	free(s->a);
 	s->n = 0;
-};
-void stack_destroy(struct Stack * s)
-{
-	if(s != NULL)
-	{
-		stack_clear(s);
-		free(s);
-	}
 }; */
 
 int main()
@@ -103,7 +103,10 @@ int main()
 
 	st_print(st);									//{>
 	printf("%c\n", st_pop(st));						//>
-	st_print(st);
+	st_print(st);									//{
+	
+	
+	
 	/* Data x;
 	scanf("%d", &x); */
 
@@ -124,8 +127,7 @@ int main()
 	break;
 	i++; */
 	
-	free(st->a);
-	free(st);
+	st_destroy(st);
 	
 	
 	return 0;
