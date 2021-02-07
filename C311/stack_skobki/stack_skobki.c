@@ -46,14 +46,14 @@ void st_print(Stack * s)
 	printf("\n");
 	}
 };
-/* Data st_pop(Stack * s)
+Data st_pop(Stack * s)
 {
 	if(st_is_empty(s))
 		return -1;
 	Data x = s->a[s->n - 1];
 	s->n --;
 	return x;
-}; */
+};
 /* Stack * stack_create(int size)
 {
 	struct Stack * s = malloc(sizeof(struct Stack));
@@ -102,6 +102,8 @@ int main()
 	printf("is empty: %d\n", st_is_empty(st));		//0
 
 	st_print(st);									//{>
+	printf("%c\n", st_pop(st));						//>
+	st_print(st);
 	/* Data x;
 	scanf("%d", &x); */
 
