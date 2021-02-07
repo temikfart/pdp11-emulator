@@ -6,7 +6,7 @@
 typedef char Data;
 typedef struct
 {
-	int n;
+	unsigned int n;
 	size_t size;
 	Data * a;
 }Stack;
@@ -21,19 +21,38 @@ int st_is_empty(Stack * s)
 {
 	return s->n == 0;
 };
-/* int stack_is_full(struct Stack * s)
+int st_is_full(Stack * s)
 {
 	return s->n == s->size;
 };
-void stack_push(struct Stack * s, Data x)
+void st_push(Stack * s, Data x)
 {
-	if(stack_is_full(s))
+	if(st_is_full(s))
 	{
 		s->size += N;
 		s->a = realloc(s->a, s->size * sizeof(Data));
 	}
 	s->a[s->n] = x;
 	s->n ++;
+};
+void st_print(Stack * s)
+{
+	if(st_is_empty(s) == 1)
+		printf("Empty stack\n");
+	else
+	{
+	for(unsigned int i = 0; i < s->n; i++)
+		printf("%c ", s->a[i]);
+	printf("\n");
+	}
+};
+/* Data st_pop(Stack * s)
+{
+	if(st_is_empty(s))
+		return -1;
+	Data x = s->a[s->n - 1];
+	s->n --;
+	return x;
 }; */
 /* Stack * stack_create(int size)
 {
@@ -47,23 +66,6 @@ Data stack_get(struct Stack * s)
 {
 	Data x = s->a[s->n - 1];
 	return x;
-};
-Data stack_pop(struct Stack * s)
-{
-	Data x = s->a[s->n - 1];
-	s->n —;
-	return x;
-};
-void stack_print(struct Stack * s)
-{
-	if(stack_is_empty(s) == 1)
-		printf("Empty stack\n");
-	else
-	{
-	for(int i = 0; i < s->n; i++)
-		printf("%d ", s->a[i]);
-		printf("\n");
-	}
 };
 int stack_size(struct Stack * s)
 {
@@ -91,9 +93,15 @@ int main()
 	Stack * st;
 	st = malloc(sizeof(Stack));
 	st_init(st);
+	
+	
+	printf("is empty: %d\n", st_is_empty(st)); 		//1
+	st_print(st);									//empty stack
+	st_push(st, '{');
+	st_push(st, '>');
+	printf("is empty: %d\n", st_is_empty(st));		//0
 
-	printf("%d\n", st_is_empty(st));
-
+	st_print(st);									//{>
 	/* Data x;
 	scanf("%d", &x); */
 
@@ -112,6 +120,11 @@ int main()
 	}
 	if(1 != scanf("%c", &s[i]))
 	break;
-	i++;
+	i++; */
+	
+	free(st->a);
+	free(st);
+	
+	
+	return 0;
 }
-*/
