@@ -127,7 +127,7 @@ int main()
 	st_print(st);
 	Data temp;
 	Data xpop;
-	//Data y1, y2;
+	Data y1, y2;
 	
 	/*
 	+	Пока есть скобки
@@ -157,14 +157,21 @@ int main()
 				printf("NO\n");
 				break;
 			}
-			/* y1 = br_comp(end, xpop);
+			//Проверка на парность:
+			//определяем вид откр. скобки xpop
+			//определяем вид закр. скобки temp
+			//если виды равны, то хорошо
+			//если различны - плохо.
+			y1 = br_comp(begin, xpop);
 			y2 = br_comp(end, temp);
+			
+			printf("\n xpop: %c \n temp: %c \n", begin[y1 - 1], end[y2 - 1]);
 			if(y1 != y2)
 			{
 				printf("NO\n");
 				break;
-			} */
-			printf("it was close\n");
+			}
+			printf("it was close. Go next.\n");
 		}
 		//printf("%c", temp);
 	}
