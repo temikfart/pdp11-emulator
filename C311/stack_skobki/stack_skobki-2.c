@@ -76,28 +76,6 @@ int br_comp(const char * br, Data temp)
     }
     return 0;
 }
-/* Stack * stack_create(int size)
-{
-    struct Stack * s = malloc(sizeof(struct Stack));
-    s->a = malloc(size * sizeof(Data));
-    s->size = size;
-    s->n = 0;
-    return s;
-};
-Data stack_get(struct Stack * s)
-{
-    Data x = s->a[s->n - 1];
-    return x;
-};
-int stack_size(struct Stack * s)
-{
-    
-};
-void stack_clear(struct Stack * s)
-{
-    free(s->a);
-    s->n = 0;
-}; */
 
 int main()
 {
@@ -108,46 +86,15 @@ int main()
     st = malloc(sizeof(Stack));
     st_init(st);
     
-    
-    /* printf("is empty: %d\n", st_is_empty(st));         //1
-    st_print(st);                                    //empty stack
-    st_push(st, '{');
-    st_push(st, '>');
-    printf("is empty: %d\n", st_is_empty(st));        //0
-
-    st_print(st);                                    //{ >
-    printf("%c\n", st_pop(st));                        //>
-    st_print(st);                                    //{
-    
-    printf("%c\n", st_pop(st));                        //{
-    st_print(st);                                    //Empty
-    
-    printf("%c %c %c\n", begin[0], begin[3], end[2]); //( < } */
-    
-    //st_print(st);
     Data temp;
     Data xpop;
     Data y1, y2;
-    
-    /*
-    +    Пока есть скобки
-    +        если скобка открывающая
-    +            положить ее в стек push
-    +        если скобка закрывающая
-    +            достать скобку из стека pop
-    +            если достать не можем — плохо
-                если эти скобки не пара — плохо
-
-        В конце проверить, что стек пустой
-        Последовательность корректная
-    */
     int j = 0;
     while(scanf("%c", &temp) != EOF)
     {
         if(br_comp(begin, temp))
         {
             st_push(st, temp);
-            //printf("it's open\n");
         }
         if(br_comp(end, temp))
         {
@@ -158,25 +105,17 @@ int main()
                 j++;
                 break;
             }
-            //Проверка на парность:
-            //определяем вид откр. скобки xpop
-            //определяем вид закр. скобки temp
-            //если виды равны, то хорошо
-            //если различны - плохо.
             y1 = br_comp(begin, xpop);
             y2 = br_comp(end, temp);
-            
-            //printf("\n xpop: %c \n temp: %c \n", begin[y1 - 1], end[y2 - 1]);
             if(y1 != y2)
             {
                 printf("NO\n");
                 j++;
                 break;
             }
-            //printf("it was close. Go next.\n");
         }
-        //printf("%c", temp);
     }
+    
     if(j == 0 && st_is_empty(st) == 0)
     {
         printf("NO\n");
@@ -184,8 +123,6 @@ int main()
     }
     if(j == 0)
         printf("YES\n");
-    //printf("EOF\n");
-    //st_print(st);
     
     st_destroy(st);
     
