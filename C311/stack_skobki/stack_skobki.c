@@ -127,7 +127,21 @@ int main()
 	st_print(st);
 	Data temp;
 	Data xpop;
-	Data y1, y2;
+	//Data y1, y2;
+	
+	/*
+	+	Пока есть скобки
+	+		если скобка открывающая
+	+			положить ее в стек push
+	+		если скобка закрывающая
+	+			достать скобку из стека pop
+	+			если достать не можем — плохо
+				если эти скобки не пара — плохо
+
+		В конце проверить, что стек пустой
+		Последовательность корректная
+	*/
+	
 	while(scanf("%c", &temp) != EOF)
 	{
 		if(br_comp(begin, temp))
@@ -143,13 +157,13 @@ int main()
 				printf("NO\n");
 				break;
 			}
-			y1 = br_comp(end, xpop);
+			/* y1 = br_comp(end, xpop);
 			y2 = br_comp(end, temp);
 			if(y1 != y2)
 			{
 				printf("NO\n");
 				break;
-			}
+			} */
 			printf("it was close\n");
 		}
 		//printf("%c", temp);
