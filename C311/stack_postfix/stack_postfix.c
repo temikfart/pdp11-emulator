@@ -50,7 +50,7 @@ void st_print(Stack * s)
 Data st_pop(Stack * s)
 {
     if(st_is_empty(s))
-        return -1;
+        return 'x';
     Data x = s->a[s->n - 1];
     s->n --;
     return x;
@@ -112,6 +112,12 @@ int main()
 		{
 			dig1 = st_pop(st);
 			dig2 = st_pop(st);
+			if(dig1 == 'x' || dig2 == 'x')
+			{
+				printf("Error\n");
+				break;
+			}
+			
 			printf("1: %c; 2: %c;\n", dig1, dig2);
 		}
     }
