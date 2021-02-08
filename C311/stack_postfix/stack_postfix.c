@@ -86,7 +86,7 @@ int main()
     st_init(st);
     
     Data temp;
-	
+	Data dig1, dig2;
 	/*
 	Пока идут данные
 		если число
@@ -108,10 +108,12 @@ int main()
 			st_push(st, temp);
 			printf("dig: %c \n", temp);
 		}
-		/* if(symb_check)
+		if(symb_check(oper, temp) != 0)
 		{
-			
-		} */
+			dig1 = st_pop(st);
+			dig2 = st_pop(st);
+			printf("1: %c; 2: %c;\n", dig1, dig2);
+		}
     }
     
     st_destroy(st);
