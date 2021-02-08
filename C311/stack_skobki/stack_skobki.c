@@ -124,7 +124,7 @@ int main()
 	
 	printf("%c %c %c\n", begin[0], begin[3], end[2]); //( < } */
 	
-	st_print(st);
+	//st_print(st);
 	Data temp;
 	Data xpop;
 	Data y1, y2;
@@ -141,13 +141,13 @@ int main()
 		В конце проверить, что стек пустой
 		Последовательность корректная
 	*/
-	
+	int j = 0;
 	while(scanf("%c", &temp) != EOF)
 	{
 		if(br_comp(begin, temp))
 		{
 			st_push(st, temp);
-			printf("it's open\n");
+			//printf("it's open\n");
 		}
 		if(br_comp(end, temp))
 		{
@@ -155,6 +155,7 @@ int main()
 			if(xpop == -1)
 			{
 				printf("NO\n");
+				j++;
 				break;
 			}
 			//Проверка на парность:
@@ -165,19 +166,21 @@ int main()
 			y1 = br_comp(begin, xpop);
 			y2 = br_comp(end, temp);
 			
-			printf("\n xpop: %c \n temp: %c \n", begin[y1 - 1], end[y2 - 1]);
+			//printf("\n xpop: %c \n temp: %c \n", begin[y1 - 1], end[y2 - 1]);
 			if(y1 != y2)
 			{
 				printf("NO\n");
+				j++;
 				break;
 			}
-			printf("it was close. Go next.\n");
+			//printf("it was close. Go next.\n");
 		}
 		//printf("%c", temp);
 	}
-	
-	printf("EOF\n");
-	st_print(st);
+	if(j == 0)
+		printf("YES\n");
+	//printf("EOF\n");
+	//st_print(st);
 	
 	st_destroy(st);
 	
