@@ -4,7 +4,7 @@
 
 #define N 10
 
-typedef char Data;
+typedef int Data;
 typedef struct
 {
     unsigned int n;
@@ -50,7 +50,7 @@ void st_print(Stack * s)
 Data st_pop(Stack * s)
 {
     if(st_is_empty(s))
-        return 'x';
+        return 0;
     Data x = s->a[s->n - 1];
     s->n --;
     return x;
@@ -75,6 +75,10 @@ int symb_check(const char * symb, Data temp)
     }
     return 0;
 }
+int st_size(Stack * s)
+{
+	return s->n;
+};
 
 int main()
 {
@@ -85,8 +89,9 @@ int main()
     st = malloc(sizeof(Stack));
     st_init(st);
     
-    Data temp;
+    char temp;
 	Data dig1, dig2;
+	Data res;
 	/*
 	Пока идут данные
 		если число
@@ -110,12 +115,15 @@ int main()
 		}
 		if(symb_check(oper, temp) != 0)
 		{
-			dig1 = st_pop(st);
-			dig2 = st_pop(st);
-			if(dig1 == 'x' || dig2 == 'x')
+			if(st->n < 2)
 			{
 				printf("Error\n");
 				break;
+			}
+			else
+			{
+				dig1 = st_pop(st);
+				dig2 = st_pop(st);
 			}
 			
 			printf("1: %c; 2: %c;\n", dig1, dig2);
