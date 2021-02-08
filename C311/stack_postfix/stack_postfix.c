@@ -85,13 +85,13 @@ int st_oper(Data x, Data y, int op_num)
 			printf("(+)\n");
 			break;
 		case 2:
-			res = x-y;
+			res = y-x;
 			printf("(-)\n");
 			break;
 		case 3:
 			res = x*y;
 			printf("(*)\n");
-			break;
+			break;			
 	}
 	return res;
 }
@@ -99,7 +99,7 @@ int st_oper(Data x, Data y, int op_num)
 int main()
 {
     const char * dig = "0123456789";
-    const char * oper = "+-*";
+    const char * oper = "+-*=";
 
     Stack * st;
     st = malloc(sizeof(Stack));
@@ -133,6 +133,12 @@ int main()
 		}
 		if(symb_check(oper, temp) != 0)
 		{
+			printf("symb_check: %d\n", symb_check(oper, temp));
+			if(symb_check(oper, temp) == 4)
+			{
+				printf("%d\n", st_pop(st));
+				break;
+			}
 			if(st->n < 2)
 			{
 				printf("Error\n");
