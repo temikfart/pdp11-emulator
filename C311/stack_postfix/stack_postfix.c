@@ -3,6 +3,7 @@
 #include <string.h>
 
 #define N 10
+#define S 48
 
 typedef int Data;
 typedef struct
@@ -43,7 +44,7 @@ void st_print(Stack * s)
     else
     {
         for(unsigned int i = 0; i < s->n; i++)
-            printf("%c ", s->a[i]);
+            printf("%d ", s->a[i]);
         printf("\n");
     }
 }
@@ -70,15 +71,30 @@ int symb_check(const char * symb, Data temp)
         if(symb[i] == temp )
         {
             return i+1;
-            break;
         }
     }
     return 0;
 }
-int st_size(Stack * s)
+int st_oper(Data x, Data y, int op_num)
 {
-	return s->n;
-};
+	Data res = -1000;
+	switch(op_num)
+	{
+		case 1:
+			res = x+y;
+			printf("(+)\n");
+			break;
+		case 2:
+			res = x-y;
+			printf("(-)\n");
+			break;
+		case 3:
+			res = x*y;
+			printf("(*)\n");
+			break;
+	}
+	return res;
+}
 
 int main()
 {
@@ -110,8 +126,10 @@ int main()
     {
         if(symb_check(dig, temp) != 0)
 		{
+			temp -= S;
 			st_push(st, temp);
-			printf("dig: %c \n", temp);
+			st_print(st);
+			//printf("dig: %c \n", temp);
 		}
 		if(symb_check(oper, temp) != 0)
 		{
@@ -124,9 +142,14 @@ int main()
 			{
 				dig1 = st_pop(st);
 				dig2 = st_pop(st);
+				
+				res = st_oper(dig1, dig2, symb_check(oper, temp));
+				st_push(st, res);
+				printf("res: %d\n", res);
+				st_print(st);
 			}
 			
-			printf("1: %c; 2: %c;\n", dig1, dig2);
+			printf("1: %d; 2: %d;\n", dig1, dig2);
 		}
     }
     
