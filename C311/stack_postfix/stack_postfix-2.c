@@ -44,20 +44,33 @@ int def_eq_size(char * str, unsigned int len)
 }
 int symb_check(char c)
 {
+	//Проверка на цифру
 	const char * dig = "0123456789";
+	for(size_t i = 0; i < strlen(dig); i++)
+	{
+		if(c == dig[i])
+		{
+			printf("Digit: %d; ", c-'0');
+			return c-'0';
+		}
+	}
+	//Проверка на операцию
     const char * oper = "+-*=";
-	
-	if(c >= '0' && c <= '9')
+	for(size_t i = 0; i < strlen(oper); i++)
 	{
-		printf("Digit: %d\n", c-'0');
-		return c-'0';
+		if(c == oper[i])
+		{
+			printf("Operand: %c; ", c);
+			return c;
+		}
 	}
-	if(c == '=' || c ==  '+' || c == '-')
+	//Проверка на пробел
+	if(c == ' ')
 	{
-		printf("Operand: %c\n", c);
-		return 100;
+		printf("Space: <%c>; ", c);
+		return -1;
 	}
-	return -1;
+	return -100;
 }
 
 int main()
@@ -83,6 +96,7 @@ int main()
 	
 	for(int i=0; i<=pos; i++)
 	{
+		printf("%d: ", i);
 		int temp = symb_check(str[i]);
 		printf("temp: %d\n", temp);
 	}
