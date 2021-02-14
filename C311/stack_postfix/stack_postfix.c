@@ -77,23 +77,23 @@ int symb_check(const char * symb, Data temp)
 }
 int st_oper(Data x, Data y, int op_num)
 {
-	Data res = -1000;
-	switch(op_num)
-	{
-		case 1:
-			res = x+y;
-			printf("(+)\n");
-			break;
-		case 2:
-			res = y-x;
-			printf("(-)\n");
-			break;
-		case 3:
-			res = x*y;
-			printf("(*)\n");
-			break;			
-	}
-	return res;
+    Data res = -1000;
+    switch(op_num)
+    {
+        case 1:
+            res = x+y;
+            //printf("(+)\n");
+            break;
+        case 2:
+            res = y-x;
+            //printf("(-)\n");
+            break;
+        case 3:
+            res = x*y;
+            //printf("(*)\n");
+            break;            
+    }
+    return res;
 }
 
 int main()
@@ -106,57 +106,57 @@ int main()
     st_init(st);
     
     char temp;
-	Data dig1, dig2;
-	Data res;
-	/*
-	Пока идут данные
-		если число
-			положить в стек
-		если операнд
-			достать два числа из стека
-				если в стеке 1 число то ошибка
-			произвести операцию
-			положить результат в стек
-		если равно
-			закончить цикл
-			вывести результат
-	*/
-	
+    Data dig1, dig2;
+    Data res;
+    /*
+    Пока идут данные
+        если число
+            положить в стек
+        если равно
+            закончить цикл
+            вывести результат
+        если операнд
+            достать два числа из стека
+                если в стеке 1 число то ошибка
+            произвести операцию
+            положить результат в стек
+    */
+    
     while(scanf("%c", &temp) != EOF)
     {
         if(symb_check(dig, temp) != 0)
-		{
-			temp -= S;
-			st_push(st, temp);
-			st_print(st);
-			//printf("dig: %c \n", temp);
-		}
-		if(symb_check(oper, temp) != 0)
-		{
-			printf("symb_check: %d\n", symb_check(oper, temp));
-			if(symb_check(oper, temp) == 4)
-			{
-				printf("%d\n", st_pop(st));
-				break;
-			}
-			if(st->n < 2)
-			{
-				printf("Error\n");
-				break;
-			}
-			else
-			{
-				dig1 = st_pop(st);
-				dig2 = st_pop(st);
-				
-				res = st_oper(dig1, dig2, symb_check(oper, temp));
-				st_push(st, res);
-				printf("res: %d\n", res);
-				st_print(st);
-			}
-			
-			printf("1: %d; 2: %d;\n", dig1, dig2);
-		}
+        {
+            temp -= S;
+            st_push(st, temp);
+            //st_print(st);
+            //printf("dig: %c \n", temp);
+        }
+        if(symb_check(oper, temp) != 0)
+        {
+            //printf("symb_check: %d\n", symb_check(oper, temp));
+            if(symb_check(oper, temp) == 4)
+            {
+                printf("%d\n", st_pop(st));
+                break;
+            }
+            if(st->n < 2)
+            {
+                printf("Error\n");
+                break;
+            }
+            else
+            {
+                dig1 = st_pop(st);
+                dig2 = st_pop(st);
+                
+                res = st_oper(dig1, dig2, symb_check(oper, temp));
+                st_push(st, res);
+                //printf("res: %d\n", res);
+                //st_print(st);
+            }
+            
+            //printf("1: %d; 2: %d;\n", dig1, dig2);
+        }
     }
     
     st_destroy(st);
