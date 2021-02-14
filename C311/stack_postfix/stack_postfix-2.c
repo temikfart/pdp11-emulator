@@ -34,14 +34,31 @@ int def_eq_size(char * str, unsigned int len)
 	
 	if(strchr(str, eq) != NULL)
 	{
-		printf("%s\n", strchr(str, eq));
-		printf("%ld\n", strlen(strchr(str, eq)));
+		//printf("%s\n", strchr(str, eq));
+		//printf("%ld\n", strlen(strchr(str, eq)));
 		pos = len - strlen(strchr(str, eq));
-		printf("%d\n", pos);
+		//printf("%d\n", pos);
 		return pos;
 	}
 	return -1;
-};
+}
+int symb_check(char c)
+{
+	const char * dig = "0123456789";
+    const char * oper = "+-*=";
+	
+	if(c >= '0' && c <= '9')
+	{
+		printf("Digit: %d\n", c-'0');
+		return c-'0';
+	}
+	if(c == '=' || c ==  '+' || c == '-')
+	{
+		printf("Operand: %c\n", c);
+		return 100;
+	}
+	return -1;
+}
 
 int main()
 {
@@ -51,19 +68,26 @@ int main()
 	size_t length = N;
 	unsigned int len = getline(&str, &length, stdin);
 	
-	printf("\n%d\n", len);
-	printf("%ld\n", strlen(str));
-	printf("%s\n", str);
+	printf("\nlen: %d\n", len);
+	printf("len(str): %ld\n", strlen(str));
+	printf("str: %s\n", str);
 	
 	
 	Stack * st;
 	st = malloc(sizeof(Stack));
 	st_init(st);
 	
-	printf("%d\n", def_eq_size(str, len));
+	int pos = def_eq_size(str, len);
+	printf("pos: %d\n", pos);
+	
+	
+	for(int i=0; i<=pos; i++)
+	{
+		int temp = symb_check(str[i]);
+		printf("temp: %d\n", temp);
+	}
 	
 	free(str);
-	//free(dst);
 	st_destroy(st);
 	
 	return 0;
