@@ -27,6 +27,21 @@ void st_destroy(Stack * s)
         free(s);
     }
 }
+int def_eq_size(char * str, unsigned int len)
+{
+	int pos = -1;
+	int eq = '=';
+	
+	if(strchr(str, eq) != NULL)
+	{
+		printf("%s\n", strchr(str, eq));
+		printf("%ld\n", strlen(strchr(str, eq)));
+		pos = len - strlen(strchr(str, eq));
+		printf("%d\n", pos);
+		return pos;
+	}
+	return -1;
+};
 
 int main()
 {
@@ -36,7 +51,8 @@ int main()
 	size_t length = N;
 	unsigned int len = getline(&str, &length, stdin);
 	
-	printf("%d\n", len);
+	printf("\n%d\n", len);
+	printf("%ld\n", strlen(str));
 	printf("%s\n", str);
 	
 	
@@ -44,10 +60,10 @@ int main()
 	st = malloc(sizeof(Stack));
 	st_init(st);
 	
-	
-	
+	printf("%d\n", def_eq_size(str, len));
 	
 	free(str);
+	//free(dst);
 	st_destroy(st);
 	
 	return 0;
