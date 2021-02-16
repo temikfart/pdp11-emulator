@@ -10,6 +10,7 @@ struct Node {
 struct Node * list_create ();
 struct Node * list_push (struct Node * list, Data x);
 struct Node * list_pop (struct Node * plist, Data * px);
+Data list_get(struct Node * list);
 int list_is_empty(struct Node * list);
 
 struct Node * list_create ()
@@ -31,6 +32,10 @@ struct Node * list_pop (struct Node * plist, Data * px)
 	free(plist);
 	return nextlist;
 }
+Data list_get(struct Node * list)
+{
+	return list->val;
+}
 int list_is_empty(struct Node * list)
 {
 	return list == NULL;
@@ -45,6 +50,8 @@ int main()
 	Data x = 15;
 	list = list_push(list, x);
 	printf("Empty: %s\n", list_is_empty(list) ? "YES" : "NO");
+	
+	printf("list get: %d\n", list_get(list));
 	
 	Data y = 0;
 	list = list_pop(list, &y);
