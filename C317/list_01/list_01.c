@@ -14,35 +14,11 @@ List list_create ();
 void list_push (List * plist, Data x);
 Data list_pop (List * plist);
 Data list_get(List list);
+void list_print (List list);
 
 int main()
 {
-    /* struct Node * list = list_create();
-    
-    printf("Empty: %s\n", list_is_empty(list) ? "YES" : "NO");
-    
-    Data x = 15;
-    list = list_push(list, x);
-    printf("Empty: %s\n", list_is_empty(list) ? "YES" : "NO");
-    
-    printf("list get: %d\n", list_get(list));
-    
-    list = list_push(list, 14);
-    list = list_push(list, 13);
-    list = list_push(list, 12);
-    
-    list_print(list); // 12 13 14 15
-    printf("Size: %d\n", list_size(list));
-    
-    Data y = 0;
-    list = list_clear(list);
-    list = list_push(list, x);
-    
-    list = list_pop(list, &y);
-    printf("pop: %d\n", y);
-    printf("Empty: %s\n", list_is_empty(list) ? "YES" : "NO"); */
-	
-	List list = list_create();
+    List list = list_create();
 	
 	Data x = 7;
 	list_push(&list, x);
@@ -58,6 +34,9 @@ int main()
     y = list_get(list);
 	printf("Get: %d\n", y);
 	
+	list_push(&list, 17);
+	//list_push(&list, 1);
+	//list_print(list); // 1 17 7
 	
     free(list);
     return 0;
@@ -87,4 +66,12 @@ Data list_pop (List * plist)
 Data list_get(List list)
 {
 	return list->val;
+}
+void list_print (List list)
+{
+    for(List p = list; p != NULL; p = p->next)
+    {
+        printf("%d ", p->val);
+    }
+    printf("\n");
 }

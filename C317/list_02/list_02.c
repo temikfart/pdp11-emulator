@@ -76,8 +76,8 @@ Data list_get(struct Node * list)
 }
 void list_print (struct Node * list)
 {
-    if(list_is_empty(list))
-        printf("List is empty.\n");
+    /* if(list_is_empty(list))
+        printf("List is empty.\n"); */
     for(struct Node * p = list; p != NULL; p = p->next)
     {
         printf("%d ", p->val);
