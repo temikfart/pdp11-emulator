@@ -12,6 +12,7 @@ typedef struct Node * List;
 
 List list_create ();
 void list_push (List * plist, Data x);
+Data list_pop (List * plist);
 
 int main()
 {
@@ -45,6 +46,14 @@ int main()
 	Data x = 7;
 	list_push(&list, x);
 	printf("Val: %d\n", list->val);
+	
+	list_push(&list, 5);
+	printf("Val: %d\n", list->val);
+	
+	Data y = list_pop(&list);
+	printf("Pop: %d\n", y);
+	printf("Val: %d\n", list->val);
+	
     
 	
     free(list);
@@ -63,4 +72,12 @@ void list_push (List * plist, Data x)
     p->val = x;
     p->next = *plist;
     *plist = p;
+}
+Data list_pop (List * plist)
+{
+	List newlist = (*plist)->next;
+	Data x = (*plist)->val;
+	free(*plist);
+	*plist = newlist;
+	return x;
 }
