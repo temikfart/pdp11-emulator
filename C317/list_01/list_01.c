@@ -11,6 +11,7 @@ struct Node {
 typedef struct Node * List;
 
 List list_create ();
+void list_push (List * plist, Data x);
 
 int main()
 {
@@ -40,8 +41,13 @@ int main()
     printf("Empty: %s\n", list_is_empty(list) ? "YES" : "NO"); */
 	
 	List list = list_create();
+	
+	Data x = 7;
+	list_push(&list, x);
+	printf("Val: %d\n", list->val);
     
-    //free(list);
+	
+    free(list);
     return 0;
 }
 
@@ -50,4 +56,11 @@ int main()
 List list_create ()
 {
     return NULL;
+}
+void list_push (List * plist, Data x)
+{
+	List p = malloc(sizeof(struct Node));
+    p->val = x;
+    p->next = *plist;
+    *plist = p;
 }
