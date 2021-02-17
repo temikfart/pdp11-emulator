@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#ifdef AAA
+//#ifdef AAA
 
 #define N 1000000
 #define KOL 5
@@ -67,20 +67,20 @@ int main()
         if(card_cmp(c1, c2) == 2)
         {
             list1 = cards_to_hand(list1, c1, c2);
-            printf("----------\nХод №%d\n", i+1);
-            printf("f: ");
-            list_print(list1);
-            printf("s: ");
-            list_print(list2);
+            //printf("----------\nХод №%d\n", i+1);
+            //printf("f: ");
+            //list_print(list1);
+            //printf("s: ");
+            //list_print(list2);
         }
         else if(card_cmp(c1, c2) == 0)
         {
             list2 = cards_to_hand(list2, c1, c2);
-            printf("----------\nХод №%d\n", i+1);
-            printf("f: ");
-            list_print(list1);
-            printf("s: ");
-            list_print(list2);
+            //printf("----------\nХод №%d\n", i+1);
+            //printf("f: ");
+            //list_print(list1);
+            //printf("s: ");
+            //list_print(list2);
         }
         else
         {
@@ -98,7 +98,7 @@ int main()
     list_clear(list2);
     return 0;
 }
-#endif
+//#endif
 
 void list_init(Node * list)
 {
