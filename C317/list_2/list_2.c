@@ -42,6 +42,11 @@ int main ()
     list_insert(list, &c);
     list_print(list); // 11 5 7
     
+    struct Node d;
+    d.data = 100;
+    list_insert_before(list, &d);
+    list_print(list); // 11 5 7 100
+    
     return 0;
 }
 #endif
@@ -59,10 +64,15 @@ void list_insert(struct Node * list, struct Node * t)
     list2->prev = t;
     t->next = list2;
 }
-/* void list_insert_before(struct Node * list, struct Node * t)
+void list_insert_before(struct Node * list, struct Node * t)
 {
+    struct Node * list0 = list->prev;
     
-} */
+    list0->next = t;
+    t->prev = list0;
+    list->prev = t;
+    t->next = list;
+}
 void list_print(struct Node * list) {
     for (struct Node * p = list->next; p != list; p = p->next) {
         printf("%d ", p->data);
