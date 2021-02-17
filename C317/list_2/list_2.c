@@ -11,6 +11,7 @@ struct Node {
 };
 
 void list_init(struct Node * list);
+int list_is_empty(struct Node * list);
 
 int main ()
 {
@@ -18,12 +19,17 @@ int main ()
     struct Node * list = &z;
     list_init(list);
     
+    printf("List is %s\n", list_is_empty(list) ? "empty" : "NOT empty");
+    
     return 0;
 }
 #endif
 
 void list_init(struct Node * list)
 {
-    list->prev = list;
-    list->next = list;
+    list->prev = list->next = list;
+}
+int list_is_empty(struct Node * list)
+{
+    return list->next == list;
 }
