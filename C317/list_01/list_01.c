@@ -35,8 +35,8 @@ int main()
 	printf("Get: %d\n", y);
 	
 	list_push(&list, 17);
-	//list_push(&list, 1);
-	//list_print(list); // 1 17 7
+	list_push(&list, 1);
+	list_print(list); // 1 17 7
 	
     free(list);
     return 0;
