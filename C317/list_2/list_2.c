@@ -14,6 +14,8 @@ void list_init(struct Node * list);
 void list_insert(struct Node * list, struct Node * t);
 void list_insert_before(struct Node * list, struct Node * t);
 void list_remove(struct Node * t);
+struct Node * list_push_front(struct Node * list, Data d);
+struct Node * list_push_back(struct Node * list, Data d);
 void list_print (struct Node * list);
 int list_is_empty(struct Node * list);
 
@@ -51,6 +53,9 @@ int main ()
     list_remove(&a);
     list_print(list); // 11 7 100
     
+    Data x = 13;
+    list = list_push_front(list, x);
+    list_print(list); // 13 11 7 100
     
     return 0;
 }
@@ -85,6 +90,19 @@ void list_remove(struct Node * t)
     
     p->next = q;
     q->prev = p;
+}
+struct Node * list_push_front(struct Node * list, Data d)
+{
+    struct Node * list2 = list->next;
+    struct Node * t = malloc(sizeof(struct Node));
+    t->data = d;
+    
+    list->next = t;
+    t->prev = list;
+    list2->prev = t;
+    t->next = list2;
+    
+    return list;
 }
 void list_print(struct Node * list) {
     for (struct Node * p = list->next; p != list; p = p->next) {
