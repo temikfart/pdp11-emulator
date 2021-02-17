@@ -26,6 +26,7 @@ void list_print (Node * list);
 int list_is_empty(Node * list);
 void list_clear(Node * list);
 Node * list_scan(Node * list);
+int card_cmp(Data fir, Data sec);
 
 int main()
 {
@@ -37,9 +38,9 @@ int main()
     list_init(list2);
     //scan
     list1 = list_scan(list1);
-    list_print(list1);
+    //list_print(list1);
     list2 = list_scan(list2);
-    list_print(list2);
+    //list_print(list2);
     //Cards
     Data c1, c2;
     for(int i = 0; i < N; i++)
@@ -47,10 +48,13 @@ int main()
         //
         c1 = list_pop_front(list1);
         c2 = list_pop_front(list2);
+        //printf("\n");
+        //printf("1: %d; 2: %d;\n", c1, c2);
         
-        printf("\n");
-        printf("1: %d; 2: %d;\n", c1, c2);
-        break;
+        //printf("%s\n", card_cmp(c1, c2) ? "Первый победил" : "Второй победил");
+        
+        //
+        //break;
     }
     
     list_clear(list1);
@@ -166,4 +170,18 @@ Node * list_scan(Node * list)
         //list_print(list);
     }
     return list;
+}
+int card_cmp(Data f, Data s)
+{
+    /* if(f+s == 9 && (!f)+(!s) > 0)) // 0 > 9
+        return (f < s) - (f > s);
+    else
+        return (f > s) - (f < s); */
+    //////////////////////
+    if(f+s == 9 && (!f)+(!s) > 0)
+    {
+        f = !f;
+        s = !s;
+    }
+    return (f > s) - (f < s) + 1; //win: f --- 2; s --- 0
 }
