@@ -15,6 +15,7 @@ void list_push (List * plist, Data x);
 Data list_pop (List * plist);
 Data list_get(List list);
 void list_print (List list);
+int list_size(List list);
 
 int main()
 {
@@ -37,6 +38,8 @@ int main()
 	list_push(&list, 17);
 	list_push(&list, 1);
 	list_print(list); // 1 17 7
+	int size = list_size(list);
+	printf("Size: %d\n", size);
 	
     free(list);
     return 0;
@@ -74,4 +77,13 @@ void list_print (List list)
         printf("%d ", p->val);
     }
     printf("\n");
+}
+int list_size(List list)
+{
+	int n = 0;
+	for(List p = list; p != NULL; p = p->next)
+    {
+        n++;
+    }
+	return n;
 }
