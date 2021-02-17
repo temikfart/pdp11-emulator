@@ -11,6 +11,8 @@ struct Node {
 };
 
 void list_init(struct Node * list);
+void list_insert(struct Node * list, struct Node * t);
+void list_insert_before(struct Node * list, struct Node * t);
 void list_print (struct Node * list);
 int list_is_empty(struct Node * list);
 
@@ -35,6 +37,11 @@ int main ()
     list_print(list); //5 7
     printf("List is %s\n", list_is_empty(list) ? "empty" : "NOT empty");
     
+    struct Node c;
+    c.data = 11;
+    list_insert(list, &c);
+    list_print(list); // 11 5 7
+    
     return 0;
 }
 #endif
@@ -43,6 +50,19 @@ void list_init(struct Node * list)
 {
     list->prev = list->next = list;
 }
+void list_insert(struct Node * list, struct Node * t)
+{
+    struct Node * list2 = list->next;
+    
+    list->next = t;
+    t->prev = list;
+    list2->prev = t;
+    t->next = list2;
+}
+/* void list_insert_before(struct Node * list, struct Node * t)
+{
+    
+} */
 void list_print(struct Node * list) {
     for (struct Node * p = list->next; p != list; p = p->next) {
         printf("%d ", p->data);
