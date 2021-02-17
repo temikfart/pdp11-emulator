@@ -29,18 +29,32 @@ Node * list_scan(Node * list);
 
 int main()
 {
-    Node z;
-    Node * list = &z;
-    list_init(list);
-    list = list_scan(list);
-    //list_print(list);
-    
-    /* for(int i = 0; i < N; i++)
+    //init
+    Node z1, z2;
+    Node * list1 = &z1;
+    Node * list2 = &z2;
+    list_init(list1);
+    list_init(list2);
+    //scan
+    list1 = list_scan(list1);
+    list_print(list1);
+    list2 = list_scan(list2);
+    list_print(list2);
+    //Cards
+    Data c1, c2;
+    for(int i = 0; i < N; i++)
     {
+        //
+        c1 = list_pop_front(list1);
+        c2 = list_pop_front(list2);
         
-    } */
+        printf("\n");
+        printf("1: %d; 2: %d;\n", c1, c2);
+        break;
+    }
     
-    list_clear(list);
+    list_clear(list1);
+    list_clear(list2);
     return 0;
 }
 #endif
@@ -149,7 +163,7 @@ Node * list_scan(Node * list)
     {
         scanf("%d", &x);
         list_push_back(list, x);
-        list_print(list);
+        //list_print(list);
     }
     return list;
 }
