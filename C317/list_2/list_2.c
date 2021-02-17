@@ -13,6 +13,7 @@ struct Node {
 void list_init(struct Node * list);
 void list_insert(struct Node * list, struct Node * t);
 void list_insert_before(struct Node * list, struct Node * t);
+void list_remove(struct Node * t);
 void list_print (struct Node * list);
 int list_is_empty(struct Node * list);
 
@@ -47,6 +48,10 @@ int main ()
     list_insert_before(list, &d);
     list_print(list); // 11 5 7 100
     
+    list_remove(&a);
+    list_print(list); // 11 7 100
+    
+    
     return 0;
 }
 #endif
@@ -72,6 +77,14 @@ void list_insert_before(struct Node * list, struct Node * t)
     t->prev = list0;
     list->prev = t;
     t->next = list;
+}
+void list_remove(struct Node * t)
+{
+    struct Node * p = t->prev;
+    struct Node * q = t->next;
+    
+    p->next = q;
+    q->prev = p;
 }
 void list_print(struct Node * list) {
     for (struct Node * p = list->next; p != list; p = p->next) {
