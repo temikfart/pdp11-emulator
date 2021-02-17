@@ -27,6 +27,7 @@ int list_is_empty(Node * list);
 void list_clear(Node * list);
 Node * list_scan(Node * list);
 int card_cmp(Data fir, Data sec);
+Node * cards_to_hand(Node * list, Data c1, Data c2);
 
 int main()
 {
@@ -43,9 +44,18 @@ int main()
     //list_print(list2);
     //Cards
     Data c1, c2;
+    int ind = 0;
     for(int i = 0; i < N; i++)
     {
-        //
+        if(list_is_empty(list1) + list_is_empty(list2) > 0)
+        {
+            int f = list_is_empty(list1);
+            int s = list_is_empty(list2);
+            printf("%s %d\n", (f < s) ? "first" : "second", (i) );
+            ind++;
+            break;
+        }
+        //Берем карты
         c1 = list_pop_front(list1);
         c2 = list_pop_front(list2);
         //printf("\n");
@@ -53,9 +63,36 @@ int main()
         
         //printf("%s\n", card_cmp(c1, c2) ? "Первый победил" : "Второй победил");
         
-        //
+        //Находим победителя и отдаем ему карты
+        if(card_cmp(c1, c2) == 2)
+        {
+            list1 = cards_to_hand(list1, c1, c2);
+            printf("----------\nХод №%d\n", i+1);
+            printf("f: ");
+            list_print(list1);
+            printf("s: ");
+            list_print(list2);
+        }
+        else if(card_cmp(c1, c2) == 0)
+        {
+            list2 = cards_to_hand(list2, c1, c2);
+            printf("----------\nХод №%d\n", i+1);
+            printf("f: ");
+            list_print(list1);
+            printf("s: ");
+            list_print(list2);
+        }
+        else
+        {
+            printf("<Ошибка! Карта не ложится в руку.>\n");
+            break;
+        }
+        
         //break;
     }
+    if(!ind)
+        printf("botva\n");
+    
     
     list_clear(list1);
     list_clear(list2);
@@ -184,4 +221,10 @@ int card_cmp(Data f, Data s)
         s = !s;
     }
     return (f > s) - (f < s) + 1; //win: f --- 2; s --- 0
+}
+Node * cards_to_hand(Node * list, Data c1, Data c2)
+{
+    list_push_back(list, c1);
+    list_push_back(list, c2);
+    return list;
 }
