@@ -16,10 +16,13 @@ Data list_pop (List * plist);
 Data list_get(List list);
 void list_print (List list);
 int list_size(List list);
+int list_is_empty(List list);
 
 int main()
 {
     List list = list_create();
+	
+	printf("List is %s\n", list_is_empty(list) ? "empty" : "not empty");
 	
 	Data x = 7;
 	list_push(&list, x);
@@ -38,8 +41,12 @@ int main()
 	list_push(&list, 17);
 	list_push(&list, 1);
 	list_print(list); // 1 17 7
+	
 	int size = list_size(list);
 	printf("Size: %d\n", size);
+	
+	printf("List is %s\n", list_is_empty(list) ? "empty" : "not empty");
+	
 	
     free(list);
     return 0;
@@ -86,4 +93,8 @@ int list_size(List list)
         n++;
     }
 	return n;
+}
+int list_is_empty(List list)
+{
+	return list == NULL;
 }
