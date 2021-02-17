@@ -56,6 +56,10 @@ int main ()
     Data x = 13;
     list = list_push_front(list, x);
     list_print(list); // 13 11 7 100
+
+    Data y = 101;
+    list = list_push_back(list, y);
+    list_print(list); // 13 11 7 100 101
     
     return 0;
 }
@@ -101,6 +105,19 @@ struct Node * list_push_front(struct Node * list, Data d)
     t->prev = list;
     list2->prev = t;
     t->next = list2;
+    
+    return list;
+}
+struct Node * list_push_back(struct Node * list, Data d)
+{
+    struct Node * list0 = list->prev;
+    struct Node * t = malloc(sizeof(struct Node));
+    t->data = d;
+    
+    list0->next = t;
+    t->prev = list0;
+    list->prev = t;
+    t->next = list;
     
     return list;
 }
