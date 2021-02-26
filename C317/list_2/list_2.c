@@ -110,12 +110,14 @@ void list_insert(struct Node * list, struct Node * t)
 }
 void list_insert_before(struct Node * list, struct Node * t)
 {
-    struct Node * list0 = list->prev;
+    /* struct Node * list0 = list->prev;
     
     list0->next = t;
     t->prev = list0;
     list->prev = t;
-    t->next = list;
+    t->next = list; */
+    
+    list_insert(list->prev, t);
 }
 void list_remove(struct Node * t)
 {
