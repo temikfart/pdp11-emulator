@@ -22,9 +22,28 @@ void printBit(unsigned char a)
 int main()
 {
     unsigned char x, y, res;
-    scanf("%hhu %hhu", x, y);
+    //scanf("%hhu %hhu", x, y);
     
+    //printf("%ld\n", sizeof(unsigned char));
     // XOR = (x | ~y) & (~x | y)
+    
+    x = 13; //0000 1101
+    printf("~x: ");
+    printBit(~x); //1111 0010
+    
+    y = 19; //0001 0011
+    printf("-y: ");
+    printBit(-y); //1110 1101
+    
+    printf("AND: ");
+    printBit(x & y); //0000 0001 AND
+    
+    printf("OR: ");
+    printBit(x | y); //0001 1111 OR
+    
+    printf("XOR: ");
+    printBit(((~x) | y) &(x | (~y))); //1110 0001 XOR
+    
     
     return 0;
 }
