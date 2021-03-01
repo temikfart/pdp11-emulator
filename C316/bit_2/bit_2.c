@@ -6,7 +6,7 @@ int main()
     unsigned int n;
     
     scanf("%x", &n);
-    printf("Num: %x\n", n);
+    //printf("Num: %x\n", n);
     
     if(n & 4)
         printf("ha\n");
