@@ -6,7 +6,7 @@ int main()
     unsigned int n;
     
     scanf("%x", &n);
-    printf("Num: %x\n", n);
+    //printf("Num: %x\n", n);
     
     // ma = ???? ???1; fe = ???? ???0
     if(n & 1)
