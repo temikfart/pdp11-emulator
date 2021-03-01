@@ -5,15 +5,15 @@
 void printBit(unsigned char a)
 {
 // значения битов записываются в строку
-        char * tmp = calloc(10, sizeof(char));
+    char * tmp = calloc(10, sizeof(char));
 // 8 знаков в строке устанавливаются равными символу '0'
-        memset(tmp, '0', sizeof(char) * 8);
+    memset(tmp, '0', sizeof(char) * 8);
 // Заполняем со старших адресов
-        for (int i = 7 ; i > -1; i--)
-        {
-                tmp[i] = a % 2 + '0'; 
-                a /= 2;
-        }
+    for (int i = 7 ; i > -1; i--)
+    {
+        tmp[i] = a % 2 + '0'; 
+        a /= 2;
+    }
 
     printf("%s\n", tmp);
     free(tmp);
@@ -34,7 +34,7 @@ int main()
     
     //res = a^b;
     //printBit(res);
-    printf("%X\n", res);
+    printf("%x\n", res);
     
     return 0;
 }
