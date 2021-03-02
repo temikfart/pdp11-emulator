@@ -17,6 +17,11 @@ int main()
     
     const char * delim = " \n\t\r";    // алфавит разделителей
     
+    //характеристики
+    char par_sex[2] = NULL; //будем хранить характеристики в массиве строк
+    par_sex[0] = "fe";
+    par_sex[1] = "ma";
+    
     for (char * p = strtok(descr, delim);   // начинаем разбор, передаем строку s 
             p != NULL;                  // пока не нашли новый разделитель
             p = strtok(NULL, delim))  // в следующий раз вызываем от NULL
@@ -24,7 +29,8 @@ int main()
         //printf("%s\n", p);
         
         //Проверка на характеристику: ma/fe
-        if(strcmp(p, "ma") == 0 || strcmp(p, "fe") == 0)
+        //if(strcmp(p, "ma") == 0 || strcmp(p, "fe") == 0)
+        if() //нужно в условии проверить на ma/fe
         {
             printf("ma_fe\n");
         }
