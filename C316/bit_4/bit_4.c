@@ -5,53 +5,52 @@ void det_sex(unsigned int n)
 {
     // ma = ???? ???1; fe = ???? ???0
     if(n & 1)
-        printf("ma\n");
+        printf("ma ");
     else
-        printf("fe\n");
+        printf("fe ");
 }
 void det_brain(unsigned int n)
 {
-    if(n >> 1)
-        printf("cl\n");
+    if((n >> 1) & 1)
+        printf("cl ");
     else
-        printf("du\n");
+        printf("du ");
 }
 void det_hat(unsigned int n)
 {
-    //if(n & 4)
-    if(n >> 2)
-        printf("ha\n");
+    if((n >> 2) & 1)
+        printf("ha ");
     else
-        printf("nh\n");
+        printf("nh ");
 }
 void det_bottom(unsigned int n)
 {
-    if(n >> 3)
-        printf("tr\n");
+    if((n >> 3) & 1)
+        printf("tr ");
     else
-        printf("sk\n");
+        printf("sk ");
 }
 void det_hair_col(unsigned int n)
 {
     if(((n >> 4) & 3) == 3) //???? ??11
-        printf("bk\n");
+        printf("bk ");
     else if(((n >> 4) & 1) == 1) //???? ??01
-        printf("rd\n");
+        printf("rd ");
     else if(((n >> 4) & 2) == 2) //???? ??10
-        printf("bw\n");
+        printf("bw ");
     else
-        printf("bn\n"); //???? ??00
+        printf("bn "); //???? ??00
 }
 void det_eyes_col(unsigned int n)
 {
     if(((n >> 6) & 3) == 3) //???? ??11
-        printf("da\n");
+        printf("da ");
     else if(((n >> 6) & 1) == 1) //???? ??01
-        printf("ge\n");
+        printf("ge ");
     else if(((n >> 6) & 2) == 2) //???? ??10
-        printf("gy\n");
+        printf("gy ");
     else
-        printf("bu\n"); //???? ??00
+        printf("bu "); //???? ??00
 }
 
 int main()
@@ -67,6 +66,8 @@ int main()
     det_bottom(n);
     det_hair_col(n);
     det_eyes_col(n);
+    
+    printf("\n");
     
     return 0;
 }
