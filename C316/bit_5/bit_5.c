@@ -21,7 +21,18 @@ int main()
             p != NULL;                  // пока не нашли новый разделитель
             p = strtok(NULL, delim))  // в следующий раз вызываем от NULL
     {
-        printf("%s\n", p);
+        //printf("%s\n", p);
+        
+        //Проверка на характеристику: ma/fe
+        if(strcmp(p, "ma") == 0 || strcmp(p, "fe") == 0)
+        {
+            printf("ma_fe\n");
+        }
+        else
+        {
+            printf("trash\n");
+            break;
+        }
     }
     
     return 0;
