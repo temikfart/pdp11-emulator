@@ -9,6 +9,14 @@ void det_sex(unsigned int n)
     else
         printf("fe\n");
 }
+void det_brain(unsigned int n)
+{
+    //if(n & 4)
+    if(n >> 1)
+        printf("cl\n");
+    else
+        printf("du\n");
+}
 
 int main()
 {
@@ -18,6 +26,7 @@ int main()
     //printf("Num: %x\n", n);
     
     det_sex(n);
+    det_brain(n);
     
     return 0;
 }
