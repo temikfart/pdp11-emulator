@@ -42,7 +42,17 @@ void det_hair_col(unsigned int n)
     else
         printf("bn\n"); //???? ??00
 }
-void det_eyes_col(unsigned int n);
+void det_eyes_col(unsigned int n)
+{
+    if(((n >> 6) & 3) == 3) //???? ??11
+        printf("da\n");
+    else if(((n >> 6) & 1) == 1) //???? ??01
+        printf("ge\n");
+    else if(((n >> 6) & 2) == 2) //???? ??10
+        printf("gy\n");
+    else
+        printf("bu\n"); //???? ??00
+}
 
 int main()
 {
@@ -56,7 +66,7 @@ int main()
     det_hat(n);
     det_bottom(n);
     det_hair_col(n);
-    //det_eyes_col(n);
+    det_eyes_col(n);
     
     return 0;
 }
