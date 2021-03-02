@@ -16,7 +16,7 @@ void det_brain(unsigned int n)
     else
         printf("du\n");
 }
-void det_hair(unsigned int n)
+void det_hat(unsigned int n)
 {
     //if(n & 4)
     if(n >> 2)
@@ -24,6 +24,15 @@ void det_hair(unsigned int n)
     else
         printf("nh\n");
 }
+void det_bottom(unsigned int n)
+{
+    if(n >> 3)
+        printf("tr\n");
+    else
+        printf("sk\n");
+}
+void det_hair_col(unsigned int n);
+void det_eyes_col(unsigned int n);
 
 int main()
 {
@@ -34,7 +43,10 @@ int main()
     
     det_sex(n);
     det_brain(n);
-    det_hair(n);
+    det_hat(n);
+    det_bottom(n);
+    //det_hair_col(n);
+    //det_eyes_col(n);
     
     return 0;
 }
