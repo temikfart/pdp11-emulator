@@ -71,16 +71,16 @@ int main()
             IR(reg);
             j += 3;
         }
-        /* else if(temp[j] == 1)
+        else if(temp[j] == 1)
         {
-            int x1 = temp[j+1];
-            int x2 = temp[j+2];
+            int x1 = temp[j+1] - A;
+            int x2 = temp[j+2] - A;
             reg[x1] = ADD(reg[x1], reg[x2]);
             //printf("ADD: reg[x1]=%d; reg[x2]=%d;\n", reg[x1], reg[x2]);
             //IR(reg);
             j += 3;
         }
-        else if(temp[j] == 2)
+        /* else if(temp[j] == 2)
         {
             int x1 = temp[j+1];
             int x2 = temp[j+2];
