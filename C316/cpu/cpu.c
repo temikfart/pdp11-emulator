@@ -67,6 +67,14 @@ int main()
             printf("ADD: reg[x1]=%d; reg[x2]=%d;\n", reg[x1], reg[x2]);
             print_reg(reg);
         }
+        else if(strcmp(temp[0], "2") == 0)
+        {
+            int x1 = *temp[1] - '0' - A;
+            int x2 = *temp[2] - '0' - A;
+            reg[x1] = SUB(reg[x1], reg[x2]);
+            printf("SUB: reg[x1]=%d; reg[x2]=%d;\n", reg[x1], reg[x2]);
+            print_reg(reg);
+        }
         
         free(descr);
     }
@@ -83,6 +91,11 @@ void print_reg(char *reg)
 char ADD (char x, char y)
 {
     x += y;
+    return x;
+}
+char SUB (char x, char y)
+{
+    x -= y;
     return x;
 }
 char MOV (char x, char y)
