@@ -59,6 +59,7 @@ int main()
             printf("MOV: x=%d; y=%d;\n", reg[x], y);
             print_reg(reg);
         }
+        free(descr);
     }
     
     return 0;
