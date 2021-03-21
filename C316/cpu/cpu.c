@@ -22,7 +22,84 @@ int main()
     }
     IR(reg);
     
-    while(1)
+    //Считывание команд из одной строки: 1 строка - много команд.
+    char * descr = NULL;
+    size_t lend;
+    
+    if(getline(&descr, &lend, stdin) == -1)
+    {
+        printf("Nothing\n");
+        return 0;
+    }
+    
+    int i = 0;
+    int size_temp = 10;
+    char * temp = malloc (size_temp*sizeof(char));
+    const char * delim = " \n\t\r";
+    for (char * p = strtok(descr, delim);
+            p != NULL;
+            p = strtok(NULL, delim))
+    {
+        if(size_temp <= i)
+        {
+            size_temp += 10;
+            temp = (char *)realloc(temp, size_temp*sizeof(char));
+        }
+        temp[i] = *p - '0';
+        printf("%d ", temp[i]);
+        i++;
+    }
+    printf("\n");
+    
+    int j = 0;
+    while(j != i)
+    {
+        
+        if(temp[j] == 0)
+        {
+            printf("HLT\n");
+            IR(reg);
+            break;
+        }
+        /* else if(temp[j] == 3)
+        {
+            int x = temp[j+1];
+            char y = temp[j+2];
+            reg[x] = MOV(reg[x], y);
+            //printf("MOV: x=%d; y=%d;\n", reg[x], y);
+            //IR(reg);
+            j += 3;
+        }
+        else if(temp[j] == 1)
+        {
+            int x1 = temp[j+1];
+            int x2 = temp[j+2];
+            reg[x1] = ADD(reg[x1], reg[x2]);
+            //printf("ADD: reg[x1]=%d; reg[x2]=%d;\n", reg[x1], reg[x2]);
+            //IR(reg);
+            j += 3;
+        }
+        else if(temp[j] == 2)
+        {
+            int x1 = temp[j+1];
+            int x2 = temp[j+2];
+            reg[x1] = SUB(reg[x1], reg[x2]);
+            //printf("SUB: reg[x1]=%d; reg[x2]=%d;\n", reg[x1], reg[x2]);
+            //IR(reg);
+            j += 3;
+        }
+        else if(temp[j] == 4)
+        {
+            IR(reg);
+        } */
+    }
+    
+    printf("Final\n");
+    free(descr);
+    free(temp);
+    
+    //Считывание команд построчно: 1 строка = 1 команда
+    /* while(1)
     {
         char * descr = NULL;
         size_t lend;
@@ -81,7 +158,7 @@ int main()
         }
         
         free(descr);
-    }
+    } */
     
     return 0;
 }
