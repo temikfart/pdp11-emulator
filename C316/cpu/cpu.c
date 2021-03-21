@@ -46,8 +46,8 @@ int main()
         }
         if(strcmp(temp[0], "0") == 0)
         {
-            printf("HLT\n");
-            IR(reg);
+            //printf("HLT\n");
+            //IR(reg);
             free(descr);
             break;
         }
@@ -56,24 +56,24 @@ int main()
             int x = *temp[1] - '0' - A;
             char y = *temp[2] - '0';
             reg[x] = MOV(reg[x], y);
-            printf("MOV: x=%d; y=%d;\n", reg[x], y);
-            IR(reg);
+            //printf("MOV: x=%d; y=%d;\n", reg[x], y);
+            //IR(reg);
         }
         else if(strcmp(temp[0], "1") == 0)
         {
             int x1 = *temp[1] - '0' - A;
             int x2 = *temp[2] - '0' - A;
             reg[x1] = ADD(reg[x1], reg[x2]);
-            printf("ADD: reg[x1]=%d; reg[x2]=%d;\n", reg[x1], reg[x2]);
-            IR(reg);
+            //printf("ADD: reg[x1]=%d; reg[x2]=%d;\n", reg[x1], reg[x2]);
+            //IR(reg);
         }
         else if(strcmp(temp[0], "2") == 0)
         {
             int x1 = *temp[1] - '0' - A;
             int x2 = *temp[2] - '0' - A;
             reg[x1] = SUB(reg[x1], reg[x2]);
-            printf("SUB: reg[x1]=%d; reg[x2]=%d;\n", reg[x1], reg[x2]);
-            IR(reg);
+            //printf("SUB: reg[x1]=%d; reg[x2]=%d;\n", reg[x1], reg[x2]);
+            //IR(reg);
         }
         else if(strcmp(temp[0], "4") == 0)
         {
