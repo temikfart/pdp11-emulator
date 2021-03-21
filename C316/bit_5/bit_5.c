@@ -18,9 +18,13 @@ int main()
     const char * delim = " \n\t\r";    // алфавит разделителей
     
     //характеристики
-    char par_sex[2] = NULL; //будем хранить характеристики в массиве строк
-    par_sex[0] = "fe";
-    par_sex[1] = "ma";
+    char *sex[] = {"ma", "fe"};
+    char *brain[] = {"cl", "du"};
+    char *hat[] = {"ha", "nh"};
+    char *bottom[] = {"tr", "sk"};
+    char *hair_col[] = {"bn", "rd", "bw", "bk"};
+    char *eyes_col[] = {"bu", "ge", "gy", "da"};
+    //будем хранить характеристики в массиве строк
     
     for (char * p = strtok(descr, delim);   // начинаем разбор, передаем строку s 
             p != NULL;                  // пока не нашли новый разделитель
