@@ -13,6 +13,8 @@ char SUB (char x, char y);
 char MOV (char x, char y);
 void IR();
 
+#define N 1000
+
 int main()
 {
     char reg[4];
@@ -33,23 +35,49 @@ int main()
     }
     
     int i = 0;
-    int size_temp = 10;
-    char * temp = malloc (size_temp*sizeof(char));
+    char * str[strlen(descr)];
+    
     const char * delim = " \n\t\r";
     for (char * p = strtok(descr, delim);
             p != NULL;
             p = strtok(NULL, delim))
     {
-        if(size_temp <= i)
+        /* if(size_temp <= i)
         {
             size_temp += 10;
             temp = (char *)realloc(temp, size_temp*sizeof(char));
-        }
-        temp[i] = *p - '0';
-        printf("%d ", temp[i]);
+        } */
+        str[i] = p;
+        //printf("%s ", str[i]);
         i++;
     }
-    printf("\n");
+    //printf("\n");
+    
+    char temp[strlen(descr)];
+    for(int k = 0; k < i; k++)
+    {
+        if(strlen(str[k]) == 1)
+        {
+            temp[k] = str[k][0] - '0';
+            //printf("Один символ: %d\n", temp[k]);
+        }
+        else
+        {
+            int pow = 1;
+            temp[k] = 0;
+            //printf("Несколько символов: %s (len: %ld)\n", str[k], strlen(str[k]));
+            for(size_t q = 0; q < strlen(str[k]); q++)
+            {
+                temp[k] += pow * (str[k][strlen(str[k]) - q - 1] - '0');
+                pow *= 10;
+                //printf("temp: %d; str: %d\n", temp[k], str[k][strlen(str[k]) - q - 1]);
+            }
+        }
+    }
+    
+    /* for(int k = 0; k < i; k++)
+        printf("%d ", temp[k]);
+    printf("\n"); */
     
     int j = 0;
     while(j != i)
@@ -76,28 +104,35 @@ int main()
             int x1 = temp[j+1] - A;
             int x2 = temp[j+2] - A;
             reg[x1] = ADD(reg[x1], reg[x2]);
-            //printf("ADD: reg[x1]=%d; reg[x2]=%d;\n", reg[x1], reg[x2]);
-            //IR(reg);
+            printf("ADD: reg[x1]=%d; reg[x2]=%d;\n", reg[x1], reg[x2]);
+            IR(reg);
             j += 3;
         }
-        /* else if(temp[j] == 2)
+        else if(temp[j] == 2)
         {
-            int x1 = temp[j+1];
-            int x2 = temp[j+2];
+            int x1 = temp[j+1] - A;
+            int x2 = temp[j+2] - A;
             reg[x1] = SUB(reg[x1], reg[x2]);
-            //printf("SUB: reg[x1]=%d; reg[x2]=%d;\n", reg[x1], reg[x2]);
-            //IR(reg);
+            printf("SUB: reg[x1]=%d; reg[x2]=%d;\n", reg[x1], reg[x2]);
+            IR(reg);
             j += 3;
         }
         else if(temp[j] == 4)
         {
             IR(reg);
-        } */
+            j++;
+        }
     }
     
-    printf("Final\n");
+    //printf("Final\n");
     free(descr);
-    free(temp);
+    //free(temp);
+    
+    
+    
+    
+    
+    
     
     //Считывание команд построчно: 1 строка = 1 команда
     /* while(1)
