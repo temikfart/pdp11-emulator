@@ -13,28 +13,34 @@ int main()
         return 0;
     }
     
-    printf("line: %sLen: %ld\n", descr, lend);
+    printf("line: %sSize: %ld\nLen: %ld\n", descr, lend, strlen(descr));
     
     const char * delim = " \n\t\r";    // алфавит разделителей
     
     //характеристики
+    //будем хранить характеристики в массиве строк
     char *sex[] = {"ma", "fe"};
     char *brain[] = {"cl", "du"};
     char *hat[] = {"ha", "nh"};
     char *bottom[] = {"tr", "sk"};
     char *hair_col[] = {"bn", "rd", "bw", "bk"};
     char *eyes_col[] = {"bu", "ge", "gy", "da"};
-    //будем хранить характеристики в массиве строк
+    printf("%s %s %s %s\n", sex[0], hat[2], eyes_col[3], bottom[0]);
+    
+    
+    //Будем заполнять описание в массиве
+    char * temp = NULL;
+    printf("Size of temp: %ld\n\n", sizeof(temp));
     
     for (char * p = strtok(descr, delim);   // начинаем разбор, передаем строку s 
             p != NULL;                  // пока не нашли новый разделитель
             p = strtok(NULL, delim))  // в следующий раз вызываем от NULL
     {
-        //printf("%s\n", p);
+        printf("%s: ", p);
         
         //Проверка на характеристику: ma/fe
         //if(strcmp(p, "ma") == 0 || strcmp(p, "fe") == 0)
-        if() //нужно в условии проверить на ma/fe
+        if(1) //нужно в условии проверить на ma/fe
         {
             printf("ma_fe\n");
         }
@@ -44,6 +50,9 @@ int main()
             break;
         }
     }
+    
+    free(descr);
+    free(temp);
     
     return 0;
 }
