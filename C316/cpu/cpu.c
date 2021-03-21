@@ -61,16 +61,17 @@ int main()
             IR(reg);
             break;
         }
-        /* else if(temp[j] == 3)
+        else if(temp[j] == 3)
         {
-            int x = temp[j+1];
+            int x = temp[j+1] - A;
             char y = temp[j+2];
+            printf("MOV: x=%d; y=%d;\n", x, y);
             reg[x] = MOV(reg[x], y);
-            //printf("MOV: x=%d; y=%d;\n", reg[x], y);
-            //IR(reg);
+            printf("MOV: reg[x]=%d; y=%d;\n", reg[x], y);
+            IR(reg);
             j += 3;
         }
-        else if(temp[j] == 1)
+        /* else if(temp[j] == 1)
         {
             int x1 = temp[j+1];
             int x2 = temp[j+2];
