@@ -59,6 +59,15 @@ int main()
             printf("MOV: x=%d; y=%d;\n", reg[x], y);
             print_reg(reg);
         }
+        else if(strcmp(temp[0], "1") == 0)
+        {
+            int x1 = *temp[1] - '0' - A;
+            int x2 = *temp[2] - '0' - A;
+            reg[x1] = ADD(reg[x1], reg[x2]);
+            printf("ADD: reg[x1]=%d; reg[x2]=%d;\n", reg[x1], reg[x2]);
+            print_reg(reg);
+        }
+        
         free(descr);
     }
     
@@ -70,6 +79,11 @@ void print_reg(char *reg)
     for(int q = 0; q < 4; q++)
         printf("%d ", reg[q]);
     printf("\n");
+}
+char ADD (char x, char y)
+{
+    x += y;
+    return x;
 }
 char MOV (char x, char y)
 {
