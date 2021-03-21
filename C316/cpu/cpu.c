@@ -7,7 +7,7 @@
 #define C 7
 #define D 8
 
-void print_reg();
+void IR();
 char ADD (char x, char y);
 char SUB (char x, char y);
 char MOV (char x, char y);
@@ -20,7 +20,7 @@ int main()
     {
         reg[k] = 0;
     }
-    print_reg(reg);
+    IR(reg);
     
     while(1)
     {
@@ -47,7 +47,7 @@ int main()
         if(strcmp(temp[0], "0") == 0)
         {
             printf("HLT\n");
-            print_reg(reg);
+            IR(reg);
             free(descr);
             break;
         }
@@ -57,7 +57,7 @@ int main()
             char y = *temp[2] - '0';
             reg[x] = MOV(reg[x], y);
             printf("MOV: x=%d; y=%d;\n", reg[x], y);
-            print_reg(reg);
+            IR(reg);
         }
         else if(strcmp(temp[0], "1") == 0)
         {
@@ -65,7 +65,7 @@ int main()
             int x2 = *temp[2] - '0' - A;
             reg[x1] = ADD(reg[x1], reg[x2]);
             printf("ADD: reg[x1]=%d; reg[x2]=%d;\n", reg[x1], reg[x2]);
-            print_reg(reg);
+            IR(reg);
         }
         else if(strcmp(temp[0], "2") == 0)
         {
@@ -73,7 +73,11 @@ int main()
             int x2 = *temp[2] - '0' - A;
             reg[x1] = SUB(reg[x1], reg[x2]);
             printf("SUB: reg[x1]=%d; reg[x2]=%d;\n", reg[x1], reg[x2]);
-            print_reg(reg);
+            IR(reg);
+        }
+        else if(strcmp(temp[0], "4") == 0)
+        {
+            IR(reg);
         }
         
         free(descr);
@@ -82,7 +86,7 @@ int main()
     return 0;
 }
 
-void print_reg(char *reg)
+void IR(char *reg)
 {
     for(int q = 0; q < 4; q++)
         printf("%d ", reg[q]);
