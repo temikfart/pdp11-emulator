@@ -7,22 +7,21 @@
 #define C 7
 #define D 8
 
-void IR();
-char ADD (char x, char y);
-char SUB (char x, char y);
-char MOV (char x, char y);
-void IR();
+void IR(int *reg);
+int ADD(int x, int y);
+int SUB(int x, int y);
+int MOV(int x, int y);
 
 #define N 1000
 
 int main()
 {
-    char reg[4];
+    int reg[4];
     for(int k = 0; k<4; k++)
     {
         reg[k] = 0;
     }
-    IR(reg);
+    //IR(reg);
     
     //Считывание команд из одной строки: 1 строка - много команд.
     char * descr = NULL;
@@ -30,12 +29,12 @@ int main()
     
     if(getline(&descr, &lend, stdin) == -1)
     {
-        printf("Nothing\n");
+        //printf("Nothing\n");
         return 0;
     }
     
     int i = 0;
-    char * str[strlen(descr)];
+    char * str[N];
     
     const char * delim = " \n\t\r";
     for (char * p = strtok(descr, delim);
@@ -53,7 +52,7 @@ int main()
     }
     //printf("\n");
     
-    char temp[strlen(descr)];
+    int temp[N];
     for(int k = 0; k < i; k++)
     {
         if(strlen(str[k]) == 1)
@@ -85,18 +84,18 @@ int main()
         
         if(temp[j] == 0)
         {
-            printf("HLT\n");
-            IR(reg);
+            //printf("HLT\n");
+            //IR(reg);
             break;
         }
         else if(temp[j] == 3)
         {
             int x = temp[j+1] - A;
-            char y = temp[j+2];
-            printf("MOV: x=%d; y=%d;\n", x, y);
+            int y = temp[j+2];
+            //printf("MOV: x=%d; y=%d;\n", x, y);
             reg[x] = MOV(reg[x], y);
-            printf("MOV: reg[x]=%d; y=%d;\n", reg[x], y);
-            IR(reg);
+            //printf("MOV: reg[x]=%d; y=%d;\n", reg[x], y);
+            //IR(reg);
             j += 3;
         }
         else if(temp[j] == 1)
@@ -104,8 +103,8 @@ int main()
             int x1 = temp[j+1] - A;
             int x2 = temp[j+2] - A;
             reg[x1] = ADD(reg[x1], reg[x2]);
-            printf("ADD: reg[x1]=%d; reg[x2]=%d;\n", reg[x1], reg[x2]);
-            IR(reg);
+            //printf("ADD: reg[x1]=%d; reg[x2]=%d;\n", reg[x1], reg[x2]);
+            //IR(reg);
             j += 3;
         }
         else if(temp[j] == 2)
@@ -113,8 +112,8 @@ int main()
             int x1 = temp[j+1] - A;
             int x2 = temp[j+2] - A;
             reg[x1] = SUB(reg[x1], reg[x2]);
-            printf("SUB: reg[x1]=%d; reg[x2]=%d;\n", reg[x1], reg[x2]);
-            IR(reg);
+            //printf("SUB: reg[x1]=%d; reg[x2]=%d;\n", reg[x1], reg[x2]);
+            //IR(reg);
             j += 3;
         }
         else if(temp[j] == 4)
@@ -199,24 +198,33 @@ int main()
     return 0;
 }
 
-void IR(char *reg)
+void IR(int *reg)
 {
     for(int q = 0; q < 4; q++)
         printf("%d ", reg[q]);
     printf("\n");
 }
-char ADD (char x, char y)
+int ADD(int x, int y)
 {
     x += y;
-    return x;
+    if(x > 128)
+        return (x % 128);
+    else
+        return x;
 }
-char SUB (char x, char y)
+int SUB(int x, int y)
 {
     x -= y;
-    return x;
+    if(x > 128)
+        return (x % 128);
+    else
+        return x;
 }
-char MOV (char x, char y)
+int MOV(int x, int y)
 {
     x += y;
-    return x;
+    if(x > 128)
+        return (x % 128);
+    else
+        return x;
 }
