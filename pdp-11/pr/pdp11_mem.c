@@ -52,20 +52,23 @@ void test_mem()
     printf("w-w/2b-r \t %02hhx%02hhx = %04hx\n", b3, b2, w3);
     assert(b2 == 0xcd);
     assert(b3 == 0xab);
-    
+}
+void test_odd_adr()
+{
     //Проверка на нечетный адрес
     //(пишем слово, читаем слово)
     Adress a4 = 9;
     word w4 = 0xaffa;
     w_write(a4, w4);
     word wres4 = w_read(a4);
-    printf("w-w/w-r \t %04hx = %04hx \t (odd adr)\n", wres2, w2);
+    printf("w-w/w-r \t %04hx = %04hx \t (odd adr)\n", wres4, w4);
     assert(w4 == wres4);
 }
 
 int main()
 {
     test_mem();
+    //test_odd_adr();
     
     return 0;
 }
