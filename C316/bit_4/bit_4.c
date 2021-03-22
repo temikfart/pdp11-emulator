@@ -1,72 +1,33 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void det_sex(unsigned int n)
-{
-    // ma = ???? ???1; fe = ???? ???0
-    if(n & 1)
-        printf("ma ");
-    else
-        printf("fe ");
-}
-void det_brain(unsigned int n)
-{
-    if((n >> 1) & 1)
-        printf("cl ");
-    else
-        printf("du ");
-}
-void det_hat(unsigned int n)
-{
-    if((n >> 2) & 1)
-        printf("ha ");
-    else
-        printf("nh ");
-}
-void det_bottom(unsigned int n)
-{
-    if((n >> 3) & 1)
-        printf("tr ");
-    else
-        printf("sk ");
-}
-void det_hair_col(unsigned int n)
-{
-    if(((n >> 4) & 3) == 3) //???? ??11
-        printf("bk ");
-    else if(((n >> 4) & 1) == 1) //???? ??01
-        printf("rd ");
-    else if(((n >> 4) & 2) == 2) //???? ??10
-        printf("bw ");
-    else
-        printf("bn "); //???? ??00
-}
-void det_eyes_col(unsigned int n)
-{
-    if(((n >> 6) & 3) == 3) //???? ??11
-        printf("da ");
-    else if(((n >> 6) & 1) == 1) //???? ??01
-        printf("ge ");
-    else if(((n >> 6) & 2) == 2) //???? ??10
-        printf("gy ");
-    else
-        printf("bu "); //???? ??00
-}
+typedef struct {
+    int shift;
+    int mask;
+    char * name[4];
+}Priznak;
 
 int main()
 {
-    unsigned int n;
+    Priznak human [] = {
+        {0, 1, {"fe", "ma"} },
+        {1, 1, {"du", "cl"} },
+        {2, 1, {"nh", "ha"} },
+        {3, 1, {"sk", "tr"} },
+        {4, 3, {"bn", "rd", "bw", "bk"} },
+        {6, 3, {"bu", "ge", "gy", "da"} }
+    };
     
-    scanf("%x", &n);
+    unsigned int a, b;
+    
+    scanf("%x", &a);
     //printf("Num: %x\n", n);
     
-    det_sex(n);
-    det_brain(n);
-    det_hat(n);
-    det_bottom(n);
-    det_hair_col(n);
-    det_eyes_col(n);
-    
+    for(int i = 0; i < 6; i++)
+    {
+        b = (a >> (human[i]).shift) & (human[i]).mask;
+        printf("%s ", (human[i]).name[b]);
+    }
     printf("\n");
     
     return 0;
