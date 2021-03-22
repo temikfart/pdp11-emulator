@@ -49,9 +49,18 @@ void test_mem()
     w_write(a3, w3);
     byte b2 = b_read(a3);
     byte b3 = b_read(a3+1);
-    word wres3 = ((word)b2) | (b3 << 8); 
-    printf("w-w/2b-r \t %02hhx%02hhx = %04hx; wres3 = %04hx\n", b3, b2, w3, wres3);
-    assert(w3 == wres3);
+    printf("w-w/2b-r \t %02hhx%02hhx = %04hx\n", b3, b2, w3);
+    assert(b2 == 0xcd);
+    assert(b3 == 0xab);
+    
+    //Проверка на нечетный адрес
+    //(пишем слово, читаем слово)
+    Adress a4 = 9;
+    word w4 = 0xaffa;
+    w_write(a4, w4);
+    word wres4 = w_read(a4);
+    printf("w-w/w-r \t %04hx = %04hx \t (odd adr)\n", wres2, w2);
+    assert(w4 == wres4);
 }
 
 int main()
@@ -71,18 +80,15 @@ byte b_read(Adress adr)
 void w_write(Adress adr, word w)
 {
     assert(adr % 2 == 0);
-    byte b0, b1;
     
-    //b0 = (byte)((w << 8) >> 8);
-    b0 = (byte)w;
-    mem[adr] = b0;
-    b1 = (byte)(w >> 8);
-    mem[adr+1] = b1;
+    mem[adr] = (byte)w & 0xFF;
+    mem[adr+1] = (byte)(w >> 8) & 0xFF;
 }
 word w_read(Adress adr)
 {
     word w = ((word)mem[adr+1]) << 8;
     //printf("w = %x\n", w);
     w = w | (mem[adr] & 0xFF);
+    
     return w;
 }
