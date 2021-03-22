@@ -3,19 +3,27 @@
 
 int main()
 {
-    unsigned int n;
+    int a, b;
     
-    scanf("%x", &n);
+    scanf("%x", &a);
     //printf("Num: %x\n", n);
     
-    if(((n >> 4) & 3) == 3) //???? ??11
-        printf("bk\n");
-    else if(((n >> 4) & 1) == 1) //???? ??01
-        printf("rd\n");
-    else if(((n >> 4) & 2) == 2) //???? ??10
-        printf("bw\n");
-    else
-        printf("bn\n"); //???? ??00
+    b = (a >> 4) & 3;
+    switch(b)
+    {
+        case 0:
+            printf("bn\n"); //???? ??00
+            break;
+        case 1:
+            printf("rd\n"); //???? ??01
+            break;
+        case 2:
+            printf("bw\n"); //???? ??10
+            break;
+        default:
+            printf("bk\n"); //???? ??11
+            break;
+    }
     
     return 0;
 }
