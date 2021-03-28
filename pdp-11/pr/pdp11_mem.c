@@ -53,16 +53,10 @@ void test_mem()
     assert(b2 == 0xcd);
     assert(b3 == 0xab);
 }
-void test_odd_adr()
+void test_odd_adr(Adress adr)
 {
     //Проверка на нечетный адрес
-    //(пишем слово, читаем слово)
-    Adress a4 = 9;
-    word w4 = 0xaffa;
-    w_write(a4, w4);
-    word wres4 = w_read(a4);
-    printf("w-w/w-r \t %04hx = %04hx \t (odd adr)\n", wres4, w4);
-    assert(w4 == wres4);
+    assert((adr % 2) == 0);
 }
 void test_mem_1(Adress adr, word w, byte b0, byte b1)
 {
@@ -103,14 +97,16 @@ void test_mem_1(Adress adr, word w, byte b0, byte b1)
 
 int main()
 {
-    //test_mem();         //Тесты на чтение и запись слов/байтов
-    //test_odd_adr();   //Тест на нечетный адрес
-    
     Adress adr = 0;
     byte b0 = 0xcd;
     byte b1 = 0xab;
     word w = 0xabcd;
-    test_mem_1(adr, w, b0, b1);     //Тесты на чтение и запись слов с входными данными из консоли(в будущем)
+    
+    //Тест на нечетный адрес
+    test_odd_adr(adr);
+    
+    //Тесты на чтение и запись слов с входными данными из консоли(в будущем)
+    test_mem_1(adr, w, b0, b1);
     
     return 0;
 }
