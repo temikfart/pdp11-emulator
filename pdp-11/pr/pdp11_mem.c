@@ -62,14 +62,18 @@ int main()
     }
     fclose(fout);
     
-    /* //void mem_dump(Adress start, word n);
+    //void mem_dump(Adress start, word n);
     Adress start = bl_adr - (Adress)bl_size;   //bl_adr изменилась после инкрементирования
     word n = bl_size;
     
-    for(word j = 0x0000; j < n; j++)
+    fout = fopen("out.txt", "a");
+    
+    for(word j = 0x0000; j < n; j++, start++)
     {
-        
-    } */
+        fprintf(stdout, "%04hx : %02hhx\n", start, b_read(start));
+        fprintf(fout, "%04hx : %02hhx\n", start, b_read(start));   //отладочная печать
+    }
+    fclose(fout);
     
     
     return 0;
