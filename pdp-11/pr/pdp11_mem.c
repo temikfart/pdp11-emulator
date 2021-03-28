@@ -39,9 +39,29 @@ void mem_dump(Adress start, word n)
     }
     //fclose(fout);
 }
-
-//void test_mem();
-//void test_odd_adr(Adress adr);
+void load_file()
+{
+    Adress bl_adr;
+    word bl_size;
+    
+    //FILE *fout = fopen("out.txt", "w");
+    
+    while(2 == fscanf(stdin, "%04hx %04hx", &bl_adr, &bl_size))
+    {
+        //fprintf(fout, "%04hx %04hx\n", bl_adr, bl_size);    //отладка печать в файл
+        
+        for(word i = 0x0000; i < bl_size; i++, bl_adr++)
+        {
+            byte bl_byte;
+            fscanf(stdin, "%02hhx", &bl_byte);
+            
+            b_write(bl_adr, bl_byte);
+            
+            //fprintf(fout, "%02hhx\n", b_read(bl_adr));             //отладочная печать в файл
+        }
+    }
+    //fclose(fout);
+}
 
 int main()
 {
@@ -51,32 +71,15 @@ int main()
     //Тесты на чтение и запись слов
     //test_mem();
     
-    //load_file();
-    Adress bl_adr;
-    word bl_size;
+    load_file();
     
-    FILE *fout = fopen("out.txt", "w");
     
-    while(2 == fscanf(stdin, "%04hx %04hx", &bl_adr, &bl_size))
-    {
-        fprintf(fout, "%04hx %04hx\n", bl_adr, bl_size);    //отладка печать в файл
-        
-        for(word i = 0x0000; i < bl_size; i++, bl_adr++)
-        {
-            byte bl_byte;
-            fscanf(stdin, "%02hhx", &bl_byte);
-            
-            b_write(bl_adr, bl_byte);
-            
-            fprintf(fout, "%02hhx\n", b_read(bl_adr));             //отладочная печать в файл
-        }
-    }
-    fclose(fout);
+    Adress start = 0x0050;
+    word n = 0x0004;
+    mem_dump(start, n);
     
-    //void mem_dump(Adress start, word n);
-    Adress start = bl_adr - (Adress)bl_size;   //bl_adr изменилась после инкрементирования
-    word n = bl_size;
-    
+    start = 0x0070;
+    n = 0x0003;
     mem_dump(start, n);
     
     
