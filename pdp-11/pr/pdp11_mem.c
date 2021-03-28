@@ -2,6 +2,8 @@
 #include <assert.h>
 #include "pdp11_mem.h"
 
+byte mem[MEMSIZE];
+
 void b_write(Adress adr, byte b)
 {
     mem[adr] = b;
