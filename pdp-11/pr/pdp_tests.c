@@ -54,8 +54,8 @@ void test_logger_prints()
     printf("Current log level: %d\n", current_log_lvl);
     logger(INFO, "Info: \t Just information\n");
     logger(ERROR, "Error: \t I'd like to live\n");
-    logger(DEBUG, "Debug: \t Bug under the body\n");
     logger(TRACE, "Trace: \t RTX\n");
+    logger(DEBUG, "Debug: \t Bug under the body\n");
 }
 void test_logger()
 {
@@ -65,5 +65,14 @@ void test_logger()
     
     //Проверка на mute logger
     current_log_lvl = SILENT;     //Ожидаем печать lvl
+    test_logger_prints();
+    
+    //Проверка на два одноуровневых вывода
+    current_log_lvl = TRACE;     //Ожидаем печать lvl + INFO & ERROR & TRACE*2
+    test_logger_prints();
+    logger(TRACE, "Trace: \t RTX\n");
+    
+    //Проверка, что все уровни печатаются
+    current_log_lvl = DEBUG;     //Ожидаем печать lvl + all prints
     test_logger_prints();
 }
