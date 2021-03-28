@@ -21,8 +21,9 @@ void w_write(Adress adr, word w)
 }
 word w_read(Adress adr)
 {
+    assert(adr % 2 == 0);
+    
     word w = ((word)mem[adr+1]) << 8;
-    //printf("w = %x\n", w);
     w = w | (mem[adr] & 0xFF);
     
     return w;
@@ -34,8 +35,7 @@ word w_read(Adress adr)
 int main()
 {
     //Тест на нечетный адрес
-    //Adress adr_odd = 3;
-    //test_odd_adr(adr_odd);
+    //test_odd_adr();
     
     //Тесты на чтение и запись слов
     test_mem();

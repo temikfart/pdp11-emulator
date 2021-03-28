@@ -14,4 +14,4 @@ void w_write(Adress adr, word w);
 word w_read(Adress adr);
 
 void test_mem();
-void test_odd_adr(Adress adr);
+void test_odd_adr();

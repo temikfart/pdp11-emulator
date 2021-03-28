@@ -44,8 +44,8 @@ void test_mem()
     test_mem_1(0x0a0b, 0x0a, 0x0b);
     test_mem_1(0x000f, 0x00, 0x0f);
 }
-void test_odd_adr(Adress adr)
+void test_odd_adr()
 {
     //Проверка на нечетный адрес
-    assert((adr % 2) == 0);
+    w_write(1, 0xabda);
 }
