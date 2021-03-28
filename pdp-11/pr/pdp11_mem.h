@@ -13,5 +13,8 @@ byte b_read(Adress adr);
 void w_write(Adress adr, word w);
 word w_read(Adress adr);
 
+void mem_dump(Adress start, word n);
+void load_file();
+
 void test_mem();
 void test_odd_adr();
