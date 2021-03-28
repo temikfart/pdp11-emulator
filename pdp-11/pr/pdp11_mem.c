@@ -64,11 +64,53 @@ void test_odd_adr()
     printf("w-w/w-r \t %04hx = %04hx \t (odd adr)\n", wres4, w4);
     assert(w4 == wres4);
 }
+void test_mem_1(Adress adr, word w, byte b0, byte b1)
+{
+    /*
+    В тестах предполагается, что на вход идет слово w,
+    которое состоит из байтов b0 и b1.
+    */
+    
+    //Пишем байт, читаем байт
+    b_write(adr, b0);
+    byte bres = b_read(adr);
+    printf("b-w/b-r \t %02hhx = %02hhx\n", b0, bres);
+    assert(b0 == bres);
+    
+    //Пишем 2 байта, читаем слово
+    b_write(adr, b0);
+    b_write(adr + 1, b1);
+    word wres = w_read(adr);
+    printf("2b-w/w-r \t %04hx = %02hhx%02hhx\n", wres, b1, b0);
+    assert(w == wres);
+    
+    //Пишем слово, читаем слово
+    adr += 2;           //Чтобы не перезаписывать данные предыдущих двух тестов
+    w_write(adr, w);
+    wres = w_read(adr);
+    printf("w-w/w-r \t %04hx = %04hx\n", wres, w);
+    assert(w == wres);
+    
+    //Пишем слово, читаем 2 байта
+    adr += 2;
+    w_write(adr, w);
+    byte b2 = b_read(adr);
+    byte b3 = b_read(adr + 1);
+    printf("w-w/2b-r \t %02hhx%02hhx = %04hx\n", b3, b2, w);
+    assert(b2 == b0);
+    assert(b3 == b1);
+}
 
 int main()
 {
-    test_mem();
-    //test_odd_adr();
+    //test_mem();         //Тесты на чтение и запись слов/байтов
+    //test_odd_adr();   //Тест на нечетный адрес
+    
+    Adress adr = 0;
+    byte b0 = 0xcd;
+    byte b1 = 0xab;
+    word w = 0xabcd;
+    test_mem_1(adr, w, b0, b1);     //Тесты на чтение и запись слов с входными данными из консоли(в будущем)
     
     return 0;
 }
