@@ -38,8 +38,28 @@ int main()
     //test_odd_adr();
     
     //Тесты на чтение и запись слов
-    test_mem();
+    //test_mem();
+    
+    //load_file();
+    Adress bl_adr;
+    word bl_size;
+    
+    FILE *fout = fopen("out.txt", "w");
+    
+    while(2 == fscanf(stdin, "%04hx %04hx", &bl_adr, &bl_size))
+    {
+        fprintf(fout, "%04hx %04hx\n", bl_adr, bl_size);
+        
+        for(word i = 0x0000; i < bl_size; i++)
+        {
+            byte bl_byte;
+            fscanf(stdin, "%02hhx", &bl_byte);
+            
+            fprintf(fout, "%02hhx\n", bl_byte);
+        }
+    }
+    fclose(fout);
+    
     
     return 0;
 }
-
