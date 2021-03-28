@@ -48,17 +48,28 @@ int main()
     
     while(2 == fscanf(stdin, "%04hx %04hx", &bl_adr, &bl_size))
     {
-        fprintf(fout, "%04hx %04hx\n", bl_adr, bl_size);
+        fprintf(fout, "%04hx %04hx\n", bl_adr, bl_size);    //отладка печать
         
-        for(word i = 0x0000; i < bl_size; i++)
+        for(word i = 0x0000; i < bl_size; i++, bl_adr++)
         {
             byte bl_byte;
             fscanf(stdin, "%02hhx", &bl_byte);
             
-            fprintf(fout, "%02hhx\n", bl_byte);
+            b_write(bl_adr, bl_byte);
+            
+            fprintf(fout, "%02hhx\n", b_read(bl_adr));             //отладочная печать
         }
     }
     fclose(fout);
+    
+    /* //void mem_dump(Adress start, word n);
+    Adress start = bl_adr - (Adress)bl_size;   //bl_adr изменилась после инкрементирования
+    word n = bl_size;
+    
+    for(word j = 0x0000; j < n; j++)
+    {
+        
+    } */
     
     
     return 0;
