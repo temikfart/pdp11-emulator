@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
+#include <errno.h>
+#include <stdlib.h>
 #include "pdp11_mem.h"
 
 byte mem[MEMSIZE];
@@ -30,40 +32,42 @@ word w_read(Adress adr)
 }
 void mem_dump(Adress start, word n)
 {
-    //fout = fopen("out.txt", "a");
-    
-    for(word j = 0x0000; j < n; j++, start++)
+    for(word j = 0; j < n; j++, start++)
     {
         fprintf(stdout, "%04hx : %02hhx\n", start, b_read(start));
-        //fprintf(fout, "%04hx : %02hhx\n", start, b_read(start));   //отладочная печать в файл
     }
-    //fclose(fout);
+    printf("\n");
 }
-void load_file()
+void load_file(const char *filename)
 {
     Adress bl_adr;
     word bl_size;
     
-    //FILE *fout = fopen("out.txt", "w");
-    
-    while(2 == fscanf(stdin, "%04hx %04hx", &bl_adr, &bl_size))
+    FILE *fin = fopen(filename, "r");
+    if(errno)
     {
-        //fprintf(fout, "%04hx %04hx\n", bl_adr, bl_size);    //отладка печать в файл
-        
-        for(word i = 0x0000; i < bl_size; i++, bl_adr++)
+        char ans[100];
+        sprintf(ans, "Can't open file: %s\n", filename);
+        perror(ans);
+        exit(1);
+    }
+    
+    while(2 == fscanf(fin, "%hx%hx", &bl_adr, &bl_size))
+    {
+        for(word i = 0; i < bl_size; i++, bl_adr++)
         {
             byte bl_byte;
-            fscanf(stdin, "%02hhx", &bl_byte);
+            fscanf(fin, "%hhx", &bl_byte);
             
             b_write(bl_adr, bl_byte);
-            
-            //fprintf(fout, "%02hhx\n", b_read(bl_adr));             //отладочная печать в файл
         }
+        //Печать из памяти mem
+        mem_dump(bl_adr - (Adress)bl_size, bl_size);
     }
-    //fclose(fout);
+    fclose(fin);
 }
 
-int main()
+int main(int argc, char * argv[])
 {
     //Тест на нечетный адрес
     //test_odd_adr();
@@ -71,16 +75,10 @@ int main()
     //Тесты на чтение и запись слов
     //test_mem();
     
-    load_file();
-    
-    
-    Adress start = 0x0050;
-    word n = 0x0004;
-    mem_dump(start, n);
-    
-    start = 0x0070;
-    n = 0x0003;
-    mem_dump(start, n);
+    if(argc == 2)
+    {
+        load_file(argv[1]);
+    }
     
     
     return 0;
