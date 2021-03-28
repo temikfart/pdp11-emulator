@@ -10,7 +10,7 @@ int main(int argc, char * argv[])
     //test_odd_adr();
     
     //Тесты на чтение и запись слов
-    test_mem();
+    //test_mem();
     
     if(argc == 2)
     {
@@ -18,7 +18,7 @@ int main(int argc, char * argv[])
     }
     
     //Проверка logger'а
-    test_logger();
+    //test_logger();
     
     return 0;
 }
