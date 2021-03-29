@@ -3,6 +3,8 @@
 #include "pdp.h"
 
 byte mem[MEMSIZE];
+int current_log_lvl = INFO;
+word reg[8];
 
 int main(int argc, char * argv[])
 {
