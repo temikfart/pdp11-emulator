@@ -28,7 +28,6 @@ typedef struct
 extern byte mem[MEMSIZE];       //Память
 extern int current_log_lvl;     //Уровень логирования
 extern word reg[8];             //Регистры R0, ..., R8
-extern Command cmd[];
 //====================
 
 //PDP main-functions
