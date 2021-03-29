@@ -46,7 +46,7 @@ void load_file(const char *filename)
     if(errno)
     {
         char *ans = malloc((strlen(filename) + 50) * sizeof(char));
-        sprintf(ans, "Can't open file: %s\n", filename);
+        sprintf(ans, "Can't open file: %s", filename);
         perror(ans);
         free(ans);
         exit(1);
@@ -65,4 +65,33 @@ void load_file(const char *filename)
         mem_dump(bl_adr - (Adress)bl_size, bl_size);
     }
     fclose(fin);
+}
+void console_arg(int argc, char * argv[])
+{
+    current_log_lvl = SILENT;
+    for(int i = 1; i < argc; i++)
+    {
+        if(!(argv[i][0] - '-'))
+        {
+            //printf("flag!!\n");
+            switch(argv[i][1])
+            {
+                case 't':
+                    current_log_lvl = (TRACE > current_log_lvl) ? TRACE : current_log_lvl;
+                    //printf("Trace flag\n");
+                    //test_logger_prints();
+                    break;
+                case 'd':
+                    current_log_lvl = (DEBUG > current_log_lvl) ? DEBUG : current_log_lvl;
+                    //printf("Debug flag\n");
+                    //test_logger_prints();
+                    break;
+                default:
+                    printf("Unknown flag: -%c\n", argv[i][1]);
+                    break;
+            }
+        }
+        else
+            load_file(argv[i]);
+    }
 }

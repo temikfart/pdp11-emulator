@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <assert.h>
+#include <stdlib.h>
 #include "pdp.h"
 
 void test_mem_1(word w, byte b1, byte b0)
@@ -75,4 +76,40 @@ void test_logger()
     //Проверка, что все уровни печатаются
     current_log_lvl = DEBUG;     //Ожидаем печать lvl + all prints
     test_logger_prints();
+}
+void test_console_arg_print(int test_argc, char * test_argv[])
+{
+    console_arg(test_argc, test_argv);
+    //printf("Current log level: %d\n", current_log_lvl);
+    test_logger_prints();
+}
+void test_console_arg()
+{
+    //Заводим переменные для аргументов
+    int test_argc = 0;
+    char * test_argv[5];
+    //test_argv = (char *)malloc(sizeof(char) * 50);
+    
+    //Ничего (Ожидаем принт уровня логирования)
+    printf("\tArg-Test 1\n");
+    test_argc = 1;
+    test_argv[0] = 0;
+    test_console_arg_print(test_argc, test_argv);
+    
+    //Несколько флагов и файлов в различном порядке
+    printf("\n\tArg-Test 2\n");
+    test_argc = 5;
+    test_argv[1] = "-t";
+    test_argv[2] = "test_arg.o";
+    test_argv[3] = "-d";
+    test_argv[4] = "test_arg.o";
+    test_console_arg_print(test_argc, test_argv);
+    
+    //1 существующий, 1 несущ. флаг и 1 сущ., 1 несущ. файл
+    printf("\n\tArg-Test 3\n");
+    test_argc = 5;
+    test_argv[2] = "-a";
+    test_argv[3] = "test_arg.o";
+    test_argv[4] = "abcd";
+    test_console_arg_print(test_argc, test_argv);
 }

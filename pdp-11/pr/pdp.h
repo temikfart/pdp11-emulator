@@ -29,6 +29,7 @@ word w_read(Adress adr);
 
 void mem_dump(Adress start, word n);
 void load_file();
+void console_arg(int argc, char * argv[]);
 //====================
 
 //Additional functions
@@ -41,4 +42,5 @@ void test_mem();
 void test_odd_adr();
 void test_logger_prints();
 void test_logger();
+void test_console_arg();
 //====================
