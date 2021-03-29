@@ -7,11 +7,11 @@ byte mem[MEMSIZE];
 int main(int argc, char * argv[])
 {
     //Разбор аргументов (флаги, файлы)
-    //console_arg(argc, argv);
+    console_arg(argc, argv);
     
     
     //Тест с различными аргументами
-    test_console_arg();
+    //test_console_arg();
     
     //Тест на нечетный адрес
     //test_odd_adr();

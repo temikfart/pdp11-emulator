@@ -3,10 +3,11 @@
 //Constants
 #define MEMSIZE (64*1024)
 
-#define ERROR 0
-#define INFO 1
-#define TRACE 2
-#define DEBUG 3
+#define FATAL 0
+#define ERROR 1
+#define INFO 2
+#define TRACE 3
+#define DEBUG 4
 #define SILENT -1
 //====================
 

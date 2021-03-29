@@ -78,14 +78,14 @@ void console_arg(int argc, char * argv[])
         {
             case 'd':
                 current_log_lvl = (DEBUG > current_log_lvl) ? DEBUG : current_log_lvl;
-                printf("flag: debug\n");
+                logger(TRACE, "flag -d: debug.\n");
                 break;
             case 't':
                 current_log_lvl = (TRACE > current_log_lvl) ? TRACE : current_log_lvl;
-                printf("flag: trace\n");
+                logger(TRACE, "flag -t: trace.\n");
                 break;
             case '?':
-                printf("Unknown flag: -%c\n", optopt);
+                logger(ERROR, "Unknown flag: -%c\n", optopt);
                 break;
         }
 	}
