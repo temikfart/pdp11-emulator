@@ -21,7 +21,7 @@ typedef struct
     word opcode;
     char * name;
     void (* do_func)(void);
-}Command;                           //Команды PDP-11
+}Command;                           //Описание для команд PDP-11
 //====================
 
 //Global variables
