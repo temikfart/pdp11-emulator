@@ -63,7 +63,8 @@ void load_file(const char *filename)
             b_write(bl_adr, bl_byte);
         }
         //Печать из памяти mem
-        mem_dump(bl_adr - (Adress)bl_size, bl_size);
+        if(current_log_lvl == TRACE)
+            mem_dump(bl_adr - (Adress)bl_size, bl_size);
     }
     fclose(fin);
 }
