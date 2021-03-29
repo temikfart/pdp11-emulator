@@ -12,6 +12,8 @@ void do_halt()
     
 }
 void do_add()
-{}
-void do_nothing()
 {} */
+void do_nothing()
+{
+    return;
+}
