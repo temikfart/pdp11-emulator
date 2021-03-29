@@ -72,9 +72,9 @@ void console_arg(int argc, char * argv[])
     current_log_lvl = SILENT;
     int flag = 0;
     opterr = 0;
-	while((flag = getopt(argc, argv, "dt")) != -1)
+    while((flag = getopt(argc, argv, "dt")) != -1)
     {
-		switch(flag)
+        switch(flag)
         {
             case 'd':
                 current_log_lvl = (DEBUG > current_log_lvl) ? DEBUG : current_log_lvl;
@@ -88,7 +88,7 @@ void console_arg(int argc, char * argv[])
                 logger(ERROR, "Unknown flag: -%c\n", optopt);
                 break;
         }
-	}
+    }
     for (int i = optind; i < argc; i++)
         load_file(argv[i]);
 }
