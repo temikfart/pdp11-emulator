@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdarg.h>
-#include <string.h>
 #include "pdp.h"
 
 byte mem[MEMSIZE];

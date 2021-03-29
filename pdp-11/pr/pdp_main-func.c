@@ -3,6 +3,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include "pdp.h"
 
 void b_write(Adress adr, byte b)
@@ -69,29 +70,25 @@ void load_file(const char *filename)
 void console_arg(int argc, char * argv[])
 {
     current_log_lvl = SILENT;
-    for(int i = 1; i < argc; i++)
+    int flag = 0;
+    opterr = 0;
+	while((flag = getopt(argc, argv, "dt")) != -1)
     {
-        if(!(argv[i][0] - '-'))
+		switch(flag)
         {
-            //printf("flag!!\n");
-            switch(argv[i][1])
-            {
-                case 't':
-                    current_log_lvl = (TRACE > current_log_lvl) ? TRACE : current_log_lvl;
-                    //printf("Trace flag\n");
-                    //test_logger_prints();
-                    break;
-                case 'd':
-                    current_log_lvl = (DEBUG > current_log_lvl) ? DEBUG : current_log_lvl;
-                    //printf("Debug flag\n");
-                    //test_logger_prints();
-                    break;
-                default:
-                    printf("Unknown flag: -%c\n", argv[i][1]);
-                    break;
-            }
+            case 'd':
+                current_log_lvl = (DEBUG > current_log_lvl) ? DEBUG : current_log_lvl;
+                printf("flag: debug\n");
+                break;
+            case 't':
+                current_log_lvl = (TRACE > current_log_lvl) ? TRACE : current_log_lvl;
+                printf("flag: trace\n");
+                break;
+            case '?':
+                printf("Unknown flag: -%c\n", optopt);
+                break;
         }
-        else
-            load_file(argv[i]);
-    }
+	}
+    for (int i = optind; i < argc; i++)
+        load_file(argv[i]);
 }
