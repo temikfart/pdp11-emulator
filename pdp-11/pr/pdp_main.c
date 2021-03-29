@@ -9,6 +9,8 @@ int main(int argc, char * argv[])
     //Разбор аргументов (флаги, файлы)
     console_arg(argc, argv);
     
+    //
+    run();
     
     //Тест с различными аргументами
     //test_console_arg();
