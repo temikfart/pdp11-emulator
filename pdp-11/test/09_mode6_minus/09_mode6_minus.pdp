@@ -1,0 +1,13 @@
+ostat = 177564
+odata = 177566
+	.=200
+A:	.ASCII	/abcde/
+; Print e 
+	.=1000
+	mov #A, R0
+	add #4, R0
+putc:
+	tstb	@#ostat
+	bpl	putc
+	movb	-2(R0), odata	; print letter c
+	halt

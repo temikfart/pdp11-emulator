@@ -1,0 +1,24 @@
+ostat = 177564
+odata = 177566
+
+	.=200
+STR:	.ASCIZ /Hello, world!/
+STR1:	.ASCII /Hello, world!/
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; R1 - адрес очередного символа
+; R0 - значение ascii кода этого символа (число)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+	.=1000
+	mov     #STR, R1
+LOOP_STR:
+	movb    (R1)+, R0
+	beq     END
+putc:
+	tstb	@#ostat
+	bpl	    putc
+	movb	R0, @#odata
+	br LOOP_STR
+END:
+	halt

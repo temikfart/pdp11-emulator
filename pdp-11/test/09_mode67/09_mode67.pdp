@@ -1,0 +1,10 @@
+ostat = 177564
+odata = 177566
+
+; Print * 
+	.=1000
+putc:
+	tstb	@#ostat
+	bpl	putc
+	movb	#'*, odata
+	halt

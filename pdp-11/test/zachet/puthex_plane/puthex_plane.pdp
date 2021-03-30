@@ -1,0 +1,59 @@
+ocsr = 0177564	; TTO command and status register for PDP-11
+odat = 0177566  ; TTO data register
+
+. = 200
+A:  .WORD   11064, 125715, -1, 1, 10, 40, 1000, 100000, 6543, 0
+HEX:    .ASCIZ      /0123456789ABCDEF/
+
+. = 1000
+
+main:	mov	#main,sp	; init stack
+
+    mov #A, r5
+loop:    
+	mov	(r5)+, r0
+    beq end
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; puthex  show number in tto in hex representation
+;   input:	RO
+;   output:	tto
+;   clobber:	flags, r0
+; R1 - the saved number
+; R2 - loop counter
+; R3 - shift by n bits
+; R0 - digit and ascii code
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+puthex:	
+	mov	r0,r1		; copy number to r1
+	mov	#4, r2		; 16 bit's counter
+    mov #-14, r3     ; first shift by 14 bits
+    
+put16_loop:    
+    mov r1, r0      ; copy number
+    ash r3, r0      ; r0 >> r3
+	bic	#~17, r0    ; (r0 >> r3) & 0xF
+    add #HEX, r0    ; r0 = HEX[r0]
+    movb (r0), r0   ; r0 = *r0
+
+putchar:
+    tstb	@#ocsr		; test bit 7 in ocsr (it's sign bit!!!)
+	bpl	putchar		; if ( bit 7 == 0 ) wait ... device is busy
+	movb	r0, @#odat	; put char to the odat
+
+    add #4, r3
+	sob	r2, put16_loop 
+
+    ; newline
+putc12:
+    tstb	@#ocsr
+	bpl	    putc12
+	movb	#12, @#odat
+putc15:
+    tstb	@#ocsr
+	bpl	    putc15
+	movb	#15, @#odat
+
+    br loop
+end:
+	halt

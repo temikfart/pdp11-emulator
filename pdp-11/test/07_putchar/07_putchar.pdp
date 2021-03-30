@@ -1,0 +1,11 @@
+ocsr = 0177564   ; TTO command and status register for PDP-11
+odat = 0177566   ; TTO data register
+
+    . = 1000
+    mov    #'*, R0     ; R0 = symbol * ascii code 
+putchar:
+    tstb   @#ocsr      ; test bit 7 in ocsr (it's sign bit!!!)
+    bpl    putchar     ; if ( bit 7 == 0 ) wait ... device is busy
+    movb   R0,@#odat   ; put char to the odat
+    
+    halt

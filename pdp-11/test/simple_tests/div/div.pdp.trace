@@ -1,0 +1,14 @@
+      2 [main] pdp11 15996 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
+the public mailing list cygwin@cygwin.com
+
+---------------- running --------------
+001000: mov     #000200,r0              [001002]=000200 
+001004: mov     (r0)+,r2                [000200]=003477 
+001006: mov     (r0)+,r3                [000202]=144744 
+001010: div     (r0),r3                 [000204]=012345 
+001012: halt                            
+
+---------------- halted ---------------
+r0=000204 r2=054321 r4=000000 sp=000000
+r1=000000 r3=001357 r5=000000 pc=001014
+psw=000000: cm=k pm=k pri=0        [5]

@@ -1,0 +1,106 @@
+. = 200
+A:  .WORD   123456, 165432, 1, 2, 3, 4, 5, -1, 10, 20, 40, 100, 1000, 100000, 6543, 0
+
+. = 1000
+
+main:	mov	#main,sp	; init stack
+    mov #hello, r0
+    jsr pc, puts
+	jsr	pc, newline
+    ;halt
+
+    mov #A, r1
+loop:    
+	mov	(r1)+, r0
+    beq end
+	jsr	pc, put8
+	jsr	pc, newline
+    br loop
+end:
+	halt
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; putchar
+;   input:	RO - ascii char
+;   output:	none
+;   clobber:	flags
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ocsr = 0177564	; TTO command and status register for PDP-11
+odat = 0177566  ; TTO data register
+;
+putchar:tstb	@#ocsr		; test bit 7 in ocsr (it's sign bit!!!)
+	bpl	putchar		; if ( bit 7 == 0 ) wait ... device is busy
+	movb	r0,@#odat	; put char to the odat
+	rts	pc		; return
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; puts
+;   input:	RO - asciz string
+;   output:	none
+;   clobber:	flags, r0
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+puts:	mov	r1,-(sp)	; save r1 in stack
+	mov	r0,r1		; copy addr to r1
+l1:	movb	(r1)+,r0	; put next char to r0
+	beq	l2		; if (r0 == 0) goto l2
+	jsr	pc,putchar	; call putchar()
+	br	l1		; goto l1
+l2:	mov	(sp)+,r1	; restore r1 from stack
+	rts	pc		; return
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; put8  show number in tto in octet representation
+;   input:	RO
+;   output:	tto
+;   clobber:	flags, r0
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+put8:	
+	mov	r1,-(sp)	; save r1 in stack
+	mov	r2,-(sp)	; save r2 in stack
+
+	mov	r0,r1		; copy number to r1
+	mov	#5, r2		; 16 bit's counter		
+
+	movb	#'0, r0		; put char '0'
+	tst	r1
+	bpl	put8_0
+	inc	r0
+put8_0:	jsr	pc, putchar	
+
+put8_2:	mov	r1, r0	
+	rol	r0
+	rol	r0
+	rol	r0
+	rol	r0
+	rol	r0
+	bic	#~7, r0 
+	add	#'0, r0		; put char '0'
+	jsr	pc, putchar
+	asl	r1
+	asl	r1
+	asl	r1
+	sob	r2, put8_2 
+	
+	mov	(sp)+,r2	; restore r2 from stack
+	mov	(sp)+,r1	; restore r1 from stack
+	rts	pc		; return
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; newline  print CRLF into tto
+;   input:	RO
+;   output:	tto
+;   clobber:	flags, r0
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+newline:
+	mov	#crlf, r0
+	jsr	pc, puts
+	rts	pc
+
+CR=15
+LF=12
+
+hello:	.asciz	<CR><LF>/hello, world!/<CR><LF>
+crlf:	.asciz	<CR><LF>
+
+	.end	main

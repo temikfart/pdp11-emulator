@@ -1,0 +1,27 @@
+      1 [main] pdp11 6820 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
+the public mailing list cygwin@cygwin.com
+
+---------------- running --------------
+
+hello, world!
+
+123456
+165432
+000001
+000002
+000003
+000004
+000005
+177777
+000010
+000020
+000040
+000100
+001000
+100000
+006543
+
+---------------- halted ---------------
+r0=000000 r2=000000 r4=000000 sp=001000
+r1=000240 r3=000000 r5=000000 pc=001044
+psw=000004: cm=k pm=k pri=0    z   [2129]

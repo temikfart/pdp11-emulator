@@ -1,0 +1,42 @@
+ostat = 177564
+odata = 177566
+
+	.=200
+STR: .ASCIZ /Hello, world!/
+STR1: .ASCII /Hello, world!/
+
+; R0 - адрес очередного символа
+; R1 - значение ascii кода этого символа (число)
+
+	.=1000
+main:
+	mov #main, sp
+	mov #STR, R1
+	jsr	pc, puts
+	halt
+	
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; puts - print string up to 0
+;   R1 - string address
+; corrupted:
+;   R0
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
+puts:	
+	movb 	(R1)+, R0
+	beq 	ENDputs
+	jsr		pc, putc
+	br		puts
+ENDputs:
+	rts		pc
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; putc - print 1 character from R0
+;   R0 - ascii code
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
+putc:
+	tstb	@#ostat
+	bpl		putc
+	movb	R0, @#odata
+	rts 	pc
+	
+	halt
