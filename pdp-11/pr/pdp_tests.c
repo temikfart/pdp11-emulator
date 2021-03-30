@@ -55,7 +55,7 @@ void test_odd_adr()
     
     //Проверка на нечетный адрес
     logger(TRACE, "\n\t(OddAdr) Test: Error\n");
-    w_write(1, 0xabda);
+    w_write(11, 0xabda);
 }
 void test_logger_prints()
 {
