@@ -81,7 +81,7 @@ void load_file(const char *filename)
 }
 void console_arg(int argc, char * argv[])
 {
-    current_log_lvl = SILENT;
+    //current_log_lvl = SILENT;
     int flag = 0;
     opterr = 0;
     while((flag = getopt(argc, argv, "dt")) != -1)
