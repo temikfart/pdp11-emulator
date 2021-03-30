@@ -7,10 +7,10 @@
 Param p;
 //Массив всех команд
 static Command cmd[] = {
-    {0170000, 0010000, "mov", 3, do_mov},
-    {0170000, 0060000, "add", 3, do_add},
-    {0177777, 0000000, "halt", 0, do_halt},
-    {0000000, 0000000, "unknown", 0, do_unknown}
+    {0170000, 0010000, "mov", HAS_DD | HAS_SS, do_mov},
+    {0170000, 0060000, "add", HAS_DD | HAS_SS, do_add},
+    {0177777, 0000000, "halt", NO_PARAM, do_halt},
+    {0000000, 0000000, "unknown", NO_PARAM, do_unknown}
 };
 
 Arg get_modereg(word w)
@@ -62,12 +62,12 @@ Param get_params(word w, char params)
         return res;
     }
     
-    if((params >> 1) & 1)
+    if(params & HAS_SS)
     {
         //logger(DEBUG, "\nhas a SS-parameter\n");
         res.ss = get_modereg(w >> 6);
     }
-    if(params & 1)
+    if(params & HAS_DD)
     {
         //logger(DEBUG, "\nhas a DD-parameter\n");
         res.dd = get_modereg(w);
