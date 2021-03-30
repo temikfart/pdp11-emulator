@@ -16,13 +16,24 @@ byte b_read(Adress adr)
 }
 void w_write(Adress adr, word w)
 {
+    if(adr < 8)
+    {
+        reg[adr] = w;
+        return;
+    }
+    
     assert(adr % 2 == 0);
     
     mem[adr] = (byte)w & 0xFF;
     mem[adr+1] = (byte)(w >> 8) & 0xFF;
+    
+    return;
 }
 word w_read(Adress adr)
 {
+    if(adr < 8)
+        return reg[adr];
+    
     assert(adr % 2 == 0);
     
     word w = ((word)mem[adr+1]) << 8;
