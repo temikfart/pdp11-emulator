@@ -17,10 +17,15 @@ typedef unsigned short int word;    //16 bit
 typedef word Adress;                //16 bit
 typedef struct
 {
+    word adr;
+    word val;
+}Arg;                               //Тип данных для SS и DD
+typedef struct
+{
     word mask;
     word opcode;
     char * name;
-    void (* do_func)(void);
+    void (* do_func)(Arg dd, Arg ss);
 }Command;                           //Описание для команд PDP-11
 //====================
 
@@ -28,6 +33,8 @@ typedef struct
 extern byte mem[MEMSIZE];       //Память
 extern int current_log_lvl;     //Уровень логирования
 extern word reg[8];             //Регистры R0, ..., R8
+extern Arg dd;
+extern Arg ss;
 //====================
 
 //PDP main-functions
