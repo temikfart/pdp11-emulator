@@ -19,3 +19,7 @@ void do_nothing()
 {
     return;
 }
+void do_unknown()
+{
+    logger(ERROR, "unknown\n");
+}
