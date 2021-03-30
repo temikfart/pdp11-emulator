@@ -3,15 +3,15 @@
 #include <string.h>
 #include "pdp.h"
 
-#define pc reg[7]
-
+//Структура для параметров функций cmd[]
+Param p;
+//Массив всех команд
 static Command cmd[] = {
-    {0170000, 0010000, "mov", do_mov},
-    {0170000, 0060000, "add", do_add},
-    {0177777, 0000000, "halt", do_halt},
-    {0000000, 0000000, "unknown", do_unknown}
+    {0170000, 0010000, "mov", 3, do_mov},
+    {0170000, 0060000, "add", 3, do_add},
+    {0177777, 0000000, "halt", 0, do_halt},
+    {0000000, 0000000, "unknown", 0, do_unknown}
 };
-Arg ss, dd;    
 
 Arg get_modereg(word w)
 {
@@ -49,13 +49,39 @@ Arg get_modereg(word w)
     
     return res;
 }
+Param get_params(word w, char params)
+{
+    logger(DEBUG, "\nget_params(word = %06o, params = %d) is running\n", w, params);
+    
+    Param res;
+    
+    if(params == NO_PARAM)
+    {
+        //logger(DEBUG, "No params\n");
+        
+        return res;
+    }
+    
+    if((params >> 1) & 1)
+    {
+        //logger(DEBUG, "\nhas a SS-parameter\n");
+        res.ss = get_modereg(w >> 6);
+    }
+    if(params & 1)
+    {
+        //logger(DEBUG, "\nhas a DD-parameter\n");
+        res.dd = get_modereg(w);
+    }
+    
+    return res;
+}
 void run()
 {
-   logger(INFO, "\n----------------RUNNING----------------");
+    logger(INFO, "\n----------------RUNNING----------------");
+    
     pc = 01000;
     while(1)
     {
-        
         word w = w_read(pc);
         logger(TRACE, "\n%06o %06o: ", pc, w);
         pc += 2;
@@ -63,27 +89,20 @@ void run()
         
         while(1)
         {
-            //Unknown command
-            if((cmd[i]).mask == 0 && (cmd[i]).opcode == 0)
-            {
-                logger(TRACE, "%s \n", (cmd[i]).name);
-                (cmd[i]).do_func(dd, ss);
-                break;
-            }
-            
-            //Operation
             if((w & (cmd[i]).mask) == (cmd[i]).opcode)
             {
                 logger(TRACE, "%s ", (cmd[i]).name);
-                if((cmd[i]).opcode != 0)
-                {
-                    ss = get_modereg(w >> 6);
-                    dd = get_modereg(w);
-                }
-                (cmd[i]).do_func(dd, ss);
+                
+                p = get_params(w, (cmd[i]).params);
+                //p.ss = get_modereg(w >> 6);
+                //p.dd = get_modereg(w);
+                (cmd[i]).do_func(p);
                 break;
             }
             i++;
         }
+        //DEBUG
+        if(current_log_lvl > TRACE)
+            reg_print();
     }
 }
