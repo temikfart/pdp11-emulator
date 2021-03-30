@@ -19,9 +19,9 @@
 //====================
 
 //Structures
-typedef unsigned char byte;         //8 bit
-typedef unsigned short int word;    //16 bit
-typedef word Adress;                //16 bit
+typedef unsigned char byte;         // 8 бит
+typedef unsigned short int word;    //16 бит
+typedef word Adress;                //16 бит
 typedef struct
 {
     word adr;
@@ -37,16 +37,16 @@ typedef struct
     word mask;
     word opcode;
     char * name;
-    char params;
+    char params;                    //000(XX)(R)(N)(SS)(DD) - 8 бит
     void (* do_func)(Param p);
 }Command;                           //Описание для команд PDP-11
 //====================
 
 //Global variables
-extern byte mem[MEMSIZE];       //Память
-extern int current_log_lvl;     //Уровень логирования
-extern word reg[8];             //Регистры R0, ..., R8
-extern Param p;                 //Структура для параметров функций cmd[]
+extern byte mem[MEMSIZE];           //Память
+extern int current_log_lvl;         //Уровень логирования
+extern word reg[8];                 //Регистры R0, ..., R8
+extern Param p;                     //Структура для параметров функций cmd[]
 //====================
 
 //PDP main-functions
@@ -59,6 +59,7 @@ void mem_dump(Adress start, word n);
 void load_file();
 void console_arg(int argc, char * argv[]);
 Arg get_modereg(word w);
+Param get_params(word w, char params);
 void run();
 //====================
 
