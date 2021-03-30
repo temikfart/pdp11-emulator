@@ -4,7 +4,8 @@
 
 void do_halt(Param p)
 {
-    logger(INFO, "\n-----------------HALT------------------\n");
+    logger(INFO, 
+        "\n-----------------HALT------------------\n");
     reg_print();
     
     exit(0);
