@@ -63,7 +63,7 @@ void load_file(const char *filename)
             b_write(bl_adr, bl_byte);
         }
         //Печать из памяти mem
-        if(current_log_lvl == TRACE)
+        if(current_log_lvl > TRACE)
             mem_dump(bl_adr - (Adress)bl_size, bl_size);
     }
     fclose(fin);
@@ -79,11 +79,11 @@ void console_arg(int argc, char * argv[])
         {
             case 'd':
                 current_log_lvl = (DEBUG > current_log_lvl) ? DEBUG : current_log_lvl;
-                logger(TRACE, "flag -d: debug.\n");
+                logger(DEBUG, "flag -d: debug.\n");
                 break;
             case 't':
                 current_log_lvl = (TRACE > current_log_lvl) ? TRACE : current_log_lvl;
-                logger(TRACE, "flag -t: trace.\n");
+                logger(DEBUG, "flag -t: trace.\n");
                 break;
             case '?':
                 logger(ERROR, "Unknown flag: -%c\n", optopt);
