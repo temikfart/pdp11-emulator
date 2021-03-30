@@ -42,6 +42,21 @@ Arg get_modereg(word w)
             else
                 logger(TRACE, "(R%o)+ ", r);
             break;
+        //Mode 4: -(Rn)
+        case 4:
+            if(r == 7 && pc == 0)
+            {
+                logger(FATAL, "Fatal error: Array index out of bounds.\n");
+                exit(1);
+            }
+            reg[r] -= 2;                //-= 1 если операция байтовая
+            res.adr = reg[r];
+            res.val = w_read(res.adr);  //b_read если операция байтовая
+            if(r == 7)
+                logger(TRACE, "#%o ", res.val);
+            else
+                logger(TRACE, "(R%o)+ ", r);
+            break;
         default:
             logger(ERROR, "Mode %o not implemented yet.\n", r);
             exit(1);
@@ -62,12 +77,12 @@ Param get_params(word w, char params)
         return res;
     }
     
-    if(params & HAS_SS)
+    if((params & HAS_SS) == HAS_SS)
     {
         //logger(DEBUG, "\nhas a SS-parameter\n");
         res.ss = get_modereg(w >> 6);
     }
-    if(params & HAS_DD)
+    if((params & HAS_DD) == HAS_DD)
     {
         //logger(DEBUG, "\nhas a DD-parameter\n");
         res.dd = get_modereg(w);
@@ -94,8 +109,6 @@ void run()
                 logger(TRACE, "%s ", (cmd[i]).name);
                 
                 p = get_params(w, (cmd[i]).params);
-                //p.ss = get_modereg(w >> 6);
-                //p.dd = get_modereg(w);
                 (cmd[i]).do_func(p);
                 break;
             }
