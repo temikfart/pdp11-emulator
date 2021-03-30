@@ -11,3 +11,12 @@ void logger(int log_lvl, const char * format, ...)
     vprintf(format, ptr);
     va_end(ptr);
 }
+void reg_print()
+{
+    logger(INFO, 
+        "R0=%06o R2=%06o R4=%06o SP=%06o\n", 
+        reg[0], reg[2], reg[4], reg[6]);
+    logger(INFO, 
+        "R1=%06o R3=%06o R5=%06o PC=%06o\n", 
+        reg[1], reg[3], reg[5], reg[7]);
+}
