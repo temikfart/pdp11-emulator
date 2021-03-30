@@ -4,15 +4,17 @@
 
 void do_halt()
 {
-    logger(TRACE, "The end\n");
+    logger(DEBUG, "The end\n");
     exit(0);
 }
-/* void do_mov()
+void do_mov()
 {
-    
+    logger(DEBUG, "mov\n");
 }
 void do_add()
-{} */
+{
+    logger(DEBUG, "add\n");
+}
 void do_nothing()
 {
     return;
