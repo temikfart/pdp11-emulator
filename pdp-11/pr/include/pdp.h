@@ -23,6 +23,7 @@ typedef word Adress;                //16 бит
 extern byte mem[MEMSIZE];           //Память
 extern int current_log_lvl;         //Уровень логирования
 extern word reg[8];                 //Регистры R0, ..., R8
+extern word is_byte_cmd;   //Индикатор режима do-функции в функции run. 1 - Byte функция, 0 - Word функция
 //====================
 
 //PDP main-функции

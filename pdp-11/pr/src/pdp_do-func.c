@@ -13,9 +13,12 @@ void do_halt(Param p)
 }
 void do_mov(Param p)
 {
-    logger(DEBUG, "\nDebug: mov: R%o = %06o.\n", p.dd.adr, p.ss.val);
+    logger(DEBUG, "\nDebug: mo%s: R%o = %06o.\n", (is_byte_cmd) ? "vb" : "v", p.dd.adr, p.ss.val);
     
-    w_write(p.dd.adr, p.ss.val);
+    if(is_byte_cmd)
+        b_write(p.dd.adr, p.ss.val);
+    else
+        w_write(p.dd.adr, p.ss.val);
 }
 void do_add(Param p)
 {
@@ -35,7 +38,9 @@ void do_sob(Param p)
 }
 void do_clr(Param p)
 {
-    reg[p.dd.adr] = 0;
+    logger(DEBUG, "\nDebug: clr: mem[%o] = 0.\n", p.dd.adr);
+    
+    w_write(p.dd.adr, 0);
 }
 void do_nothing(Param p)
 {
