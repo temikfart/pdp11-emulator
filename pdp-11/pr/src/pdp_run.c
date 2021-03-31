@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "pdp.h"
+#include "pdp_run.h"
 
 static Param p;                 //Структура для параметров функций cmd[]
 
@@ -83,3 +83,44 @@ void run()
             reg_print();
     }
 }
+void mode0(Arg * res, int r)
+{
+    res->adr = r;
+    res->val = reg[r];
+    logger(TRACE, "R%o ", r);
+}
+void mode1(Arg * res, int r)
+{
+    res->adr = reg[r];
+    res->val = w_read(res->adr);  //b_read если операция байтовая
+    logger(TRACE, "(R%o) ", r);
+}
+void mode2(Arg * res, int r)
+{
+    res->adr = reg[r];
+    res->val = w_read(res->adr);  //b_read если операция байтовая
+    reg[r] += 2;                //+= 1 если операция байтовая
+    if(r == 7)
+        logger(TRACE, "#%o ", res->val);
+    else
+        logger(TRACE, "(R%o)+ ", r);
+}
+void mode3(Arg * res, int r);
+void mode4(Arg * res, int r)
+{
+    if(r == 7 && pc == 8)   //Это после появления PSW переделается
+    {
+        logger(FATAL, "Fatal error: Array index out of bounds.\n");
+        exit(1);
+    }
+    reg[r] -= 2;                //-= 1 если операция байтовая
+    res->adr = reg[r];
+    res->val = w_read(res->adr);  //b_read если операция байтовая
+    if(r == 7)
+        logger(TRACE, "-(PC) ");
+    else
+        logger(TRACE, "-(R%o) ", r);
+}
+void mode5(Arg * res, int r);
+void mode6(Arg * res, int r);
+void mode7(Arg * res, int r);
