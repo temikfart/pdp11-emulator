@@ -25,9 +25,17 @@ void do_add(Param p)
     w = w + p.ss.val;
     w_write(p.dd.adr, w);
 }
-void do_SOB(Param p)
+void do_sob(Param p)
 {
+    reg[p.r]--;
+    if(reg[p.r] != 0)
+        pc = pc - 2*p.nn;
     
+    logger(DEBUG, "\nDebug: sob: R%o = %o, PC = %o.\n", p.r, reg[p.r], pc);
+}
+void do_clr(Param p)
+{
+    reg[p.dd.adr] = 0;
 }
 void do_nothing(Param p)
 {

@@ -9,7 +9,8 @@ static Param p;                 //Структура для параметров
 static Command cmd[] = {
     {0170000, 0060000, "add", HAS_DD | HAS_SS, do_add},
     {0170000, 0010000, "mov", HAS_DD | HAS_SS, do_mov},
-    {0177000, 0077777, "SOB", HAS_R | HAS_N, do_SOB},
+    {0177000, 0077000, "sob", HAS_R | HAS_N, do_sob},
+    {0177700, 0005000, "clr", HAS_DD, do_clr},
     {0177777, 0000000, "halt", NO_PARAM, do_halt},
     {0000000, 0000000, "unknown", NO_PARAM, do_unknown}
 };
@@ -52,6 +53,12 @@ Param get_params(word w, char params)
     if((params & HAS_DD) == HAS_DD)
         res.dd = get_modereg(w);
     
+    if((params & HAS_N) == HAS_N)
+        res.nn = w & 077;
+    
+    if((params & HAS_R) == HAS_R)
+        res.r = (w >> 6) & 1;
+    
     return res;
 }
 void run()
@@ -83,6 +90,9 @@ void run()
             reg_print();
     }
 }
+//============================================
+//====================МОДЫ====================
+//============================================
 void mode0(Arg * res, int r)
 {
     res->adr = r;
