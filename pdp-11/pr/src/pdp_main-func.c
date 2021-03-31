@@ -8,6 +8,15 @@
 
 void b_write(Adress adr, byte b)
 {
+    if(adr < 8)
+    {
+        if((b >> 7) == 0)
+            reg[adr] = (word)b;
+        else
+            reg[adr] = (word)b | 0xFF00;
+        return;
+    }
+    
     mem[adr] = b;
 }
 byte b_read(Adress adr)
