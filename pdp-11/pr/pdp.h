@@ -16,6 +16,9 @@
 #define NO_PARAM 0
 #define HAS_DD 1
 #define HAS_SS 2
+#define HAS_N 4
+#define HAS_R 8
+#define HAS_XX 16
 //====================
 
 //Structures
@@ -46,7 +49,6 @@ typedef struct
 extern byte mem[MEMSIZE];           //Память
 extern int current_log_lvl;         //Уровень логирования
 extern word reg[8];                 //Регистры R0, ..., R8
-extern Param p;                     //Структура для параметров функций cmd[]
 //====================
 
 //PDP main-functions
@@ -63,10 +65,22 @@ Param get_params(word w, char params);
 void run();
 //====================
 
+//Modes
+void mode0(Arg * res, int r);
+void mode1(Arg * res, int r);
+void mode2(Arg * res, int r);
+void mode3(Arg * res, int r);
+void mode4(Arg * res, int r);
+void mode5(Arg * res, int r);
+void mode6(Arg * res, int r);
+void mode7(Arg * res, int r);
+//====================
+
 //PDP do-functions
 void do_halt(Param p);
 void do_mov(Param p);
 void do_add(Param p);
+void do_SOB(Param p);
 void do_nothing(Param p);
 void do_unknown(Param p);
 //====================
