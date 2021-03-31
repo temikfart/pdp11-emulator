@@ -33,6 +33,9 @@ Arg get_modereg(word w)
         case 2:             //Mode 2: (Rn)+
             mode2(&res, r);
             break;
+        case 3:
+            mode3(&res, r);
+            break;
         case 4:             //Mode 4: -(Rn)
             mode4(&res, r);
             break;
@@ -45,7 +48,7 @@ Arg get_modereg(word w)
 }
 Param get_params(word w, char params)
 {
-    logger(DEBUG, "\nget_params(word = %06o, params = %d) is running\n", w, params);
+    logger(DEBUG, "\nget_params: word = %06o; params = %d.\n", w, params);
     
     Param res;
     
@@ -123,23 +126,29 @@ void mode1(Arg * res, int r)
 void mode2(Arg * res, int r)
 {
     res->adr = reg[r];
-    if(is_byte_cmd && r < 6)
-    {
+    if(is_byte_cmd)
         res->val = b_read(res->adr);
-        reg[r] += 1;
-    }
     else
-    {
         res->val = w_read(res->adr);
+    
+    if(is_byte_cmd && r < 6)
+        reg[r] += 1;
+    else
         reg[r] += 2;
-    }
         
     if(r == 7)
         logger(TRACE, "#%o ", res->val);
     else
         logger(TRACE, "(R%o)+ ", r);
 }
-void mode3(Arg * res, int r);
+void mode3(Arg * res, int r)
+{
+    res->adr = w_read(reg[r]);
+    res->val = w_read(res->adr);
+    reg[r] += 2;
+    
+    logger(TRACE, "@#%o ", res->adr);
+}
 void mode4(Arg * res, int r)
 {
     if(r == 7 && pc == 8)   //Это после появления PSW переделается
