@@ -1,7 +1,5 @@
 #pragma once
 
-//Constants
-
 //Наличие аргументов в функции
 #define NO_PARAM 0
 #define HAS_DD 1
@@ -9,20 +7,19 @@
 #define HAS_N 4
 #define HAS_R 8
 #define HAS_XX 16
-//====================
 
-//Структуры
 typedef struct
 {
     word adr;
     word val;
-}Arg;                               //Тип данных для dd, ss, ...
+}Arg;                               //Тип данных для dd, ss
 typedef struct
 {
     Arg dd;
     Arg ss;
     unsigned char r;
     unsigned char nn;
+    word is_byte_cmd;
 }Param;                             //Аргументы для функций в одной структуре
 typedef struct
 {
@@ -32,7 +29,6 @@ typedef struct
     char params;                    //000(XX)(R)(N)(SS)(DD) - 8 бит
     void (* do_func)(Param p);
 }Command;                           //Описание для команд PDP-11
-//====================
 
 //Моды
 void mode0(Arg * res, int r);
@@ -43,19 +39,6 @@ void mode4(Arg * res, int r);
 void mode5(Arg * res, int r);
 void mode6(Arg * res, int r);
 void mode7(Arg * res, int r);
-//====================
 
-//Функции
-Arg get_modereg(word w);
-Param get_params(word w, char params);
-//====================
-
-//do-функции
-void do_halt(Param p);
-void do_mov(Param p);
-void do_add(Param p);
-void do_sob(Param p);
-void do_clr(Param p);
-void do_nothing(Param p);
-void do_unknown(Param p);
-//====================
+Arg get_modereg(word w);                //Определение моды
+Param get_params(word w, char params);  //Определение параметров для операций pdp11
