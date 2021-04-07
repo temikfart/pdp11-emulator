@@ -90,7 +90,13 @@ void load_file(const char *filename)
 }
 
 void print_instruction(char * str) {
-  printf("%s [-d set debug print-lvl] [-t set trace print-lvl]\n", str);
+  //Usage
+  printf("Usage: pdp11 [options] [file]\n\n");
+  
+  //Options
+  printf("Options:\n");
+  printf("\t-d \t set debug print-lvl\n");
+  printf("\t-t \t set trace print-lvl\n");
 }
 
 void console_arg(int argc, char * argv[]) {
