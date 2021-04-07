@@ -8,7 +8,7 @@ SDIR=src
 ODIR=obj
 
 
-_DEPS = pdp.h pdp_run.h
+_DEPS = pdp.h pdp_add-func.h pdp_do-func.h pdp_main-func.h pdp_run.h pdp_tests.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
 
