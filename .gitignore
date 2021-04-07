@@ -20,3 +20,6 @@ pdp-11/pr/pdp11.exe
 pdp-11/~$TZ.rtf
 pdp-11/~$TZ.rtf
 *.exe
+
+*.swp
+*.swo

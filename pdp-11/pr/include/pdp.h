@@ -35,6 +35,7 @@ word w_read(Adress adr);
 void mem_dump(Adress start, word n);
 void load_file();
 void console_arg(int argc, char * argv[]);
+void print_instruction();
 void run();
 //====================
 

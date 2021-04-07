@@ -88,28 +88,44 @@ void load_file(const char *filename)
     }
     fclose(fin);
 }
-void console_arg(int argc, char * argv[])
-{
-    //current_log_lvl = SILENT;
-    int flag = 0;
-    opterr = 0;
-    while((flag = getopt(argc, argv, "dt")) != -1)
-    {
-        switch(flag)
-        {
-            case 'd':
-                current_log_lvl = (DEBUG > current_log_lvl) ? DEBUG : current_log_lvl;
-                logger(DEBUG, "flag -d: debug.\n");
-                break;
-            case 't':
-                current_log_lvl = (TRACE > current_log_lvl) ? TRACE : current_log_lvl;
-                logger(DEBUG, "flag -t: trace.\n");
-                break;
-            case '?':
-                logger(ERROR, "Unknown flag: -%c\n", optopt);
-                break;
-        }
+
+void print_instruction(char * str) {
+  //Usage
+  printf("Usage: pdp11 [options] [file]\n\n");
+  
+  //Options
+  printf("Options:\n");
+  printf("\t-d \t set debug print-lvl\n");
+  printf("\t-t \t set trace print-lvl\n");
+}
+
+void console_arg(int argc, char * argv[]) {
+  //current_log_lvl = SILENT;  
+  int flag = 0;
+  opterr = 0;
+
+  if (argc == 1) {  // program started with no arguments
+    print_instruction(argv[0]);  // file name
+    exit(0);
+  }
+
+  while((flag = getopt(argc, argv, "dt")) != -1) {
+    switch (flag) {
+      case 'd':
+        current_log_lvl = (DEBUG > current_log_lvl) ? DEBUG : current_log_lvl;
+        logger(DEBUG, "flag -d: debug.\n");
+        break;
+      case 't':
+        current_log_lvl = (TRACE > current_log_lvl) ? TRACE : current_log_lvl;
+        logger(DEBUG, "flag -t: trace.\n");
+        break;
+      case '?':
+        logger(ERROR, "Unknown flag: -%c\n", optopt);
+        break;
     }
-    for (int i = optind; i < argc; i++)
-        load_file(argv[i]);
+  }
+
+  for (int i = optind; i < argc; i++) {
+    load_file(argv[i]);
+  }
 }
