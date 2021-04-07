@@ -75,12 +75,12 @@ void load_file(const char *filename)
     
     while(2 == fscanf(fin, "%hx%hx", &bl_adr, &bl_size))
     {
-        for(word i = 0; i < bl_size; i++, bl_adr++)
+        for(word i = 0; i < bl_size; i++)
         {
             byte bl_byte;
             fscanf(fin, "%hhx", &bl_byte);
             
-            b_write(bl_adr, bl_byte);
+            b_write(bl_adr + i, bl_byte);
         }
         //Печать из памяти mem
         if(current_log_lvl > TRACE)
