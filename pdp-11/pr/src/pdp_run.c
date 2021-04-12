@@ -2,15 +2,16 @@
 #include <stdlib.h>
 #include "pdp.h"
 #include "pdp_run.h"
-#include "pdp_do-func.h"
-#include "pdp_main-func.h"
+#include "pdp_do_func.h"
+#include "pdp_add_func.h"
+#include "pdp_main_func.h"
 
-static Param p;       //Структура для параметров функций cmd[]
-//Индикатор режима do-функции в функции run.
-//1 - Byte функция, 0 - Word функция
+static Param p;       // Структура для параметров функций cmd[]
+// Индикатор режима do-функции в функции run.
+// 1 - Byte функция, 0 - Word функция
 static word is_byte_cmd;
 
-//Массив всех команд
+// Массив всех команд
 static Command cmd[] = {
   {0170000, 0060000, "add", HAS_DD | HAS_SS, do_add},
   {0170000, 0010000, "mov", HAS_DD | HAS_SS, do_mov},
@@ -23,23 +24,23 @@ static Command cmd[] = {
 
 Arg get_modereg(word w) {
   Arg res;
-  int r = w & 7;        //Номер регистра
-  int mode = (w >> 3) & 7;  //Номер моды
+  int r = w & 7;        // Номер регистра
+  int mode = (w >> 3) & 7;  // Номер моды
   
   switch (mode) {
-    case 0:       //Mode 0: Rn
+    case 0:       // Mode 0: Rn
       mode0(&res, r);
       break;
-    case 1:       //Mode 1: (Rn)
+    case 1:       // Mode 1: (Rn)
       mode1(&res, r);
       break;
-    case 2:       //Mode 2: (Rn)+
+    case 2:       // Mode 2: (Rn)+
       mode2(&res, r);
       break;
     case 3:
       mode3(&res, r);
       break;
-    case 4:       //Mode 4: -(Rn)
+    case 4:       // Mode 4: -(Rn)
       mode4(&res, r);
       break;
     default:
@@ -50,29 +51,29 @@ Arg get_modereg(word w) {
   return res;
 }
 Param get_params(word w, char params) {
-  logger(DEBUG, "\nget_params: word = %06o; params = %d.\n", w, params);
+  logger(DEBUG, "params = %d ", params);
   
   Param res;
   
-  //SS
+  // SS
   if ((params & HAS_SS) == HAS_SS) {
     res.ss = get_modereg(w >> 6);
   }
-  //DD
+  // DD
   if ((params & HAS_DD) == HAS_DD) {
     res.dd = get_modereg(w);
   }
-  //R
+  // R
   if ((params & HAS_R) == HAS_R) {
     res.r = (w >> 6) & 1;
     logger(TRACE, "R%o ", res.r);
   }
-  //NN
+  // NN
   if ((params & HAS_N) == HAS_N) {
     res.nn = w & 077;
     logger(TRACE, "%o ", (pc - 2*res.nn));
   }
-  //is_byte_cmd
+  // is_byte_cmd
   res.is_byte_cmd = (w >> 15) & 1;
   
   return res;
@@ -99,15 +100,15 @@ void run() {
       }
       i++;
     }
-    //DEBUG
+    // DEBUG
     if (current_log_lvl > TRACE) {
       reg_print();
     }
   }
 }
-//============================================
-//====================МОДЫ====================
-//============================================
+// ============================================
+// ====================МОДЫ====================
+// ============================================
 void mode0(Arg *res, int r) {
   res->adr = r;
   res->val = reg[r];
@@ -151,7 +152,7 @@ void mode3(Arg *res, int r) {
   logger(TRACE, "@#%o ", res->adr);
 }
 void mode4(Arg *res, int r) {
-  if (r == 7 && pc == 8) {  //Это после появления PSW переделается
+  if (r == 7 && pc == 8) {  // Это после появления PSW переделается
     logger(FATAL, "Fatal error: Array index out of bounds.\n");
     exit(1);
   }
