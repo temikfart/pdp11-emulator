@@ -9,7 +9,7 @@ void do_halt(Param p) {
   logger(INFO, 
          "\n-----------------HALT------------------\n");
   reg_print();
-  
+  process_state_word_print(); 
   exit(0);
 }
 void do_mov(Param p) {
@@ -51,4 +51,15 @@ void do_unknown(Param p) {
   logger(ERROR, "unknown\n");
   
   exit(1);
+}
+
+// changing N, Z flags to some values and set V, C flags to 0
+void do_tst(Param p) {
+  // p.dd.val -- this is the pattern to replace the N, Z flags
+  logger(DEBUG, "\n NZVC = %02o00\n", p.dd.val);
+  byte zero_b = 0;
+  byte specifier_for_n_z_flags = p.dd.val; // 0 or 1 or 2 or 3 
+  set_negative_and_zero_flags((byte)specifier_for_n_z_flags);
+  set_carry_flag(zero_b);
+  set_overflow_flag(zero_b);
 }

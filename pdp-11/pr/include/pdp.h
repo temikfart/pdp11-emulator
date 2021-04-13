@@ -18,8 +18,4 @@ typedef word adress;                // 16 бит
 extern int current_log_lvl;         // Уровень логирования
 extern word reg[8];                 // Регистры R0, ..., R7
 
-// Хранит состояние флагов NZVC в последних 4-ех битах.
-// N - negative; Z - zero; V - overflow; C - carry
-extern byte process_state_word;     
-
 void run();

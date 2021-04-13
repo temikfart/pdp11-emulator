@@ -1,5 +1,7 @@
 #pragma once
 
+extern byte process_state_word;
+
 // Функции работы с памятью
 void b_write(adress adr, byte b);
 byte b_read(adress adr);
