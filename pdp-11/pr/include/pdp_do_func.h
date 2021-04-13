@@ -7,3 +7,5 @@ void do_sob(Param p);
 void do_clr(Param p);
 void do_nothing(Param p);
 void do_unknown(Param p);
+void do_tst(Param p);
+void do_tstb(Param p); // todo

@@ -16,8 +16,11 @@ static Command cmd[] = {
   {0170000, 0060000, "add", HAS_DD | HAS_SS, do_add},
   {0170000, 0010000, "mov", HAS_DD | HAS_SS, do_mov},
   {0170000, 0110000, "movb", HAS_DD | HAS_SS, do_mov},
+  // {0170000, 0120000, "cmpb", HAS_DD | HAS_SS, do_cmp},
   {0177000, 0077000, "sob", HAS_R | HAS_N, do_sob},
   {0177700, 0005000, "clr", HAS_DD, do_clr},
+  {0177700, 0005700, "tst", HAS_DD, do_tst}, 
+  // {0177700, 0105700, "tstb", HAS_DD, do_tst},
   {0177777, 0000000, "halt", NO_PARAM, do_halt},
   {0000000, 0000000, "unknown", NO_PARAM, do_unknown}
 };
@@ -176,3 +179,25 @@ void mode4(Arg *res, int r) {
 void mode5(Arg *res, int r);
 void mode6(Arg *res, int r);
 void mode7(Arg *res, int r);
+
+// it is realization setting psw(process_state_word) flags functions
+// X - it is one bit (zero or one)
+
+void set_negative_and_zero_flags(byte pattern) {
+  // pattern == XX
+  byte fitted_pattern = pattern << 2; // XX --> XX00
+  process_state_word  = fitted_pattern | (process_state_word & 3); // XX00 -> XXVC
+}
+
+void set_carry_flag(byte pattern) {
+  // pattern == X
+  // (psw & 14) == NZVC -> NZV0
+  process_state_word = pattern | (process_state_word & 14); // X --> NZVX
+}
+
+void set_overflow_flag(byte pattern) {
+  // pattern == X
+  // (psw & 13) == NZVC -> NZ0C
+  process_state_word = pattern | (process_state_word & 13); // X --> NZXC
+}
+
