@@ -180,24 +180,42 @@ void mode5(Arg *res, int r);
 void mode6(Arg *res, int r);
 void mode7(Arg *res, int r);
 
-// it is realization setting psw(process_state_word) flags functions
-// X - it is one bit (zero or one)
 
-void set_negative_and_zero_flags(byte pattern) {
-  // pattern == XX
-  byte fitted_pattern = pattern << 2; // XX --> XX00
-  process_state_word  = fitted_pattern | (process_state_word & 3); // XX00 -> XXVC
-}
+// pattern == x where x is 1 or 0
+// flag_name == [NZVC]
+// process_state_word -- is global variable
+// (defined at pdp_main_func.h)
+void set_psw_flag(byte pattern, char flag_name) {
+  
+  byte number_of_bit_shifts = 0;
+  byte template_for_immutable_flags_in_place = 0;
 
-void set_carry_flag(byte pattern) {
-  // pattern == X
-  // (psw & 14) == NZVC -> NZV0
-  process_state_word = pattern | (process_state_word & 14); // X --> NZVX
-}
+  switch (flag_name) {
+    case 'N':
+      template_for_immutable_flags_in_place = 7; // NZVC -> 0ZVC
+      number_of_bit_shifts = 3; // pattern << 3 is x000
+      break;
+    case 'Z':
+      template_for_immutable_flags_in_place = 11; // NZVC -> N0VC
+      number_of_bit_shifts = 2; // pattern << 2 is 0x00
+      break;
+    case 'V':
+      template_for_immutable_flags_in_place = 13; // NZVC -> NZ0C
+      number_of_bit_shifts = 1; // pattern << 1 is 00x0
+      break;
+    case 'C':
+      template_for_immutable_flags_in_place = 14; // NZVC -> NZV0
+      number_of_bit_shifts = 0; // pattern << 0 is 000x
+      break;
+    default:
+      logger(ERROR, "Flag %c don't exists.\n", flag_name);
+      exit(1);
+  }
+  
+  // change one bit at psw == 0000NZVC
+  // for example if flag_name is Z:  NZVC -> NxVC
+  process_state_word = (pattern << number_of_bit_shifts)  | 
+                       (process_state_word & template_for_immutable_flags_in_place); 
 
-void set_overflow_flag(byte pattern) {
-  // pattern == X
-  // (psw & 13) == NZVC -> NZ0C
-  process_state_word = pattern | (process_state_word & 13); // X --> NZXC
 }
 

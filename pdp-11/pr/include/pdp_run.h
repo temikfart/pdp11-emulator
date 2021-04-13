@@ -40,9 +40,6 @@ void mode7(Arg * res, int r);
 Arg get_modereg(word w);                // Определение моды
 Param get_params(word w, char params);  // Определение параметров для операций pdp11
 
-// this function using global variable process_state_word
-// it is defined at "pdp_main_func.h"
-// two_bits_pattern looks like 0...0XX, where X is 1 or 0
-void set_negative_and_zero_flags(byte two_bits_pattern); 
-void set_carry_flag(byte one_bit_pattern);
-void set_overflow_flag(byte one_bit_pattern); 
+// pattern == X, where X is 1 or 0
+// flag_name == [NZVC] 
+void set_psw_flag(byte pattern, char flag_name);
