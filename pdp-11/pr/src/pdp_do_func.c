@@ -55,11 +55,23 @@ void do_unknown(Param p) {
 
 // changing N, Z flags to some values and set V, C flags to 0
 void do_tst(Param p) {
-  // p.dd.val -- this is the pattern to replace the N, Z flags
-  logger(DEBUG, "\n NZVC = %02o00\n", p.dd.val);
+  
   byte zero_b = 0;
-  byte specifier_for_n_z_flags = p.dd.val; // 0 or 1 or 2 or 3 
-  set_negative_and_zero_flags((byte)specifier_for_n_z_flags);
-  set_carry_flag(zero_b);
-  set_overflow_flag(zero_b);
+
+  // p.dd.val -- it is the value for which we set flags N, Z flags
+  word tested_value = p.dd.val;
+  
+  logger(DEBUG, "\n NZVC = %1o%1o00\n",
+         tested_value < zero_b,
+         tested_value == zero_b);
+  
+  // get tested_value sign: 
+  // sign == 1 if t_v < 0
+  byte sign = (tested_value >> 15) & 1;
+  
+  // set flags
+  set_psw_flag(sign, 'N');
+  set_psw_flag(tested_value == zero_b, 'Z');
+  set_psw_flag(zero_b, 'V');
+  set_psw_flag(zero_b, 'C');
 }
