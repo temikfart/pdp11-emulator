@@ -8,8 +8,7 @@
 void do_halt(Param p) {
   logger(INFO, 
          "\n-----------------HALT------------------\n");
-  reg_print();
-  process_state_word_print(); 
+  result_print(); 
   exit(0);
 }
 void do_mov(Param p) {
@@ -53,6 +52,21 @@ void do_unknown(Param p) {
   exit(1);
 }
 
+byte find_sign(word value, char type_value) {
+  if (type_value == 'b') {
+    // byte includes 8 bits we need the left most
+    return (tested_value >> 7) & 1;
+  
+  } else if (type_value == 'w') {  
+    // word includes 16 bits we need the left most
+    return (tested_value >> 15) & 1;
+  
+  } else {
+    logger(ERROR, "Type %c unknown", type_value);
+    exit(0);
+  }
+}
+
 // changing N, Z flags to some values and set V, C flags to 0
 void do_tst(Param p) {
   
@@ -67,7 +81,12 @@ void do_tst(Param p) {
   
   // get tested_value sign: 
   // sign == 1 if t_v < 0
-  byte sign = (tested_value >> 15) & 1;
+  byte sign = 0;
+  if (p.is_byte_cmd) {
+    sign = find_sign(tested_value, 'b');  // b == byte
+  } else {
+    sign = find_sign(tested_value, 'w');  // w = word 
+  }
   
   // set flags
   set_psw_flag(sign, 'N');

@@ -19,12 +19,17 @@ void reg_print() {
          reg[0], reg[2], reg[4], reg[6],
          reg[1], reg[3], reg[5], reg[7]);
 }
-void process_state_word_print() {
+void psw_print() {
   logger(INFO, 
          "N = %1o Z = %1o V = %1o C = %1o \n",
-         (process_state_word & 15) >> 3,  // NZVC -> N
-         (process_state_word & 7) >> 2,  // NZVC -> Z
-         (process_state_word & 3) >> 1,  // NZVC -> V
-         process_state_word & 1  // NZVC -> C
+         (psw & 15) >> 3,  // NZVC -> N
+         (psw & 7) >> 2,  // NZVC -> Z
+         (psw & 3) >> 1,  // NZVC -> V
+         (psw & 1)  // NZVC -> C
          ); 
+}
+
+void result_print() {
+  reg_print();
+  psw_print();
 }

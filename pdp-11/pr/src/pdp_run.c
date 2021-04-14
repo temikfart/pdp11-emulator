@@ -16,11 +16,11 @@ static Command cmd[] = {
   {0170000, 0060000, "add", HAS_DD | HAS_SS, do_add},
   {0170000, 0010000, "mov", HAS_DD | HAS_SS, do_mov},
   {0170000, 0110000, "movb", HAS_DD | HAS_SS, do_mov},
-  // {0170000, 0120000, "cmpb", HAS_DD | HAS_SS, do_cmp},
+  // {0170000, 0120000, "cmp", HAS_DD | HAS_SS, do_cmp},
   {0177000, 0077000, "sob", HAS_R | HAS_N, do_sob},
   {0177700, 0005000, "clr", HAS_DD, do_clr},
   {0177700, 0005700, "tst", HAS_DD, do_tst}, 
-  // {0177700, 0105700, "tstb", HAS_DD, do_tst},
+  {0177700, 0105700, "tstb", HAS_DD, do_tst},
   {0177777, 0000000, "halt", NO_PARAM, do_halt},
   {0000000, 0000000, "unknown", NO_PARAM, do_unknown}
 };
@@ -183,8 +183,9 @@ void mode7(Arg *res, int r);
 
 // pattern == x where x is 1 or 0
 // flag_name == [NZVC]
-// process_state_word -- is global variable
+// psw -- global variable
 // (defined at pdp_main_func.h)
+// is_byte_cmd -- global variable
 void set_psw_flag(byte pattern, char flag_name) {
   
   byte number_of_bit_shifts = 0;
@@ -208,14 +209,13 @@ void set_psw_flag(byte pattern, char flag_name) {
       number_of_bit_shifts = 0; // pattern << 0 is 000x
       break;
     default:
-      logger(ERROR, "Flag %c don't exists.\n", flag_name);
+      logger(ERROR, "Flag %c doesn't exist.\n", flag_name);
       exit(1);
   }
   
   // change one bit at psw == 0000NZVC
   // for example if flag_name is Z:  NZVC -> NxVC
-  process_state_word = (pattern << number_of_bit_shifts)  | 
-                       (process_state_word & template_for_immutable_flags_in_place); 
-
+  psw = (pattern << number_of_bit_shifts)  | 
+        (psw & template_for_immutable_flags_in_place); 
 }
 
