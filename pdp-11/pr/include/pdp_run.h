@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdint.h>  // required to uint32_t type
+
 // Наличие аргументов в функции
 #define NO_PARAM 0
 #define HAS_DD 1
@@ -27,6 +29,8 @@ typedef struct {
   void (* do_func)(Param p);
 } Command;  // Описание для команд PDP-11
 
+
+
 // Моды
 void mode0(Arg * res, int r);
 void mode1(Arg * res, int r);
@@ -40,6 +44,9 @@ void mode7(Arg * res, int r);
 Arg get_modereg(word w);                // Определение моды
 Param get_params(word w, char params);  // Определение параметров для операций pdp11
 
-// pattern == X, where X is 1 or 0
-// flag_name == [NZVC] 
-void set_psw_flag(byte pattern, char flag_name);
+// determines if the result of executing an assembler 
+// instruction is negative or zero 
+void set_NZ(uint32_t value);
+
+// determines if there was an overflow
+void set_C(uint32_t value);

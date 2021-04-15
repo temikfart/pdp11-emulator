@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include "pdp.h"
 #include "pdp_run.h"
 #include "pdp_do_func.h"
@@ -16,7 +17,8 @@ static Command cmd[] = {
   {0170000, 0060000, "add", HAS_DD | HAS_SS, do_add},
   {0170000, 0010000, "mov", HAS_DD | HAS_SS, do_mov},
   {0170000, 0110000, "movb", HAS_DD | HAS_SS, do_mov},
-  // {0170000, 0120000, "cmp", HAS_DD | HAS_SS, do_cmp},
+//  {0170000, 0020000, "cmp", HAS_DD | HAS_SS, do_cmp},
+//  {0170000, 0120000, "cmpb", HAS_DD | HAS_SS, do_cmp},
   {0177000, 0077000, "sob", HAS_R | HAS_N, do_sob},
   {0177700, 0005000, "clr", HAS_DD, do_clr},
   {0177700, 0005700, "tst", HAS_DD, do_tst}, 
@@ -180,42 +182,33 @@ void mode5(Arg *res, int r);
 void mode6(Arg *res, int r);
 void mode7(Arg *res, int r);
 
-
-// pattern == x where x is 1 or 0
-// flag_name == [NZVC]
-// psw -- global variable
-// (defined at pdp_main_func.h)
-// is_byte_cmd -- global variable
-void set_psw_flag(byte pattern, char flag_name) {
-  
-  byte number_of_bit_shifts = 0;
-  byte template_for_immutable_flags_in_place = 0;
-
-  switch (flag_name) {
-    case 'N':
-      template_for_immutable_flags_in_place = 7; // NZVC -> 0ZVC
-      number_of_bit_shifts = 3; // pattern << 3 is x000
-      break;
-    case 'Z':
-      template_for_immutable_flags_in_place = 11; // NZVC -> N0VC
-      number_of_bit_shifts = 2; // pattern << 2 is 0x00
-      break;
-    case 'V':
-      template_for_immutable_flags_in_place = 13; // NZVC -> NZ0C
-      number_of_bit_shifts = 1; // pattern << 1 is 00x0
-      break;
-    case 'C':
-      template_for_immutable_flags_in_place = 14; // NZVC -> NZV0
-      number_of_bit_shifts = 0; // pattern << 0 is 000x
-      break;
-    default:
-      logger(ERROR, "Flag %c doesn't exist.\n", flag_name);
-      exit(1);
+char it_is_negative(uint32_t value, char is_byte) {
+  if (is_byte) { 
+    // byte includes 8 bits we need the left most
+    return (value >> 7) & 1;
+  } else {
+    // word includes 16 bits we need the left most
+    return (value >> 15) & 1;
   }
-  
-  // change one bit at psw == 0000NZVC
-  // for example if flag_name is Z:  NZVC -> NxVC
-  psw = (pattern << number_of_bit_shifts)  | 
-        (psw & template_for_immutable_flags_in_place); 
 }
 
+void set_NZ(uint32_t value, word it_was_byte_cmd) {
+  psw.Z = 0;
+  psw.N = 0;
+  
+  if (value == 0) {
+    psw.Z = 1;
+  } else if (it_is_negative(value, it_was_byte_cmd)) {
+    psw.N = 1;
+  }
+}
+
+void set_C(uint32_t value, word it_was_byte_cmd) {
+  if (it_was_byte_cmd) { 
+    // byte includes 8 bits we need the left most
+    psw.C = (value >> 8) & 1;
+  } else {
+    // word includes 16 bits we need the left most
+    psw.C = (value >> 16) & 1;
+  }
+}

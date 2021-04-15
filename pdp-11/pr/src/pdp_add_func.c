@@ -22,11 +22,7 @@ void reg_print() {
 void psw_print() {
   logger(INFO, 
          "N = %1o Z = %1o V = %1o C = %1o \n",
-         (psw & 15) >> 3,  // NZVC -> N
-         (psw & 7) >> 2,  // NZVC -> Z
-         (psw & 3) >> 1,  // NZVC -> V
-         (psw & 1)  // NZVC -> C
-         ); 
+         psw.N, psw.Z, psw.V, psw.C);
 }
 
 void result_print() {

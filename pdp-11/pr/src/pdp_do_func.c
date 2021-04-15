@@ -52,21 +52,6 @@ void do_unknown(Param p) {
   exit(1);
 }
 
-byte find_sign(word value, char type_value) {
-  if (type_value == 'b') {
-    // byte includes 8 bits we need the left most
-    return (tested_value >> 7) & 1;
-  
-  } else if (type_value == 'w') {  
-    // word includes 16 bits we need the left most
-    return (tested_value >> 15) & 1;
-  
-  } else {
-    logger(ERROR, "Type %c unknown", type_value);
-    exit(0);
-  }
-}
-
 // changing N, Z flags to some values and set V, C flags to 0
 void do_tst(Param p) {
   
@@ -76,21 +61,16 @@ void do_tst(Param p) {
   word tested_value = p.dd.val;
   
   logger(DEBUG, "\n NZVC = %1o%1o00\n",
-         tested_value < zero_b,
+         tested_value < zero_b,  // todo
          tested_value == zero_b);
   
-  // get tested_value sign: 
-  // sign == 1 if t_v < 0
-  byte sign = 0;
-  if (p.is_byte_cmd) {
-    sign = find_sign(tested_value, 'b');  // b == byte
-  } else {
-    sign = find_sign(tested_value, 'w');  // w = word 
-  }
-  
-  // set flags
-  set_psw_flag(sign, 'N');
-  set_psw_flag(tested_value == zero_b, 'Z');
-  set_psw_flag(zero_b, 'V');
-  set_psw_flag(zero_b, 'C');
+	set_NZ(tested_value, p.is_byte_cmd);
+	set_C(0, p.is_byte_cmd);
 }
+
+// void do_cmp(Param p) {
+//   word left_value = p.ss.val;
+//   word right_value = p.dd.val;
+
+//   set_psw_flag(
+// }

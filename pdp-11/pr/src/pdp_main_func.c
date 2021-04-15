@@ -10,7 +10,6 @@
 #define MEMSIZE (64*1024)   // Размер памяти PDP-11
 
 byte mem[MEMSIZE];
-byte psw;
 
 void b_write(adress adr, byte b) {
   if (adr < 8) {

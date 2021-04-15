@@ -1,14 +1,5 @@
 #pragma once
 
-// Save state 4 flags in the last 4 bits:
-// process_state_word == 0000NZVC
-// N -- negative (1 | 0)
-// Z -- zero (1 | 0)
-// V -- overflow (1 | 0)
-// C -- carry (1 | 0)
-// they are defined last completed command
-extern byte psw;
-
 // Функции работы с памятью
 void b_write(adress adr, byte b);
 byte b_read(adress adr);
