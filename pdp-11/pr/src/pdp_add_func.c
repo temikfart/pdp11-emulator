@@ -30,13 +30,13 @@ void psw_print() {
   char* p_psw = &(psw.N);
 
   for (int i = 0; i < strlen(result_print); i++) {
-    if (*(p_psw + i)) {
+    if (!*(p_psw + i)) {
       result_print[i] = '-';
     }
   }
 
   // print name of flag if it is 1 and print "-" if it is 0
-  logger(INFO, "NZVC = %s", result_print);
+  logger(INFO, "NZVC: %s", result_print);
 }
 
 void result_print() {
