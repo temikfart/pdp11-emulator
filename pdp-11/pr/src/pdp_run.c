@@ -14,16 +14,50 @@ static word is_byte_cmd;
 
 // Массив всех команд
 static Command cmd[] = {
+  // DD = SS + DD
   {0170000, 0060000, "add", HAS_DD | HAS_SS, do_add},
+  // DD = SS [word]
   {0170000, 0010000, "mov", HAS_DD | HAS_SS, do_mov},
+  // DD = SS [byte]
   {0170000, 0110000, "movb", HAS_DD | HAS_SS, do_mov},
+  // set N, Z, V flags with agreement with (SS - DD) [word]
   {0170000, 0020000, "cmp", HAS_DD | HAS_SS, do_cmp},
+  // set N, Z, V flags with agreement with (SS - DD) [byte]
   {0170000, 0120000, "cmpb", HAS_DD | HAS_SS, do_cmp},
+  // Subtract One and Branch: PC=PC-2*NN
   {0177000, 0077000, "sob", HAS_R | HAS_N, do_sob},
+  
+  // DD = 0
   {0177700, 0005000, "clr", HAS_DD, do_clr},
-  {0177700, 0005700, "tst", HAS_DD, do_tst}, 
+  // set N, Z flags in agreement with DD [word]
+  {0177700, 0005700, "tst", HAS_DD, do_tst},
+  // set N, Z flags in agreement with DD [byte]
   {0177700, 0105700, "tstb", HAS_DD, do_tst},
-  {0177777, 0000000, "halt", NO_PARAM, do_halt},
+
+  // clear all condition codes NZVC = 0000
+  {0177777, 000257, "ccc", NO_PARAM, do_ccc},
+  // clear N flag
+  {0177777, 000250, "cln", NO_PARAM, do_cln},
+  // clear Z flag
+  {0177777, 000244, "clz", NO_PARAM, do_clz},
+  // clear C flag
+  {0177777, 000241, "clc", NO_PARAM, do_clc},
+
+  // set all condition codes at one NZVC = 1111
+  {0177777, 000277, "scc", NO_PARAM, do_scc},
+  // set N = 1
+  {0177777, 000270, "sen", NO_PARAM, do_sen},
+  // set Z = 1
+  {0177777, 000264, "sez", NO_PARAM, do_sez},
+  // set C = 1
+  {0177777, 000261, "sec", NO_PARAM, do_sec},
+
+  // stop program execution
+  {0177777, 0000000, "halt", NO_PARAM, do_halt},  
+  // no opeartion 
+  {0177777, 000240, "nop", NO_PARAM, do_nop},
+
+  // buffer element
   {0000000, 0000000, "unknown", NO_PARAM, do_unknown}
 };
 
@@ -187,11 +221,15 @@ word is_negative(uint32_t value, word is_byte_cmd) {
   return is_byte_cmd ? (value >> 7) & 1 : (value >> 15) & 1;
 }
 
-void set_NZ(uint32_t value, word is_byte_cmd) {
-  psw.Z = (value == 0);
+void set_N(uint32_t value, word is_byte_cmd) {
   psw.N = is_negative(value, is_byte_cmd);
+}
+
+void set_Z(uint32_t value, word is_byte_cmd) {
+  psw.Z = (value == 0);
 }
 
 void set_C(uint32_t value, word is_byte_cmd) {
   psw.C = (value >> (is_byte_cmd ? 8 : 16)) & 1;
 }
+

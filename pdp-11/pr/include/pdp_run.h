@@ -45,8 +45,12 @@ Arg get_modereg(word w);                // Определение моды
 Param get_params(word w, char params);  // Определение параметров для операций pdp11
 
 // determines if the result of executing an assembler 
-// instruction is negative or zero 
-void set_NZ(uint32_t value, word is_byte_cmd);
+// instruction is negative 
+void set_N(uint32_t value, word is_byte_cmd);
+
+// determines if the result of executing an assembler 
+// instruction is zero
+void set_Z(uint32_t value, word is_byte_cmd);
 
 // determines if there was an overflow
 void set_C(uint32_t value, word is_byte_cmd);

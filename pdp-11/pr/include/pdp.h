@@ -23,7 +23,7 @@ typedef word adress;                // 16 бит
 typedef struct {
   char N;
   char Z;
-  char V;
+  char V; // todo
   char C;
 } PSW;
 
