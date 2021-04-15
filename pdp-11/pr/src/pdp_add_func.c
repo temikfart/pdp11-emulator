@@ -24,20 +24,10 @@ void reg_print() {
 }
 
 void psw_log_print(uint8_t logging_level) {
-  // create template for printing
-  char result_print[] = "NZVC";
-
-  // point at the beggining of the structure
-  char* p_psw = &(psw.N);
-
-  for (int i = 0; i < strlen(result_print); i++) {
-    if (!*(p_psw + i)) {
-      result_print[i] = '-';
-    }
-  }
-
-  // print name of flag if it is 1 and print "-" if it is 0
-  logger(logging_level, "\n[NZVC] = [%s]\n\n", result_print);
+  logger(logging_level, psw.N ? "N" : "-");
+  logger(logging_level, psw.Z ? "Z" : "-");
+  logger(logging_level, psw.V ? "V" : "-");
+  logger(logging_level, psw.C ? "C " : "- ");
 }
 
 void result_print() {
