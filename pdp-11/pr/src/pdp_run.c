@@ -183,32 +183,14 @@ void mode6(Arg *res, int r);
 void mode7(Arg *res, int r);
 
 word is_negative(uint32_t value, word is_byte_cmd) {
-  if (is_byte_cmd) { 
-    // byte includes 8 bits we need the left most
-    return (value >> 7) & 1;
-  } else {
-    // word includes 16 bits we need the left most
-    return (value >> 15) & 1;
-  }
+  return is_byte_cmd ? (value >> 7) & 1 : (value >> 15) & 1;
 }
 
 void set_NZ(uint32_t value, word is_byte_cmd) {
-  psw.Z = 0;
-  psw.N = 0;
-  
-  if (value == 0) {
-    psw.Z = 1;
-  } else if (is_negative(value, is_byte_cmd)) {
-    psw.N = 1;
-  }
+  psw.Z = (value == 0);
+  psw.N = is_negative(value, is_byte_cmd);
 }
 
 void set_C(uint32_t value, word is_byte_cmd) {
-  if (is_byte_cmd) { 
-    // byte includes 8 bits we need the left most
-    psw.C = (value >> 8) & 1;
-  } else {
-    // word includes 16 bits we need the left most
-    psw.C = (value >> 16) & 1;
-  }
+  psw.C = (value >> (is_byte_cmd ? 8 : 16)) & 1;
 }
