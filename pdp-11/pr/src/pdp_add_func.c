@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
+#include <stdint.h>
 #include "pdp.h"
 #include "pdp_main_func.h"
 
@@ -22,7 +23,7 @@ void reg_print() {
          reg[1], reg[3], reg[5], reg[7]);
 }
 
-void psw_print() {
+void psw_log_print(uint8_t logging_level) {
   // create template for printing
   char result_print[] = "NZVC";
 
@@ -36,10 +37,10 @@ void psw_print() {
   }
 
   // print name of flag if it is 1 and print "-" if it is 0
-  logger(INFO, "NZVC: %s", result_print);
+  logger(logging_level, "\n[NZVC] = [%s]\n\n", result_print);
 }
 
 void result_print() {
   reg_print();
-  psw_print();
+  psw_log_print(INFO);
 }

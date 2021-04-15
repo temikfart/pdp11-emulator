@@ -97,8 +97,9 @@ void run() {
     
     while (1) {
       if ((w & (cmd[i]).mask) == (cmd[i]).opcode) {
+        psw_log_print(TRACE);
         logger(TRACE, "%s ", (cmd[i]).name);
-        
+
         p = get_params(w, (cmd[i]).params);
         (cmd[i]).do_func(p);
         break;
