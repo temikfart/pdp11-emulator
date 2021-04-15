@@ -17,8 +17,8 @@ static Command cmd[] = {
   {0170000, 0060000, "add", HAS_DD | HAS_SS, do_add},
   {0170000, 0010000, "mov", HAS_DD | HAS_SS, do_mov},
   {0170000, 0110000, "movb", HAS_DD | HAS_SS, do_mov},
-//  {0170000, 0020000, "cmp", HAS_DD | HAS_SS, do_cmp},
-//  {0170000, 0120000, "cmpb", HAS_DD | HAS_SS, do_cmp},
+  {0170000, 0020000, "cmp", HAS_DD | HAS_SS, do_cmp},
+  {0170000, 0120000, "cmpb", HAS_DD | HAS_SS, do_cmp},
   {0177000, 0077000, "sob", HAS_R | HAS_N, do_sob},
   {0177700, 0005000, "clr", HAS_DD, do_clr},
   {0177700, 0005700, "tst", HAS_DD, do_tst}, 
@@ -182,7 +182,7 @@ void mode5(Arg *res, int r);
 void mode6(Arg *res, int r);
 void mode7(Arg *res, int r);
 
-char it_is_negative(uint32_t value, char is_byte) {
+word it_is_negative(uint32_t value, word is_byte) {
   if (is_byte) { 
     // byte includes 8 bits we need the left most
     return (value >> 7) & 1;

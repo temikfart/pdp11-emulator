@@ -46,7 +46,9 @@ Param get_params(word w, char params);  // Определение парамет
 
 // determines if the result of executing an assembler 
 // instruction is negative or zero 
-void set_NZ(uint32_t value);
+void set_NZ(uint32_t value, word it_was_byte_cmd);
 
 // determines if there was an overflow
-void set_C(uint32_t value);
+void set_C(uint32_t value, word it_was_byte_cmd);
+
+word it_is_negative(uint32_t value, word is_byte);

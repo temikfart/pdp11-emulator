@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include "pdp.h"
 #include "pdp_run.h"
 #include "pdp_add_func.h"
@@ -54,23 +55,27 @@ void do_unknown(Param p) {
 
 // changing N, Z flags to some values and set V, C flags to 0
 void do_tst(Param p) {
-  
   byte zero_b = 0;
 
   // p.dd.val -- it is the value for which we set flags N, Z flags
   word tested_value = p.dd.val;
   
-  logger(DEBUG, "\n NZVC = %1o%1o00\n",
-         tested_value < zero_b,  // todo
-         tested_value == zero_b);
-  
 	set_NZ(tested_value, p.is_byte_cmd);
 	set_C(0, p.is_byte_cmd);
+
+	logger(DEBUG, "\nvalue: %o NZVC = %1o%1o0%o\n",
+         tested_value, psw.N, psw.Z, psw.C);
 }
 
-// void do_cmp(Param p) {
-//   word left_value = p.ss.val;
-//   word right_value = p.dd.val;
+void do_cmp(Param p) {
+  word left_value = p.ss.val;
+  word right_value = p.dd.val;
 
-//   set_psw_flag(
-// }
+  uint32_t tested_value = left_value - right_value;
+  
+  set_NZ(tested_value, p.is_byte_cmd);
+  set_C(tested_value, p.is_byte_cmd);
+
+  logger(DEBUG, "\nvalue: %o NZVC = %1o%1o0%o\n",
+         tested_value, psw.N, psw.Z, psw.C);
+}
