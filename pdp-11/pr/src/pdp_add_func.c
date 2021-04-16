@@ -24,10 +24,10 @@ void reg_print() {
 }
 
 void psw_log_print(uint8_t logging_level) {
-  logger(logging_level, psw.N ? "N" : "-");
+  logger(logging_level, psw.N ? "[N" : "[-");
   logger(logging_level, psw.Z ? "Z" : "-");
   logger(logging_level, psw.V ? "V" : "-");
-  logger(logging_level, psw.C ? "C " : "- ");
+  logger(logging_level, psw.C ? "C]" : "-]");
 }
 
 void result_print() {

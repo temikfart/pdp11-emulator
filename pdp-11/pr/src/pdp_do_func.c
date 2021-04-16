@@ -85,22 +85,24 @@ void do_tst(Param p) {
 	set_Z(tested_value, p.is_byte_cmd);
 	set_C(0, p.is_byte_cmd);
 
-  logger(DEBUG, "\nNZVC = %1o%1o%1o%o\n", psw.N, psw.Z, psw.V, psw.C);
+  logger(DEBUG, "\nNZVC = %1o%1o%1o%1o\n", psw.N, psw.Z, psw.V, psw.C);
 }
 
 void do_cmp(Param p) {
-  word left_value = p.ss.val;
-  word right_value = p.dd.val;
+	uint32_t tested_value;
 
-  uint32_t tested_value = left_value - right_value;
-  
+	if (p.is_byte_cmd) {
+		tested_value = (byte)(p.ss.val) - (byte)(p.dd.val);
+	} else {
+		tested_value = (word)p.ss.val - (word)p.dd.val;
+	}
 
   // NZVC == ****
   set_N(tested_value, p.is_byte_cmd);
   set_Z(tested_value, p.is_byte_cmd);
   set_C(tested_value, p.is_byte_cmd);
 
-  logger(DEBUG, "\nNZVC = %1o%1o%1o%o\n", psw.N, psw.Z, psw.V, psw.C);
+  logger(DEBUG, "\nNZVC = %1o%1o%1o%1o\n", psw.N, psw.Z, psw.V, psw.C);
 }
 
 void do_ccc(Param p) {
@@ -109,28 +111,28 @@ void do_ccc(Param p) {
   set_Z(1, p.is_byte_cmd);
   set_C(1, p.is_byte_cmd);
 
-  logger(DEBUG, "\nNZVC = %1o%1o%1o%o\n", psw.N, psw.Z, psw.V, psw.C);
+  logger(DEBUG, "\nNZVC = %1o%1o%1o%1o\n", psw.N, psw.Z, psw.V, psw.C);
 }
 
 void do_cln(Param p) {
 	// NZVC == 0---
   set_N(1, p.is_byte_cmd);
 
-  logger(DEBUG, "\nNZVC = %1o%1o%1o%o\n", psw.N, psw.Z, psw.V, psw.C);
+  logger(DEBUG, "\nNZVC = %1o%1o%1o%1o\n", psw.N, psw.Z, psw.V, psw.C);
 }
 
 void do_clz(Param p) {
 	// NZVC == -0--
   set_Z(1, p.is_byte_cmd);
 
-  logger(DEBUG, "\nNZVC = %1o%1o%1o%o\n", psw.N, psw.Z, psw.V, psw.C);
+  logger(DEBUG, "\nNZVC = %1o%1o%1o%1o\n", psw.N, psw.Z, psw.V, psw.C);
 }
 
 void do_clc(Param p) {
 	// NZVC == ---0
   set_C(1, p.is_byte_cmd);
 
-  logger(DEBUG, "\nNZVC = %1o%1o%1o%o\n", psw.N, psw.Z, psw.V, psw.C);
+  logger(DEBUG, "\nNZVC = %1o%1o%1o%1o\n", psw.N, psw.Z, psw.V, psw.C);
 }
 
 void do_scc(Param p) {
@@ -139,26 +141,26 @@ void do_scc(Param p) {
   set_Z(0, p.is_byte_cmd);
   set_C(CONSTANT_FOR_TURN_ON_C_FLAG, p.is_byte_cmd);
 
-  logger(DEBUG, "\nNZVC = %1o%1o%1o%o\n", psw.N, psw.Z, psw.V, psw.C);
+  logger(DEBUG, "\nNZVC = %1o%1o%1o%1o\n", psw.N, psw.Z, psw.V, psw.C);
 }
 
 void do_sen(Param p) {
 	// NZVC == 1---
   set_N((byte)(-1), 1);
 
-  logger(DEBUG, "\nNZVC = %1o%1o%1o%o\n", psw.N, psw.Z, psw.V, psw.C);
+  logger(DEBUG, "\nNZVC = %1o%1o%1o%1o\n", psw.N, psw.Z, psw.V, psw.C);
 }
 
 void do_sez(Param p) {
 	// NZVC == -1--
   set_Z(0, p.is_byte_cmd);
 
-  logger(DEBUG, "\nNZVC = %1o%1o%1o%o\n", psw.N, psw.Z, psw.V, psw.C);
+  logger(DEBUG, "\nNZVC = %1o%1o%1o%1o\n", psw.N, psw.Z, psw.V, psw.C);
 }
 
 void do_sec(Param p) {
 	// NZVC == ---1
-  set_N(CONSTANT_FOR_TURN_ON_C_FLAG, p.is_byte_cmd);
+  set_C(CONSTANT_FOR_TURN_ON_C_FLAG, p.is_byte_cmd);
 
-  logger(DEBUG, "\nNZVC = %1o%1o%1o%o\n", psw.N, psw.Z, psw.V, psw.C);
+  logger(DEBUG, "\nNZVC = %1o%1o%1o%1o\n", psw.N, psw.Z, psw.V, psw.C);
 }
