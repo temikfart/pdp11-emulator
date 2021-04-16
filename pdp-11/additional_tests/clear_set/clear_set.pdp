@@ -1,0 +1,20 @@
+  	. = 1000
+	scc
+	ccc
+	
+	sen
+	scc
+	cln
+	ccc
+	
+	sez
+	scc
+	clz
+	ccc
+
+	sec
+	scc
+	clc
+	ccc
+	
+	halt
