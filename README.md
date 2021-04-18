@@ -58,7 +58,7 @@ Options:
   -t  set trace print-lvl
 
 File:
-  /filepath/  путь до вашей программы, например, ../programs/my_pr.o
+  filepath  путь до вашей программы     Пример: ../programs/my_pr.o
 ```
 6. Приятного использования.
 
@@ -67,7 +67,7 @@ File:
 --------------------------------------
 
 Для того, чтобы протестировать на эмуляторе PDP-11 свою программу вам понадобится:
-1. Переводчик `as11` (Находится в репозитории в папке *Папка с `as11.exe`*);
+1. Переводчик `as11` (Находится в репозитории в папке *\<Папка с `as11.exe`\>*);
 2. Командная строка.
 
 Чтобы написать программу, которая будет принята эмулятором вам потребуется:
@@ -78,9 +78,25 @@ File:
 ```
 >./as11.exe -l [listing] -o [object] [your program]
 
-[listing]         Путь для файла listing \*.l, например, ../tests/sum/mytest_sum.l
-[object]          Путь для объектного файла \*.o, например, ../test/sum/mytest_sum.o
-[your program]    Ваша программа на ассемблере, например, ../tests/sum/mytest_sum
+[listing]         Путь для файла listing \*.l         Пример: /tests/sum/mytest_sum.l
+[object]          Путь для объектного файла \*.o      Пример: /tests/sum/mytest_sum.o
+[your program]    Ваша программа на ассемблере        Пример: /tests/sum/mytest_sum
+
+Пример:
+
+>./as11.exe -l /tests/sum/mytest_sum.l -o /tests/sum/mytest_sum.o /tests/sum/mytest_sum
+
+...   //Мы здесь
+|__Folder1
+|__Folder2
+|__tests
+.  |__sum
+.  .  |__mytest_sum
+.  .  |__mytest_sum.l
+.  .  |__mytest_sum.o
+.  |__subtr
+.  |__div
+|__Folder3
 ```
 
 
