@@ -78,8 +78,8 @@ File:
 ```
 >./as11.exe -l [listing] -o [object] [your program]
 
-[listing]         Путь для файла listing \*.l         Пример: /tests/sum/mytest_sum.l
-[object]          Путь для объектного файла \*.o      Пример: /tests/sum/mytest_sum.o
+[listing]         Путь для файла listing        *.l   Пример: /tests/sum/mytest_sum.l
+[object]          Путь для объектного файла     *.o   Пример: /tests/sum/mytest_sum.o
 [your program]    Ваша программа на ассемблере        Пример: /tests/sum/mytest_sum
 
 Пример:
