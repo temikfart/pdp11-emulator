@@ -69,8 +69,15 @@ File:
 >Возможно наши [тесты](https://github.com/tatyderb/pdp11_tests) Вам пригодятся.
 
 Для того, чтобы протестировать на эмуляторе PDP-11 свою программу вам понадобится:
-1. Переводчик `as11` (Находится в репозитории в папке *\<Папка с `as11.exe`\>*);
-2. Командная строка.
+1. Переводчик `as11`, который можно скачать здесь:
+
+    [Linux](http://acm.mipt.ru/twiki/pub/Cintro/PDPIntro/pdp11em-linux.zip)
+    
+    [Windows](http://acm.mipt.ru/twiki/pub/Cintro/PDPIntro/pdp11em-win32.rar)
+    
+    [Mac OS](http://acm.mipt.ru/twiki/pub/Cintro/PDPIntro/mac_exe.zip)
+    
+3. Командная строка.
 
 Чтобы написать программу, которая будет принята эмулятором вам потребуется:
 1. Напишите ваш ассемблер-код в виде текстового файла;
