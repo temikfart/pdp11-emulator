@@ -75,8 +75,6 @@ void do_unknown(Param p) {
 
 // changing N, Z flags to some values and set V, C flags to 0
 void do_tst(Param p) {
-  byte zero_b = 0;
-
   // p.dd.val -- it is the value for which we set flags N, Z flags
   word tested_value = p.dd.val;
   
