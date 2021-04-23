@@ -5,7 +5,10 @@
 #include "pdp_tests.h"
 
 int current_log_lvl = INFO;
+
 word reg[8];
+
+PSW psw = {0, 0, 0, 0};
 
 int main(int argc, char *argv[]) {
   // Разбор аргументов (флаги, файлы)

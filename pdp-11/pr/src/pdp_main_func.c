@@ -127,3 +127,4 @@ void console_arg(int argc, char *argv[]) {
     load_file(argv[i]);
   }
 }
+

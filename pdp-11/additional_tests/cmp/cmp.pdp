@@ -1,0 +1,22 @@
+  	. = 1000
+	mov 	#1, R0
+	mov 	#-1, R1
+	cmp 	R0, R1
+		
+	mov 	#-100, R0
+	mov 	#1, R1
+	cmp 	R0, R1
+
+	mov 	#1, R0
+	mov 	#1, R1
+	cmp 	R0, R1
+
+	mov 	#0, R0
+	mov 	#0, R1
+	cmp 	R0, R1
+
+	mov 	#2, R0
+	mov 	#1, R1
+	cmp 	R0, R1
+
+	halt
