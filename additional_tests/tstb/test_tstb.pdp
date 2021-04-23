@@ -1,0 +1,12 @@
+  	. = 1000
+	movb 	#0, R0
+	tstb R0
+		
+	movb 	#-1, R1
+	tstb R1
+	
+	movb	#1, R2
+	tstb R2
+	
+	halt
+

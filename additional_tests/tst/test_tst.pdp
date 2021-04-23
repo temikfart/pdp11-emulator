@@ -1,0 +1,12 @@
+  	. = 1000
+	mov 	#0, R0
+	tst R0
+		
+	mov 	#-1, R1
+	tst R1
+	
+	mov	#1, R2
+	tst R2
+	
+	halt
+
