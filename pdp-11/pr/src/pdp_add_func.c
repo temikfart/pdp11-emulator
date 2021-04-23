@@ -33,4 +33,5 @@ void psw_log_print(uint8_t logging_level) {
 void result_print() {
   reg_print();
   psw_log_print(INFO);
+  logger(INFO, "\n"); //temporarily
 }
