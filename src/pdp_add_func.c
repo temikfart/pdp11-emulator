@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include "pdp.h"
 #include "pdp_main_func.h"
+#include "pdp_run.h"
 
 void logger(int log_lvl, const char * format, ...) {
   if (log_lvl > current_log_lvl) {
@@ -34,4 +35,12 @@ void result_print() {
   reg_print();
   psw_log_print(INFO);
   logger(INFO, "\n"); //temporarily
+}
+
+void edr_print() {
+  // Display
+  logger(DEBUG, "\nDisplay addresses:\tostat = %06o; odata = %06o.\n",
+         DisplayReg.ostat, DisplayReg.odata);
+  logger(DEBUG, "Display value:\t\tostat = %06o; odata = %06o.\n",
+         w_read(DisplayReg.ostat), w_read(DisplayReg.odata));
 }

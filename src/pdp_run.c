@@ -7,10 +7,13 @@
 #include "pdp_add_func.h"
 #include "pdp_main_func.h"
 
-static Param p;       // Структура для параметров функций cmd[]
+// Структура для параметров функций cmd[]
+static Param p;
 // Индикатор режима do-функции в функции run.
 // 1 - Byte функция, 0 - Word функция
 static word is_byte_cmd;
+// Display's external device's register
+EDReg DisplayReg = {0177564, 0177566};
 
 // Массив всех команд
 static Command cmd[] = {
@@ -123,9 +126,14 @@ Param get_params(word w, char params) {
   return res;
 }
 void run() {
-  logger(INFO, "\n----------------RUNNING----------------");
-  
+  // Default preset
   pc = 01000;
+  w_write(DisplayReg.ostat, STATUS_READY);
+//  w_write(DisplayReg.odata, STATUS_BUSY);
+  edr_print();
+
+  logger(INFO, "\n----------------RUNNING----------------");
+
   while (1) {
     word w = w_read(pc);
     logger(TRACE, "\n%06o %06o: ", pc, w);

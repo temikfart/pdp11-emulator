@@ -6,3 +6,4 @@ void logger(int log_lvl, const char * format, ...);
 void reg_print();
 void psw_log_print();
 void result_print();
+void edr_print();
