@@ -35,27 +35,32 @@ static Command cmd[] = {
   {0177700, 0105700, "tstb", HAS_DD, do_tst},
 
   // clear all condition codes NZVC = 0000
-  {0177777, 000257, "ccc", NO_PARAM, do_ccc},
+  {0177777, 0000257, "ccc", NO_PARAM, do_ccc},
   // clear N flag
-  {0177777, 000250, "cln", NO_PARAM, do_cln},
+  {0177777, 0000250, "cln", NO_PARAM, do_cln},
   // clear Z flag
-  {0177777, 000244, "clz", NO_PARAM, do_clz},
+  {0177777, 0000244, "clz", NO_PARAM, do_clz},
   // clear C flag
-  {0177777, 000241, "clc", NO_PARAM, do_clc},
+  {0177777, 0000241, "clc", NO_PARAM, do_clc},
 
   // set all condition codes at one NZVC = 1111
-  {0177777, 000277, "scc", NO_PARAM, do_scc},
+  {0177777, 0000277, "scc", NO_PARAM, do_scc},
   // set N = 1
-  {0177777, 000270, "sen", NO_PARAM, do_sen},
+  {0177777, 0000270, "sen", NO_PARAM, do_sen},
   // set Z = 1
-  {0177777, 000264, "sez", NO_PARAM, do_sez},
+  {0177777, 0000264, "sez", NO_PARAM, do_sez},
   // set C = 1
-  {0177777, 000261, "sec", NO_PARAM, do_sec},
+  {0177777, 0000261, "sec", NO_PARAM, do_sec},
+
+  // check flag Z (if Z = 0)
+  {0177700, 0001400, "beq", HAS_XX, do_beq},
+  // check flag N (if N = 0)
+  {0177700, 0100000, "bpl", HAS_XX, do_bpl},
 
   // stop program execution
   {0177777, 0000000, "halt", NO_PARAM, do_halt},  
-  // no opeartion 
-  {0177777, 000240, "nop", NO_PARAM, do_nop},
+  // no operation
+  {0177777, 0000240, "nop", NO_PARAM, do_nop},
 
   // buffer element
   {0000000, 0000000, "unknown", NO_PARAM, do_unknown}

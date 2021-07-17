@@ -22,3 +22,6 @@ void do_scc(Param p);
 void do_sen(Param p);
 void do_sez(Param p);
 void do_sec(Param p);
+
+void do_beq(Param p);
+void do_bpl(Param p);
