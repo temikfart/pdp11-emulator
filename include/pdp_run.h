@@ -11,7 +11,7 @@
 #define HAS_R 8
 #define HAS_XX 16
 // Statuses for external device's registers
-#define STATUS_READY 1
+#define STATUS_READY 0200
 #define STATUS_BUSY 0
 
 

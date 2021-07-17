@@ -42,5 +42,5 @@ void edr_print() {
   logger(DEBUG, "\nDisplay addresses:\tostat = %06o; odata = %06o.\n",
          DisplayReg.ostat, DisplayReg.odata);
   logger(DEBUG, "Display value:\t\tostat = %06o; odata = %06o.\n",
-         w_read(DisplayReg.ostat), w_read(DisplayReg.odata));
+         w_read(DisplayReg.ostat) >> 7, w_read(DisplayReg.odata));
 }
