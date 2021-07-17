@@ -162,3 +162,11 @@ void do_sec(Param p) {
 
   logger(DEBUG, "\nNZVC = %1o%1o%1o%1o\n", psw.N, psw.Z, psw.V, psw.C);
 }
+
+void do_beq(Param p) {
+  return;
+}
+
+void do_bpl(Param p) {
+  return;
+}
