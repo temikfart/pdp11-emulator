@@ -18,7 +18,7 @@ void logger(int log_lvl, const char * format, ...) {
 
 void reg_print() {
   logger(INFO, 
-         "R0=%06o R2=%06o R4=%06o SP=%06o\
+         "\nR0=%06o R2=%06o R4=%06o SP=%06o\
          \nR1=%06o R3=%06o R5=%06o PC=%06o\n", 
          reg[0], reg[2], reg[4], reg[6],
          reg[1], reg[3], reg[5], reg[7]);
@@ -28,7 +28,7 @@ void psw_log_print(uint8_t logging_level) {
   logger(logging_level, psw.N ? "[N" : "[-");
   logger(logging_level, psw.Z ? "Z" : "-");
   logger(logging_level, psw.V ? "V" : "-");
-  logger(logging_level, psw.C ? "C]" : "-]");
+  logger(logging_level, psw.C ? "C]\n" : "-]\n");
 }
 
 void result_print() {

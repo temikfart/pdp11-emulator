@@ -55,6 +55,8 @@ static Command cmd[] = {
   // set C = 1
   {0177777, 0000261, "sec", NO_PARAM, do_sec},
 
+  // Branch (pc = pc + XX*2)
+  {0177400, 0000400, "br", HAS_XX, do_br},
   // check flag Z (if Z = 0)
   {0177700, 0001400, "beq", HAS_XX, do_beq},
   // check flag N (if N = 0)
@@ -98,7 +100,7 @@ Arg get_modereg(word w) {
   return res;
 }
 Param get_params(word w, char params) {
-  logger(DEBUG, "params = %d ", params);
+//  logger(DEBUG, "params = %d ", params);
   
   Param res;
   
@@ -122,8 +124,8 @@ Param get_params(word w, char params) {
   }
   // XX
   if ((params & HAS_XX) == HAS_XX) {
-    res.xx = w & 077;
-    logger(TRACE, "%o ", (pc - 2*res.nn));
+    res.xx = w & 0xFF;
+//    logger(TRACE, "%o ", res.xx);
   }
   // is_byte_cmd
   res.is_byte_cmd = (w >> 15) & 1;
@@ -137,7 +139,7 @@ void run() {
 //  w_write(DisplayReg.odata, STATUS_BUSY);
   edr_print();
 
-  logger(INFO, "\n----------------RUNNING----------------\n");
+  logger(INFO, "\n----------------RUNNING----------------");
 
   while (1) {
     word w = w_read(pc);
@@ -149,19 +151,19 @@ void run() {
     
     while (1) {
       if ((w & (cmd[i]).mask) == (cmd[i]).opcode) {
-        logger(TRACE, "%s ", (cmd[i]).name);
+        logger(TRACE, "%-8s", (cmd[i]).name);
 
         p = get_params(w, (cmd[i]).params);
         (cmd[i]).do_func(p);
-        
-        psw_log_print(TRACE);
+
+        // DEBUG
+        if (current_log_lvl > TRACE) {
+          reg_print();
+        }
+        psw_log_print(DEBUG);
         break;
       }
       i++;
-    }
-    // DEBUG
-    if (current_log_lvl > TRACE) {
-      reg_print();
     }
   }
 }
