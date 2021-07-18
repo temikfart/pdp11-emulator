@@ -144,8 +144,15 @@ void run() {
   while (1) {
     word w = w_read(pc);
     logger(TRACE, "\n%06o %06o: ", pc, w);
-    pc += 2;
-    
+
+    // Registers protection
+    if (pc < 8) {
+      logger(FATAL, "Fatal error: Array index out of bounds.\n");
+      exit(1);
+    } else {
+      pc += 2;
+    }
+
     int i = 0;
     is_byte_cmd = (w >> 15) & 1;
     
@@ -213,11 +220,7 @@ void mode3(Arg *res, int r) {
   logger(TRACE, "@#%o ", res->adr);
 }
 void mode4(Arg *res, int r) {
-  if (r == 7 && pc == 8) {  // Это после появления PSW переделается
-    logger(FATAL, "Fatal error: Array index out of bounds.\n");
-    exit(1);
-  }
-  
+  // Action
   if (is_byte_cmd && r < 6) {
     reg[r] -= 1;
     res->adr = reg[r];
@@ -227,11 +230,18 @@ void mode4(Arg *res, int r) {
     res->adr = reg[r];
     res->val = w_read(res->adr);
   }
-  
-  if (r == 7) {
-    logger(TRACE, "-(PC) ");
-  } else {
-    logger(TRACE, "-(R%o) ", r);
+
+  // Print
+  switch (r) {
+    case 6:
+      logger(TRACE, "-(SP) ");
+      break;
+    case 7:
+      logger(TRACE, "-(PC) ");
+      break;
+    default:
+      logger(TRACE, "-(R%o) ", r);
+      break;
   }
 }
 void mode5(Arg *res, int r);
