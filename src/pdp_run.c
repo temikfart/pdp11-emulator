@@ -58,9 +58,9 @@ static Command cmd[] = {
   // Branch (pc = pc + XX*2)
   {0177400, 0000400, "br", HAS_XX, do_br},
   // check flag Z (if Z = 0)
-  {0177700, 0001400, "beq", HAS_XX, do_beq},
+  {0177400, 0001400, "beq", HAS_XX, do_beq},
   // check flag N (if N = 0)
-  {0177700, 0100300, "bpl", HAS_XX, do_bpl},
+  {0177400, 0100000, "bpl", HAS_XX, do_bpl},
 
   // stop program execution
   {0177777, 0000000, "halt", NO_PARAM, do_halt},  
@@ -86,7 +86,7 @@ Arg get_modereg(word w) {
     case 2:       // Mode 2: (Rn)+
       mode2(&res, r);
       break;
-    case 3:
+    case 3:       // Mode 3: @(Rn)+
       mode3(&res, r);
       break;
     case 4:       // Mode 4: -(Rn)
@@ -125,7 +125,6 @@ Param get_params(word w, char params) {
   // XX
   if ((params & HAS_XX) == HAS_XX) {
     res.xx = w & 0xFF;
-//    logger(TRACE, "%o ", res.xx);
   }
   // is_byte_cmd
   res.is_byte_cmd = (w >> 15) & 1;
@@ -139,7 +138,7 @@ void run() {
 //  w_write(DisplayReg.odata, STATUS_BUSY);
   edr_print();
 
-  logger(INFO, "\n----------------RUNNING----------------");
+  logger(INFO, "\n----------------RUNNING----------------\n");
 
   while (1) {
     word w = w_read(pc);

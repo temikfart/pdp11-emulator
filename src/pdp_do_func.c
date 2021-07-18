@@ -83,7 +83,7 @@ void do_tst(Param p) {
 	set_Z(tested_value, p.is_byte_cmd);
 	set_C(0, p.is_byte_cmd);
 
-  logger(DEBUG, "\nNZVC = %1o%1o%1o%1o\n", psw.N, psw.Z, psw.V, psw.C);
+  logger(DEBUG, "\tNZVC = %1o%1o%1o%1o", psw.N, psw.Z, psw.V, psw.C);
 }
 
 void do_cmp(Param p) {
@@ -182,5 +182,8 @@ void do_bpl(Param p) {
   // NZVC == ----
   if(psw.N == 0) {
     do_br(p);
+  }
+  else {
+    logger(TRACE, "%06o ", pc);
   }
 }
