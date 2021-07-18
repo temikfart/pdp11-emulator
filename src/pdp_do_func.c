@@ -168,5 +168,9 @@ void do_beq(Param p) {
 }
 
 void do_bpl(Param p) {
-  return;
+  // NZVC == ----
+
+  if(psw.N == 0) {
+    logger(INFO, "WAIT..\n");
+  }
 }

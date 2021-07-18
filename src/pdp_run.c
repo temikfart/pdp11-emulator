@@ -58,7 +58,7 @@ static Command cmd[] = {
   // check flag Z (if Z = 0)
   {0177700, 0001400, "beq", HAS_XX, do_beq},
   // check flag N (if N = 0)
-  {0177700, 0100000, "bpl", HAS_XX, do_bpl},
+  {0177700, 0100300, "bpl", HAS_XX, do_bpl},
 
   // stop program execution
   {0177777, 0000000, "halt", NO_PARAM, do_halt},  
@@ -120,6 +120,11 @@ Param get_params(word w, char params) {
     res.nn = w & 077;
     logger(TRACE, "%o ", (pc - 2*res.nn));
   }
+  // XX
+  if ((params & HAS_XX) == HAS_XX) {
+    res.xx = w & 077;
+    logger(TRACE, "%o ", (pc - 2*res.nn));
+  }
   // is_byte_cmd
   res.is_byte_cmd = (w >> 15) & 1;
   
@@ -132,7 +137,7 @@ void run() {
 //  w_write(DisplayReg.odata, STATUS_BUSY);
   edr_print();
 
-  logger(INFO, "\n----------------RUNNING----------------");
+  logger(INFO, "\n----------------RUNNING----------------\n");
 
   while (1) {
     word w = w_read(pc);

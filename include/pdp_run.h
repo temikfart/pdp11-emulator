@@ -24,6 +24,7 @@ typedef struct {
   Arg ss;
   unsigned char r;
   unsigned char nn;
+  char xx;
   word is_byte_cmd;
 } Param;    // Arguments for functions in structure
 typedef struct {
