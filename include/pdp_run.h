@@ -44,16 +44,16 @@ extern EDReg DisplayReg;  // External device's register for Display
 
 
 // Modes
-void mode0(Arg * res, int r);
-void mode1(Arg * res, int r);
-void mode2(Arg * res, int r);
-void mode3(Arg * res, int r);
-void mode4(Arg * res, int r);
-void mode5(Arg * res, int r);
-void mode6(Arg * res, int r);
-void mode7(Arg * res, int r);
+void mode0(Arg * res, int r, word is_byte_cmd);
+void mode1(Arg * res, int r, word is_byte_cmd);
+void mode2(Arg * res, int r, word is_byte_cmd);
+void mode3(Arg * res, int r, word is_byte_cmd);
+void mode4(Arg * res, int r, word is_byte_cmd);
+void mode5(Arg * res, int r, word is_byte_cmd);
+void mode6(Arg * res, int r, word is_byte_cmd);
+void mode7(Arg * res, int r, word is_byte_cmd);
 
-Arg get_modereg(word w);                // mode definition
+Arg get_modereg(word w, word is_byte_cmd);                // Mode definition
 Param get_params(word w, char params);  // Determines parameters for operations PDP-11
 
 // Determines if the result of executing an assembler

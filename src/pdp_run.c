@@ -9,9 +9,6 @@
 
 // Структура для параметров функций cmd[]
 static Param p;
-// Индикатор режима do-функции в функции run.
-// 1 - Byte функция, 0 - Word функция
-static word is_byte_cmd;
 // Display's external device's register
 EDReg DisplayReg = {0177564, 0177566};
 
@@ -57,9 +54,13 @@ static Command cmd[] = {
 
   // Branch (pc = pc + XX*2)
   {0177400, 0000400, "br", HAS_XX, do_br},
-  // check flag Z (if Z = 0)
+  // Branch if Carry clear (if C = 0)
+  {0177400, 0103000, "bcc", HAS_XX, do_bcc},
+  // Branch if Carry clear (if C = 0)
+  {0177400, 0103400, "bcs", HAS_XX, do_bcs},
+  // Branch if equal (if Z = 0)
   {0177400, 0001400, "beq", HAS_XX, do_beq},
-  // check flag N (if N = 0)
+  // Branch if plus (if N = 0)
   {0177400, 0100000, "bpl", HAS_XX, do_bpl},
 
   // stop program execution
@@ -71,26 +72,26 @@ static Command cmd[] = {
   {0000000, 0000000, "unknown", NO_PARAM, do_unknown}
 };
 
-Arg get_modereg(word w) {
+Arg get_modereg(word w, word is_byte_cmd) {
   Arg res;
   int r = w & 7;        // Номер регистра
   int mode = (w >> 3) & 7;  // Номер моды
   
   switch (mode) {
     case 0:       // Mode 0: Rn
-      mode0(&res, r);
+      mode0(&res, r, is_byte_cmd);
       break;
     case 1:       // Mode 1: (Rn)
-      mode1(&res, r);
+      mode1(&res, r, is_byte_cmd);
       break;
     case 2:       // Mode 2: (Rn)+
-      mode2(&res, r);
+      mode2(&res, r, is_byte_cmd);
       break;
     case 3:       // Mode 3: @(Rn)+
-      mode3(&res, r);
+      mode3(&res, r, is_byte_cmd);
       break;
     case 4:       // Mode 4: -(Rn)
-      mode4(&res, r);
+      mode4(&res, r, is_byte_cmd);
       break;
     default:
       logger(ERROR, "Mode %o not implemented yet.\n", mode);
@@ -101,16 +102,20 @@ Arg get_modereg(word w) {
 }
 Param get_params(word w, char params) {
 //  logger(DEBUG, "params = %d ", params);
-  
+
+  // Индикатор режима do-функции в функции run.
+  // 1 - Byte функция, 0 - Word функция
+  word is_byte_cmd = (w >> 15) & 1;
+
   Param res;
   
   // SS
   if ((params & HAS_SS) == HAS_SS) {
-    res.ss = get_modereg(w >> 6);
+    res.ss = get_modereg(w >> 6, is_byte_cmd);
   }
   // DD
   if ((params & HAS_DD) == HAS_DD) {
-    res.dd = get_modereg(w);
+    res.dd = get_modereg(w, is_byte_cmd);
   }
   // R
   if ((params & HAS_R) == HAS_R) {
@@ -127,7 +132,7 @@ Param get_params(word w, char params) {
     res.xx = w & 0xFF;
   }
   // is_byte_cmd
-  res.is_byte_cmd = (w >> 15) & 1;
+  res.is_byte_cmd = is_byte_cmd;
   
   return res;
 }
@@ -135,7 +140,6 @@ void run() {
   // Default preset
   pc = 01000;
   w_write(DisplayReg.ostat, STATUS_READY);
-//  w_write(DisplayReg.odata, STATUS_BUSY);
   edr_print();
 
   logger(INFO, "\n----------------RUNNING----------------\n");
@@ -153,7 +157,6 @@ void run() {
     }
 
     int i = 0;
-    is_byte_cmd = (w >> 15) & 1;
     
     while (1) {
       if ((w & (cmd[i]).mask) == (cmd[i]).opcode) {
@@ -173,52 +176,60 @@ void run() {
     }
   }
 }
-// ============================================
-// ====================МОДЫ====================
-// ============================================
-void mode0(Arg *res, int r) {
+/*==========================================
+====================MODES===================
+==========================================*/
+void mode0(Arg *res, int r, word is_byte_cmd) {
+  // Action
   res->adr = r;
   res->val = reg[r];
+
+  // Print
   logger(TRACE, "R%o ", r);
 }
-void mode1(Arg *res, int r) {
+void mode1(Arg *res, int r, word is_byte_cmd) {
+  // Action
   res->adr = reg[r];
   if (is_byte_cmd) {
     res->val = b_read(res->adr);
   } else {
     res->val = w_read(res->adr);
   }
-  
+
+  // Print
   logger(TRACE, "(R%o) ", r);
 }
-void mode2(Arg *res, int r) {
+void mode2(Arg *res, int r, word is_byte_cmd) {
+  // Action
   res->adr = reg[r];
   if (is_byte_cmd) {
     res->val = b_read(res->adr);
   } else {
     res->val = w_read(res->adr);
   }
-  
   if (is_byte_cmd && r < 6) {
     reg[r] += 1;
   } else {
     reg[r] += 2;
   }
-    
+
+  // Print
   if (r == 7) {
     logger(TRACE, "#%o ", res->val);
   } else {
     logger(TRACE, "(R%o)+ ", r);
   }
 }
-void mode3(Arg *res, int r) {
+void mode3(Arg *res, int r, word is_byte_cmd) {
+  // Action
   res->adr = w_read(reg[r]);
   res->val = w_read(res->adr);
   reg[r] += 2;
-  
+
+  // Print
   logger(TRACE, "@#%o ", res->adr);
 }
-void mode4(Arg *res, int r) {
+void mode4(Arg *res, int r, word is_byte_cmd) {
   // Action
   if (is_byte_cmd && r < 6) {
     reg[r] -= 1;
@@ -243,12 +254,12 @@ void mode4(Arg *res, int r) {
       break;
   }
 }
-void mode5(Arg *res, int r);
-void mode6(Arg *res, int r);
-void mode7(Arg *res, int r);
+void mode5(Arg *res, int r, word is_byte_cmd);
+void mode6(Arg *res, int r, word is_byte_cmd);
+void mode7(Arg *res, int r, word is_byte_cmd);
 
 word is_negative(uint32_t value, word is_byte_cmd) {
-  return is_byte_cmd ? (value >> 7) & 1 : (value >> 15) & 1;
+  return value >> (is_byte_cmd ? 7 : 15) & 1;
 }
 
 void set_N(uint32_t value, word is_byte_cmd) {
@@ -262,4 +273,3 @@ void set_Z(uint32_t value, word is_byte_cmd) {
 void set_C(uint32_t value, word is_byte_cmd) {
   psw.C = (value >> (is_byte_cmd ? 8 : 16)) & 1;
 }
-

@@ -135,7 +135,7 @@ void do_clc(Param p) {
 
 void do_scc(Param p) {
   // NZVC == 1111
-  set_N((byte)(-1), 1); 
+  set_N((byte)(-1), 1);
   set_Z(0, p.is_byte_cmd);
   set_C(CONSTANT_FOR_TURN_ON_C_FLAG, p.is_byte_cmd);
 
@@ -166,24 +166,46 @@ void do_sec(Param p) {
 void do_br(Param p) {
   logger(TRACE, "%06o ", pc);
   pc = pc + (2 * p.xx);
+
+  // NZVC == ----
+}
+
+void do_bcc(Param p) {
+  if(psw.C == 0) {
+    do_br(p);
+  } else {
+    logger(TRACE, "%06o ", pc);
+  }
+
+  // NZVC == ----
+}
+void do_bcs(Param p) {
+  if(psw.C == 1) {
+    do_br(p);
+  } else {
+    logger(TRACE, "%06o ", pc);
+  }
+  // NZVC == ----
 }
 
 void do_beq(Param p) {
-  // NZVC == ----
-  if(psw.Z) {
+  if(psw.Z == 1) {
     do_br(p);
   }
   else {
     logger(TRACE, "%06o ", pc);
   }
+
+  // NZVC == ----
 }
 
 void do_bpl(Param p) {
-  // NZVC == ----
   if(psw.N == 0) {
     do_br(p);
   }
   else {
     logger(TRACE, "%06o ", pc);
   }
+
+  // NZVC == ----
 }
