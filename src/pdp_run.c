@@ -54,21 +54,29 @@ static Command cmd[] = {
 
   // Branch (pc = pc + XX*2)
   {0177400, 0000400, "br", HAS_XX, do_br},
-  // Branch if Carry clear (if C = 0)
+  // Branch if Carry Clear (C = 0)
   {0177400, 0103000, "bcc", HAS_XX, do_bcc},
-  // Branch if Carry clear (if C = 0)
+  // Branch if Carry Set (C = 1)
   {0177400, 0103400, "bcs", HAS_XX, do_bcs},
-  // Branch if equal (if Z = 0)
+  // Branch if EQual (Z = 0)
   {0177400, 0001400, "beq", HAS_XX, do_beq},
-  // Branch if plus (if N = 0)
+  // Branch if HIgher (C and Z = 0)
+  {0177400, 0101000, "bhi", HAS_XX, do_bhi},
+  // Branch if Lower Or Same (C and Z = 1)
+  {0177400, 0101400, "blos", HAS_XX, do_blos},
+  // Branch if MInus
+  {0177400, 0100400, "bmi", HAS_XX, do_bmi},
+  // Branch if Not Equal
+  {177400, 0001000, "bne", HAS_XX, do_bne}
+  // Branch if PLus (N = 0)
   {0177400, 0100000, "bpl", HAS_XX, do_bpl},
 
-  // stop program execution
+  // Stop program execution
   {0177777, 0000000, "halt", NO_PARAM, do_halt},  
-  // no operation
+  // No OPeration
   {0177777, 0000240, "nop", NO_PARAM, do_nop},
 
-  // buffer element
+  // Buffer element
   {0000000, 0000000, "unknown", NO_PARAM, do_unknown}
 };
 

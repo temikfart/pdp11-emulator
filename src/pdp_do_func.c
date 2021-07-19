@@ -179,6 +179,7 @@ void do_bcc(Param p) {
 
   // NZVC == ----
 }
+
 void do_bcs(Param p) {
   if(psw.C == 1) {
     do_br(p);
@@ -196,6 +197,42 @@ void do_beq(Param p) {
     logger(TRACE, "%06o ", pc);
   }
 
+  // NZVC == ----
+}
+
+void do_bhi(Param p) {
+  if(psw.C == 0 && psw.Z == 0) {
+    do_br(p);
+  } else {
+    logger(TRACE, "%06o ", pc);
+  }
+  // NZVC == ----
+}
+
+void do_blos(Param p) {
+  if(psw.C == 1 && psw.Z == 1) {
+    do_br(p);
+  } else {
+    logger(TRACE, "%06o ", pc);
+  }
+  // NZVC == ----
+}
+
+void do_bmi(Param p) {
+  if(psw.N == 1) {
+    do_br(p);
+  } else {
+    logger(TRACE, "%06o ", pc);
+  }
+  // NZVC == ----
+}
+
+void do_bne(Param p) {
+  if(psw.Z == 1) {
+    do_br(p);
+  } else {
+    logger(TRACE, "%06o ", pc);
+  }
   // NZVC == ----
 }
 
