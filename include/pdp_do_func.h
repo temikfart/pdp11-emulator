@@ -19,11 +19,13 @@ void do_cmp(Param p);
 void do_ccc(Param p);
 void do_cln(Param p);
 void do_clz(Param p);
+void do_clv(Param p);
 void do_clc(Param p);
 
 void do_scc(Param p);
 void do_sen(Param p);
 void do_sez(Param p);
+void do_sev(Param p);
 void do_sec(Param p);
 
 void do_br(Param p);

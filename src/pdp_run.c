@@ -40,6 +40,8 @@ static Command cmd[] = {
   {0177777, 0000250, "cln", NO_PARAM, do_cln},
   // Clear Z flag
   {0177777, 0000244, "clz", NO_PARAM, do_clz},
+  // Clear V flag
+  {0177777, 0000242, "clv", NO_PARAM, do_clv},
   // Clear C flag
   {0177777, 0000241, "clc", NO_PARAM, do_clc},
 
@@ -49,6 +51,8 @@ static Command cmd[] = {
   {0177777, 0000270, "sen", NO_PARAM, do_sen},
   // Set Z = 1
   {0177777, 0000264, "sez", NO_PARAM, do_sez},
+  // Set V = 1
+  {0177777, 0000262, "sev", NO_PARAM, do_sev},
   // Set C = 1
   {0177777, 0000261, "sec", NO_PARAM, do_sec},
 

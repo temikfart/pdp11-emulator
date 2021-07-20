@@ -132,6 +132,13 @@ void do_clz(Param p) {
   logger(DEBUG, "\nNZVC = %1o%1o%1o%1o\n", psw.N, psw.Z, psw.V, psw.C);
 }
 
+void do_clv(Param p) {
+  // NZVC == --0-
+  set_V(PSW_V_OFF);
+
+  logger(DEBUG, "\nNZVC = %1o%1o%1o%1o\n", psw.N, psw.Z, psw.V, psw.C);
+}
+
 void do_clc(Param p) {
 	// NZVC == ---0
   set_C(1, p.is_byte_cmd);
@@ -159,6 +166,13 @@ void do_sen(Param p) {
 void do_sez(Param p) {
 	// NZVC == -1--
   set_Z(0);
+
+  logger(DEBUG, "\nNZVC = %1o%1o%1o%1o\n", psw.N, psw.Z, psw.V, psw.C);
+}
+
+void do_sev(Param p) {
+  // NZVC == --1-
+  set_V(PSW_V_ON);
 
   logger(DEBUG, "\nNZVC = %1o%1o%1o%1o\n", psw.N, psw.Z, psw.V, psw.C);
 }
