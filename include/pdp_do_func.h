@@ -1,6 +1,9 @@
 #pragma once
 
-#define CONSTANT_FOR_TURN_ON_C_FLAG 0x1ffff
+#define PSW_C_ON 0x1FFFF
+#define PSW_V_OFF 0
+#define PSW_V_ON 1
+#define PSW_V_DEFAULT 2
 
 void do_halt(Param p);
 void do_mov(Param p);

@@ -20,36 +20,36 @@ static Command cmd[] = {
   {0170000, 0010000, "mov", HAS_DD | HAS_SS, do_mov},
   // DD = SS [byte]
   {0170000, 0110000, "movb", HAS_DD | HAS_SS, do_mov},
-  // set N, Z, V flags with agreement with (SS - DD) [word]
+  // Set N, Z, V flags with agreement with (SS - DD) [word]
   {0170000, 0020000, "cmp", HAS_DD | HAS_SS, do_cmp},
-  // set N, Z, V flags with agreement with (SS - DD) [byte]
+  // Set N, Z, V flags with agreement with (SS - DD) [byte]
   {0170000, 0120000, "cmpb", HAS_DD | HAS_SS, do_cmp},
   // Subtract One and Branch: PC=PC-2*NN
   {0177000, 0077000, "sob", HAS_R | HAS_N, do_sob},
   
   // DD = 0
   {0177700, 0005000, "clr", HAS_DD, do_clr},
-  // set N, Z flags in agreement with DD [word]
+  // Set N, Z flags in agreement with DD [word]
   {0177700, 0005700, "tst", HAS_DD, do_tst},
-  // set N, Z flags in agreement with DD [byte]
+  // Set N, Z flags in agreement with DD [byte]
   {0177700, 0105700, "tstb", HAS_DD, do_tst},
 
-  // clear all condition codes NZVC = 0000
+  // Clear all condition codes NZVC = 0000
   {0177777, 0000257, "ccc", NO_PARAM, do_ccc},
-  // clear N flag
+  // Clear N flag
   {0177777, 0000250, "cln", NO_PARAM, do_cln},
-  // clear Z flag
+  // Clear Z flag
   {0177777, 0000244, "clz", NO_PARAM, do_clz},
-  // clear C flag
+  // Clear C flag
   {0177777, 0000241, "clc", NO_PARAM, do_clc},
 
-  // set all condition codes at one NZVC = 1111
+  // Set all condition codes at one NZVC = 1111
   {0177777, 0000277, "scc", NO_PARAM, do_scc},
-  // set N = 1
+  // Set N = 1
   {0177777, 0000270, "sen", NO_PARAM, do_sen},
-  // set Z = 1
+  // Set Z = 1
   {0177777, 0000264, "sez", NO_PARAM, do_sez},
-  // set C = 1
+  // Set C = 1
   {0177777, 0000261, "sec", NO_PARAM, do_sec},
 
   // Branch (pc = pc + XX*2)
@@ -67,7 +67,7 @@ static Command cmd[] = {
   // Branch if MInus
   {0177400, 0100400, "bmi", HAS_XX, do_bmi},
   // Branch if Not Equal
-  {177400, 0001000, "bne", HAS_XX, do_bne}
+  {0177400, 0001000, "bne", HAS_XX, do_bne},
   // Branch if PLus (N = 0)
   {0177400, 0100000, "bpl", HAS_XX, do_bpl},
 
@@ -80,7 +80,7 @@ static Command cmd[] = {
   {0000000, 0000000, "unknown", NO_PARAM, do_unknown}
 };
 
-Arg get_modereg(word w, word is_byte_cmd) {
+Arg get_mode(word w, word is_byte_cmd) {
   Arg res;
   int r = w & 7;        // Номер регистра
   int mode = (w >> 3) & 7;  // Номер моды
@@ -119,11 +119,11 @@ Param get_params(word w, char params) {
   
   // SS
   if ((params & HAS_SS) == HAS_SS) {
-    res.ss = get_modereg(w >> 6, is_byte_cmd);
+    res.ss = get_mode(w >> 6, is_byte_cmd);
   }
   // DD
   if ((params & HAS_DD) == HAS_DD) {
-    res.dd = get_modereg(w, is_byte_cmd);
+    res.dd = get_mode(w, is_byte_cmd);
   }
   // R
   if ((params & HAS_R) == HAS_R) {
@@ -271,13 +271,29 @@ word is_negative(uint32_t value, word is_byte_cmd) {
 }
 
 void set_N(uint32_t value, word is_byte_cmd) {
-  psw.N = is_negative(value, is_byte_cmd);
+  psw.N = (char)is_negative(value, is_byte_cmd);
 }
 
-void set_Z(uint32_t value, word is_byte_cmd) {
-  psw.Z = (value == 0);
+void set_Z(uint32_t value) {
+  psw.Z = (char)(value == 0);
+}
+
+void set_V(uint32_t flag) {
+  switch (flag) {
+    case PSW_V_OFF:
+      psw.V = 0;
+      break;
+    case PSW_V_ON:
+      psw.V = 1;
+      break;
+    case PSW_V_DEFAULT:
+      psw.V = (char)(psw.N ^ psw.C);
+      break;
+    default:
+      break;
+  }
 }
 
 void set_C(uint32_t value, word is_byte_cmd) {
-  psw.C = (value >> (is_byte_cmd ? 8 : 16)) & 1;
+  psw.C = (char)((value >> (is_byte_cmd ? 8 : 16)) & 1);
 }

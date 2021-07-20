@@ -53,7 +53,7 @@ void mode5(Arg * res, int r, word is_byte_cmd);
 void mode6(Arg * res, int r, word is_byte_cmd);
 void mode7(Arg * res, int r, word is_byte_cmd);
 
-Arg get_modereg(word w, word is_byte_cmd);                // Mode definition
+Arg get_mode(word w, word is_byte_cmd);                // Mode definition
 Param get_params(word w, char params);  // Determines parameters for operations PDP-11
 
 // Determines if the result of executing an assembler
@@ -62,7 +62,11 @@ void set_N(uint32_t value, word is_byte_cmd);
 
 // Determines if the result of executing an assembler
 // Instruction is zero
-void set_Z(uint32_t value, word is_byte_cmd);
+void set_Z(uint32_t value);
+
+// Determines if summed two positive numbers,
+// and the result is negative
+void set_V(uint32_t flag);
 
 // Determines if there was an overflow
 void set_C(uint32_t value, word is_byte_cmd);
