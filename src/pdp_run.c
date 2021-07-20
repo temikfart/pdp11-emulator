@@ -60,8 +60,16 @@ static Command cmd[] = {
   {0177400, 0103400, "bcs", HAS_XX, do_bcs},
   // Branch if EQual (Z = 0)
   {0177400, 0001400, "beq", HAS_XX, do_beq},
+  // Branch if Greater or Equal (N and V = 0)
+  {0177400, 0002000, "bge", HAS_XX, do_bge},
+  // Branch if Greater Than (Z or {N and V} = 0)
+  {0177400, 0003000, "bgt", HAS_XX, do_bgt},
   // Branch if HIgher (C and Z = 0)
   {0177400, 0101000, "bhi", HAS_XX, do_bhi},
+  // Branch if Less or Equal (Z or {N and V} = 1)
+  {0177400, 0003400, "ble", HAS_XX, do_ble},
+  // Branch if Less Than (N and V = 1)
+  {0177400, 0002400, "blt", HAS_XX, do_blt},
   // Branch if Lower Or Same (C and Z = 1)
   {0177400, 0101400, "blos", HAS_XX, do_blos},
   // Branch if MInus
@@ -70,6 +78,10 @@ static Command cmd[] = {
   {0177400, 0001000, "bne", HAS_XX, do_bne},
   // Branch if PLus (N = 0)
   {0177400, 0100000, "bpl", HAS_XX, do_bpl},
+  // Branch if oVerflow clear (V = 0)
+  {0177400, 0102000, "bvc", HAS_XX, do_bvc},
+  // Branch if oVerflow set (V = 1)
+  {0177400, 0102400, "bvs", HAS_XX, do_bvs},
 
   // Stop program execution
   {0177777, 0000000, "halt", NO_PARAM, do_halt},  

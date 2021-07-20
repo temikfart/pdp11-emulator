@@ -193,11 +193,34 @@ void do_bcs(Param p) {
   } else {
     logger(TRACE, "%06o ", pc);
   }
+
   // NZVC == ----
 }
 
 void do_beq(Param p) {
   if(psw.Z == 1) {
+    do_br(p);
+  }
+  else {
+    logger(TRACE, "%06o ", pc);
+  }
+
+  // NZVC == ----
+}
+
+void do_bge(Param p) {
+  if(psw.N && psw.V == 0) {
+    do_br(p);
+  }
+  else {
+    logger(TRACE, "%06o ", pc);
+  }
+
+  // NZVC == ----
+}
+
+void do_bgt(Param p) {
+  if(psw.Z || (psw.N && psw.V) == 0) {
     do_br(p);
   }
   else {
@@ -213,6 +236,27 @@ void do_bhi(Param p) {
   } else {
     logger(TRACE, "%06o ", pc);
   }
+
+  // NZVC == ----
+}
+
+void do_ble(Param p) {
+  if(psw.Z || (psw.N && psw.V) == 1) {
+    do_br(p);
+  } else {
+    logger(TRACE, "%06o ", pc);
+  }
+
+  // NZVC == ----
+}
+
+void do_blt(Param p) {
+  if(psw.N && psw.V == 1) {
+    do_br(p);
+  } else {
+    logger(TRACE, "%06o ", pc);
+  }
+
   // NZVC == ----
 }
 
@@ -222,6 +266,7 @@ void do_blos(Param p) {
   } else {
     logger(TRACE, "%06o ", pc);
   }
+
   // NZVC == ----
 }
 
@@ -231,6 +276,7 @@ void do_bmi(Param p) {
   } else {
     logger(TRACE, "%06o ", pc);
   }
+
   // NZVC == ----
 }
 
@@ -240,11 +286,34 @@ void do_bne(Param p) {
   } else {
     logger(TRACE, "%06o ", pc);
   }
+
   // NZVC == ----
 }
 
 void do_bpl(Param p) {
   if(psw.N == 0) {
+    do_br(p);
+  }
+  else {
+    logger(TRACE, "%06o ", pc);
+  }
+
+  // NZVC == ----
+}
+
+void do_bvc(Param p) {
+  if(psw.V == 0) {
+    do_br(p);
+  }
+  else {
+    logger(TRACE, "%06o ", pc);
+  }
+
+  // NZVC == ----
+}
+
+void do_bvs(Param p) {
+  if(psw.V == 1) {
     do_br(p);
   }
   else {
