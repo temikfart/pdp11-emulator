@@ -9,13 +9,13 @@
 
 void do_halt(Param p) {
   logger(INFO, 
-         "\n-----------------HALT------------------\n");
+         "\n-----------------HALT------------------");
   result_print(); 
   exit(0);
 }
 
 void do_mov(Param p) {
-  logger(DEBUG, "\nR%o = %06o.\n", p.dd.adr, p.ss.val);
+  logger(DEBUG, "\t\tR%o = %06o.", p.dd.adr, p.ss.val);
 
   if (p.is_byte_cmd) {
     b_write(p.dd.adr, p.ss.val);
@@ -25,11 +25,12 @@ void do_mov(Param p) {
 
   // NZVC == **0-
   set_N(p.ss.val, p.is_byte_cmd);
-  set_Z(p.ss.val, p.is_byte_cmd);
+  set_Z(p.ss.val);
+  set_V(PSW_V_OFF);
 }
 
 void do_add(Param p) {
-  logger(DEBUG, "\nR%o = R%o + R%o.\n", p.dd.adr, p.dd.adr, p.ss.adr);
+  logger(DEBUG, "\t\t\tR%o = R%o + R%o.", p.dd.adr, p.dd.adr, p.ss.adr);
   
   uint32_t w = w_read(p.dd.adr);
   w = w + p.ss.val;
@@ -37,8 +38,9 @@ void do_add(Param p) {
 
   // NZVC == ****
   set_N(w, p.is_byte_cmd);
-  set_Z(w, p.is_byte_cmd);
+  set_Z(w);
   set_C(w, p.is_byte_cmd);
+  set_V(PSW_V_DEFAULT);
 }
 
 void do_sob(Param p) {
@@ -49,17 +51,18 @@ void do_sob(Param p) {
 
   // NZVC == ----
 
-  logger(DEBUG, "\nR%o = %o, PC = %o.\n", p.r, reg[p.r], pc);
+  logger(DEBUG, "\nR%o = %o, PC = %o.", p.r, reg[p.r], pc);
 }
 
 void do_clr(Param p) {
-  logger(DEBUG, "\nmem[%o] = 0.\n", p.dd.adr);
+  logger(DEBUG, "\tmem[%o] = 0.", p.dd.adr);
   
   w_write(p.dd.adr, 0);
 
   // NZVC == 0100
   set_N(0, p.is_byte_cmd);
-  set_Z(0, p.is_byte_cmd);
+  set_Z(0);
+  set_V(PSW_V_OFF);
   set_C(0, p.is_byte_cmd);
 }
 
@@ -80,10 +83,11 @@ void do_tst(Param p) {
   
   // NZVC == **00
 	set_N(tested_value, p.is_byte_cmd);
-	set_Z(tested_value, p.is_byte_cmd);
+	set_Z(tested_value);
+  set_V(PSW_V_OFF);
 	set_C(0, p.is_byte_cmd);
 
-  logger(DEBUG, "\nNZVC = %1o%1o%1o%1o\n", psw.N, psw.Z, psw.V, psw.C);
+  logger(DEBUG, "\tNZVC = %1o%1o%1o%1o", psw.N, psw.Z, psw.V, psw.C);
 }
 
 void do_cmp(Param p) {
@@ -97,8 +101,9 @@ void do_cmp(Param p) {
 
   // NZVC == ****
   set_N(tested_value, p.is_byte_cmd);
-  set_Z(tested_value, p.is_byte_cmd);
+  set_Z(tested_value);
   set_C(tested_value, p.is_byte_cmd);
+  set_V(PSW_V_DEFAULT);
 
   logger(DEBUG, "\nNZVC = %1o%1o%1o%1o\n", psw.N, psw.Z, psw.V, psw.C);
 }
@@ -106,7 +111,8 @@ void do_cmp(Param p) {
 void do_ccc(Param p) {
   // NZVC == 0000
   set_N(1, p.is_byte_cmd);
-  set_Z(1, p.is_byte_cmd);
+  set_Z(1);
+  set_V(PSW_V_OFF);
   set_C(1, p.is_byte_cmd);
 
   logger(DEBUG, "\nNZVC = %1o%1o%1o%1o\n", psw.N, psw.Z, psw.V, psw.C);
@@ -121,7 +127,14 @@ void do_cln(Param p) {
 
 void do_clz(Param p) {
 	// NZVC == -0--
-  set_Z(1, p.is_byte_cmd);
+  set_Z(1);
+
+  logger(DEBUG, "\nNZVC = %1o%1o%1o%1o\n", psw.N, psw.Z, psw.V, psw.C);
+}
+
+void do_clv(Param p) {
+  // NZVC == --0-
+  set_V(PSW_V_OFF);
 
   logger(DEBUG, "\nNZVC = %1o%1o%1o%1o\n", psw.N, psw.Z, psw.V, psw.C);
 }
@@ -135,9 +148,10 @@ void do_clc(Param p) {
 
 void do_scc(Param p) {
   // NZVC == 1111
-  set_N((byte)(-1), 1); 
-  set_Z(0, p.is_byte_cmd);
-  set_C(CONSTANT_FOR_TURN_ON_C_FLAG, p.is_byte_cmd);
+  set_N((byte)(-1), 1);
+  set_Z(0);
+  set_V(PSW_V_ON);
+  set_C(PSW_C_ON, p.is_byte_cmd);
 
   logger(DEBUG, "\nNZVC = %1o%1o%1o%1o\n", psw.N, psw.Z, psw.V, psw.C);
 }
@@ -151,14 +165,174 @@ void do_sen(Param p) {
 
 void do_sez(Param p) {
 	// NZVC == -1--
-  set_Z(0, p.is_byte_cmd);
+  set_Z(0);
+
+  logger(DEBUG, "\nNZVC = %1o%1o%1o%1o\n", psw.N, psw.Z, psw.V, psw.C);
+}
+
+void do_sev(Param p) {
+  // NZVC == --1-
+  set_V(PSW_V_ON);
 
   logger(DEBUG, "\nNZVC = %1o%1o%1o%1o\n", psw.N, psw.Z, psw.V, psw.C);
 }
 
 void do_sec(Param p) {
 	// NZVC == ---1
-  set_C(CONSTANT_FOR_TURN_ON_C_FLAG, p.is_byte_cmd);
+  set_C(PSW_C_ON, p.is_byte_cmd);
 
   logger(DEBUG, "\nNZVC = %1o%1o%1o%1o\n", psw.N, psw.Z, psw.V, psw.C);
+}
+
+void do_br(Param p) {
+  logger(TRACE, "%06o ", pc);
+  pc = pc + (2 * p.xx);
+
+  // NZVC == ----
+}
+
+void do_bcc(Param p) {
+  if(psw.C == 0) {
+    do_br(p);
+  } else {
+    logger(TRACE, "%06o ", pc);
+  }
+
+  // NZVC == ----
+}
+
+void do_bcs(Param p) {
+  if(psw.C == 1) {
+    do_br(p);
+  } else {
+    logger(TRACE, "%06o ", pc);
+  }
+
+  // NZVC == ----
+}
+
+void do_beq(Param p) {
+  if(psw.Z == 1) {
+    do_br(p);
+  }
+  else {
+    logger(TRACE, "%06o ", pc);
+  }
+
+  // NZVC == ----
+}
+
+void do_bge(Param p) {
+  if(psw.N && psw.V == 0) {
+    do_br(p);
+  }
+  else {
+    logger(TRACE, "%06o ", pc);
+  }
+
+  // NZVC == ----
+}
+
+void do_bgt(Param p) {
+  if(psw.Z || (psw.N && psw.V) == 0) {
+    do_br(p);
+  }
+  else {
+    logger(TRACE, "%06o ", pc);
+  }
+
+  // NZVC == ----
+}
+
+void do_bhi(Param p) {
+  if(psw.C == 0 && psw.Z == 0) {
+    do_br(p);
+  } else {
+    logger(TRACE, "%06o ", pc);
+  }
+
+  // NZVC == ----
+}
+
+void do_ble(Param p) {
+  if(psw.Z || (psw.N && psw.V) == 1) {
+    do_br(p);
+  } else {
+    logger(TRACE, "%06o ", pc);
+  }
+
+  // NZVC == ----
+}
+
+void do_blt(Param p) {
+  if(psw.N && psw.V == 1) {
+    do_br(p);
+  } else {
+    logger(TRACE, "%06o ", pc);
+  }
+
+  // NZVC == ----
+}
+
+void do_blos(Param p) {
+  if(psw.C == 1 && psw.Z == 1) {
+    do_br(p);
+  } else {
+    logger(TRACE, "%06o ", pc);
+  }
+
+  // NZVC == ----
+}
+
+void do_bmi(Param p) {
+  if(psw.N == 1) {
+    do_br(p);
+  } else {
+    logger(TRACE, "%06o ", pc);
+  }
+
+  // NZVC == ----
+}
+
+void do_bne(Param p) {
+  if(psw.Z == 1) {
+    do_br(p);
+  } else {
+    logger(TRACE, "%06o ", pc);
+  }
+
+  // NZVC == ----
+}
+
+void do_bpl(Param p) {
+  if(psw.N == 0) {
+    do_br(p);
+  }
+  else {
+    logger(TRACE, "%06o ", pc);
+  }
+
+  // NZVC == ----
+}
+
+void do_bvc(Param p) {
+  if(psw.V == 0) {
+    do_br(p);
+  }
+  else {
+    logger(TRACE, "%06o ", pc);
+  }
+
+  // NZVC == ----
+}
+
+void do_bvs(Param p) {
+  if(psw.V == 1) {
+    do_br(p);
+  }
+  else {
+    logger(TRACE, "%06o ", pc);
+  }
+
+  // NZVC == ----
 }

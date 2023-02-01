@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include "pdp.h"
 #include "pdp_add_func.h"
+#include "pdp_run.h"
 
 #define MEMSIZE (64*1024)   // Размер памяти PDP-11
 
@@ -20,8 +21,13 @@ void b_write(adress adr, byte b) {
     return;
     }
   }
-  
+
   mem[adr] = b;
+
+  // External device's register
+  if (adr == DisplayReg.odata) {
+    logger(INFO, "%c", b);
+  }
 }
 byte b_read(adress adr) {
   return mem[adr] & 0xFF;
